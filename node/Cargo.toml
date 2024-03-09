@@ -1,12 +1,13 @@
 [package]
 name = "parachain-template-node"
 version = "0.1.0"
-authors = ["Anonymous"]
-description = "A new Cumulus FRAME-based Substrate Node, ready for hacking together a parachain."
-license = "Unlicense"
-homepage = "https://substrate.io"
+authors.workspace = true
+description = "Parachain node template"
+license.workspace = true
+homepage.workspace = true
 repository.workspace = true
 edition.workspace = true
+
 build = "build.rs"
 publish = false
 
