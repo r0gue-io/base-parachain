@@ -11,7 +11,6 @@ repository = "https://github.com/paritytech/extended-parachain-template/"
 [workspace]
 members = [
 	"node",
-	"pallets/*",
 	"runtime",
 ]
 resolver = "2"
@@ -34,7 +33,6 @@ substrate-wasm-builder = { git = "https://github.com/paritytech/polkadot-sdk", b
 substrate-build-script-utils = { git = "https://github.com/paritytech/polkadot-sdk", branch = "release-polkadot-v1.7.1" }
 
 # Local
-pallet-parachain-template = { path = "./pallets/template", default-features = false }
 parachain-template-runtime = { path = "./runtime" }
 
 # Substrate
