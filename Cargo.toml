@@ -2,11 +2,11 @@
 panic = "unwind"
 
 [workspace.package]
-authors = ["Anonymous"]
+authors = ["R0GUE <go@r0gue.io>"]
 edition = "2021"
-homepage = "https://substrate.io"
+homepage = "https://r0gue.io"
 license = "Unlicense"
-repository = "https://github.com/paritytech/extended-parachain-template/"
+repository = "https://github.com/r0gue-io/base-parachain"
 
 [workspace]
 members = [
