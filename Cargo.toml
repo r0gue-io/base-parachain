@@ -4,7 +4,7 @@ panic = "unwind"
 [workspace.package]
 authors = ["R0GUE <go@r0gue.io>"]
 edition = "2021"
-homepage = "r0gue.io"
+homepage = "https://r0gue.io"
 license = "Unlicense"
 repository = "https://github.com/r0gue-io/base-parachain"
 
