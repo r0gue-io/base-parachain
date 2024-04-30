@@ -145,6 +145,10 @@ impl xcm_executor::Config for XcmConfig {
 	type AssetExchanger = ();
 	type FeeManager = XcmFeeManagerFromComponents<
 		WaivedLocations,
+		// Delivery fees are sent to the treasury account.
+		// These funds are not accessible without a module controlling such an account.
+		// [pallet_treasury](https://github.com/paritytech/polkadot-sdk/tree/master/substrate/frame/treasury)
+		// could be suitable option.
 		XcmFeeToAccount<Self::AssetTransactor, AccountId, TreasuryAccount>,
 	>;
 	type MessageExporter = ();
