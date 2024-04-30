@@ -30,10 +30,14 @@ frame-system = { workspace = true }
 frame-system-benchmarking = { workspace = true }
 frame-system-rpc-runtime-api = { workspace = true }
 frame-try-runtime = { workspace = true }
+pallet-assets = { workspace = true }
 pallet-aura = { workspace = true }
 pallet-authorship = { workspace = true }
 pallet-balances = { workspace = true }
 pallet-message-queue = { workspace = true }
+pallet-nfts = { workspace = true }
+pallet-nfts-runtime-api = { workspace = true }
+pallet-nft-fractionalization = { workspace = true }
 pallet-session = { workspace = true }
 pallet-sudo = { workspace = true }
 pallet-timestamp = { workspace = true }
@@ -95,11 +99,15 @@ std = [
 	"frame-system/std",
 	"frame-try-runtime/std",
 	"log/std",
+	"pallet-assets/std",
 	"pallet-aura/std",
 	"pallet-authorship/std",
 	"pallet-balances/std",
 	"pallet-collator-selection/std",
 	"pallet-message-queue/std",
+	"pallet-nfts/std",
+	"pallet-nfts-runtime-api/std",
+	"pallet-nft-fractionalization/std",
 	"pallet-session/std",
 	"pallet-sudo/std",
 	"pallet-timestamp/std",
@@ -138,9 +146,12 @@ runtime-benchmarks = [
 	"frame-support/runtime-benchmarks",
 	"frame-system-benchmarking/runtime-benchmarks",
 	"frame-system/runtime-benchmarks",
+	"pallet-assets/runtime-benchmarks",
 	"pallet-balances/runtime-benchmarks",
 	"pallet-collator-selection/runtime-benchmarks",
 	"pallet-message-queue/runtime-benchmarks",
+	"pallet-nfts/runtime-benchmarks",
+	"pallet-nft-fractionalization/runtime-benchmarks",
 	"pallet-sudo/runtime-benchmarks",
 	"pallet-timestamp/runtime-benchmarks",
 	"pallet-xcm/runtime-benchmarks",
@@ -161,11 +172,14 @@ try-runtime = [
 	"frame-support/try-runtime",
 	"frame-system/try-runtime",
 	"frame-try-runtime/try-runtime",
+	"pallet-assets/try-runtime",
 	"pallet-aura/try-runtime",
 	"pallet-authorship/try-runtime",
 	"pallet-balances/try-runtime",
 	"pallet-collator-selection/try-runtime",
 	"pallet-message-queue/try-runtime",
+	"pallet-nfts/try-runtime",
+	"pallet-nft-fractionalization/try-runtime",
 	"pallet-session/try-runtime",
 	"pallet-sudo/try-runtime",
 	"pallet-timestamp/try-runtime",

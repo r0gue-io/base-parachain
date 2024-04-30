@@ -69,8 +69,7 @@ pub fn development_config() -> ChainSpec {
 	properties.insert("ss58Format".into(), 42.into());
 
 	ChainSpec::builder(
-		runtime::WASM_BINARY
-			.expect("WASM binary was not built, please build it!"),
+		runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
 		Extensions {
 			relay_chain: "rococo-local".into(),
 			// You MUST set this to the correct network!
@@ -121,8 +120,7 @@ pub fn local_testnet_config() -> ChainSpec {
 
 	#[allow(deprecated)]
 	ChainSpec::builder(
-		runtime::WASM_BINARY
-			.expect("WASM binary was not built, please build it!"),
+		runtime::WASM_BINARY.expect("WASM binary was not built, please build it!"),
 		Extensions {
 			relay_chain: "rococo-local".into(),
 			// You MUST set this to the correct network!

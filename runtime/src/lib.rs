@@ -10,7 +10,6 @@ mod weights;
 pub mod xcm_config;
 
 use cumulus_pallet_parachain_system::RelayNumberMonotonicallyIncreases;
-use polkadot_runtime_common::xcm_sender::NoPriceForMessageDelivery;
 use smallvec::smallvec;
 use sp_api::impl_runtime_apis;
 use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
@@ -32,19 +31,26 @@ use frame_support::{
 	dispatch::DispatchClass,
 	genesis_builder_helper::{build_config, create_default_config},
 	parameter_types,
-	traits::{ConstBool, ConstU32, ConstU64, ConstU8, EitherOfDiverse, TransformOrigin},
+	traits::{
+		tokens::nonfungibles_v2::Inspect, AsEnsureOriginWithArg, ConstBool, ConstU32, ConstU64,
+		ConstU8, EitherOfDiverse, TransformOrigin,
+	},
 	weights::{
 		constants::WEIGHT_REF_TIME_PER_SECOND, ConstantMultiplier, Weight, WeightToFeeCoefficient,
 		WeightToFeeCoefficients, WeightToFeePolynomial,
 	},
-	PalletId,
+	BoundedVec, PalletId,
 };
 use frame_system::{
 	limits::{BlockLength, BlockWeights},
-	EnsureRoot,
+	EnsureRoot, EnsureSigned,
 };
+use pallet_nfts::PalletFeatures;
 use pallet_xcm::{EnsureXcm, IsVoiceOfBody};
-use parachains_common::message_queue::{NarrowOriginToSibling, ParaIdToSibling};
+use parachains_common::{
+	message_queue::{NarrowOriginToSibling, ParaIdToSibling},
+	AssetIdForTrustBackedAssets, CollectionId, ItemId,
+};
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 pub use sp_runtime::{MultiAddress, Perbill, Permill};
 use xcm_config::{RelayLocation, XcmOriginToTransactDispatchOrigin};
@@ -58,7 +64,7 @@ use polkadot_runtime_common::{BlockHashCount, SlowAdjustingFeeUpdate};
 use weights::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight};
 
 // XCM Imports
-use xcm::latest::prelude::BodyId;
+use xcm::latest::prelude::{AssetId, BodyId};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 pub type Signature = MultiSignature;
@@ -206,9 +212,14 @@ pub const DAYS: BlockNumber = HOURS * 24;
 
 // Unit = the base number of indivisible units for balances
 pub const UNIT: Balance = 1_000_000_000_000;
+pub const CENTIUNIT: Balance = 10_000_000_000;
 pub const MILLIUNIT: Balance = 1_000_000_000;
 pub const MICROUNIT: Balance = 1_000_000;
 
+// Deposits
+const fn deposit(items: u32, bytes: u32) -> Balance {
+	(items as Balance * UNIT + (bytes as Balance) * (5 * MILLIUNIT / 100)) / 10
+}
 /// The existential deposit. Set to 1/10 of the Connected Relay Chain.
 pub const EXISTENTIAL_DEPOSIT: Balance = MILLIUNIT;
 
@@ -311,7 +322,7 @@ impl pallet_timestamp::Config for Runtime {
 	type MinimumPeriod = ConstU64<0>;
 	#[cfg(not(feature = "experimental"))]
 	type MinimumPeriod = ConstU64<{ SLOT_DURATION / 2 }>;
-	type WeightInfo = ();
+	type WeightInfo = pallet_timestamp::weights::SubstrateWeight<Runtime>;
 }
 
 impl pallet_authorship::Config for Runtime {
@@ -358,7 +369,7 @@ impl pallet_transaction_payment::Config for Runtime {
 impl pallet_sudo::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type RuntimeCall = RuntimeCall;
-	type WeightInfo = ();
+	type WeightInfo = pallet_sudo::weights::SubstrateWeight<Runtime>;
 }
 
 parameter_types! {
@@ -375,7 +386,7 @@ type ConsensusHook = cumulus_pallet_aura_ext::FixedVelocityConsensusHook<
 >;
 
 impl cumulus_pallet_parachain_system::Config for Runtime {
-	type WeightInfo = ();
+	type WeightInfo = cumulus_pallet_parachain_system::weights::SubstrateWeight<Runtime>;
 	type RuntimeEvent = RuntimeEvent;
 	type OnSystemEvent = ();
 	type SelfParaId = parachain_info::Pallet<Runtime>;
@@ -393,10 +404,9 @@ impl parachain_info::Config for Runtime {}
 parameter_types! {
 	pub MessageQueueServiceWeight: Weight = Perbill::from_percent(35) * RuntimeBlockWeights::get().max_block;
 }
-
 impl pallet_message_queue::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
-	type WeightInfo = ();
+	type WeightInfo = pallet_message_queue::weights::SubstrateWeight<Runtime>;
 	#[cfg(feature = "runtime-benchmarks")]
 	type MessageProcessor = pallet_message_queue::mock_helpers::NoopMessageProcessor<
 		cumulus_primitives_core::AggregateMessageOrigin,
@@ -418,6 +428,20 @@ impl pallet_message_queue::Config for Runtime {
 
 impl cumulus_pallet_aura_ext::Config for Runtime {}
 
+parameter_types! {
+	/// The asset ID for the asset that we use to pay for message delivery fees.
+	pub FeeAssetId: AssetId = AssetId(xcm_config::TokenLocation::get());
+	/// The base fee for the message delivery fees.
+	pub const BaseDeliveryFee: u128 = CENTIUNIT.saturating_mul(3);
+}
+
+pub type PriceForSiblingParachainDelivery = polkadot_runtime_common::xcm_sender::ExponentialPrice<
+	FeeAssetId,
+	BaseDeliveryFee,
+	TransactionByteFee,
+	XcmpQueue,
+>;
+
 impl cumulus_pallet_xcmp_queue::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type ChannelInfo = ParachainSystem;
@@ -427,8 +451,8 @@ impl cumulus_pallet_xcmp_queue::Config for Runtime {
 	type MaxInboundSuspended = sp_core::ConstU32<1_000>;
 	type ControllerOrigin = EnsureRoot<AccountId>;
 	type ControllerOriginConverter = XcmOriginToTransactDispatchOrigin;
-	type WeightInfo = ();
-	type PriceForSiblingDelivery = NoPriceForMessageDelivery<ParaId>;
+	type WeightInfo = cumulus_pallet_xcmp_queue::weights::SubstrateWeight<Runtime>;
+	type PriceForSiblingDelivery = PriceForSiblingParachainDelivery;
 }
 
 parameter_types! {
@@ -447,7 +471,7 @@ impl pallet_session::Config for Runtime {
 	// Essentially just Aura, but let's be pedantic.
 	type SessionHandler = <SessionKeys as sp_runtime::traits::OpaqueKeys>::KeyTypeIdProviders;
 	type Keys = SessionKeys;
-	type WeightInfo = ();
+	type WeightInfo = pallet_session::weights::SubstrateWeight<Runtime>;
 }
 
 impl pallet_aura::Config for Runtime {
@@ -485,9 +509,110 @@ impl pallet_collator_selection::Config for Runtime {
 	type ValidatorId = <Self as frame_system::Config>::AccountId;
 	type ValidatorIdOf = pallet_collator_selection::IdentityCollator;
 	type ValidatorRegistration = Session;
-	type WeightInfo = ();
+	type WeightInfo = pallet_collator_selection::weights::SubstrateWeight<Runtime>;
 }
 
+parameter_types! {
+	pub const NftFractionalizationPalletId: PalletId = PalletId(*b"fraction");
+	pub NewAssetSymbol: BoundedVec<u8, AssetsStringLimit> = (*b"FRAC").to_vec().try_into().unwrap();
+	pub NewAssetName: BoundedVec<u8, AssetsStringLimit> = (*b"Frac").to_vec().try_into().unwrap();
+}
+
+impl pallet_nft_fractionalization::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Deposit = AssetDeposit;
+	type Currency = Balances;
+	type NewAssetSymbol = NewAssetSymbol;
+	type NewAssetName = NewAssetName;
+	type StringLimit = AssetsStringLimit;
+	type NftCollectionId = <Self as pallet_nfts::Config>::CollectionId;
+	type NftId = <Self as pallet_nfts::Config>::ItemId;
+	type AssetBalance = <Self as pallet_assets::Config<TrustBackedAssets>>::Balance;
+	type AssetId = <Self as pallet_assets::Config<TrustBackedAssets>>::AssetId;
+	type Assets = Assets;
+	type Nfts = Nfts;
+	type PalletId = NftFractionalizationPalletId;
+	type WeightInfo = pallet_nft_fractionalization::weights::SubstrateWeight<Runtime>;
+	type RuntimeHoldReason = RuntimeHoldReason;
+	#[cfg(feature = "runtime-benchmarks")]
+	type BenchmarkHelper = ();
+}
+
+parameter_types! {
+	pub NftsPalletFeatures: PalletFeatures = PalletFeatures::all_enabled();
+	pub const NftsCollectionDeposit: Balance = 10 * UNIT;
+	pub const NftsItemDeposit: Balance = UNIT / 100;
+	pub const NftsMetadataDepositBase: Balance = deposit(1, 129);
+	pub const NftsAttributeDepositBase: Balance = deposit(1, 0);
+	pub const NftsDepositPerByte: Balance = deposit(0, 1);
+	pub const NftsMaxDeadlineDuration: BlockNumber = 12 * 30 * DAYS;
+}
+impl pallet_nfts::Config for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type CollectionId = CollectionId;
+	type ItemId = ItemId;
+	type Currency = Balances;
+	type CreateOrigin = AsEnsureOriginWithArg<EnsureSigned<AccountId>>;
+	type ForceOrigin = AssetsForceOrigin;
+	type Locker = ();
+	type CollectionDeposit = NftsCollectionDeposit;
+	type ItemDeposit = NftsItemDeposit;
+	type MetadataDepositBase = NftsMetadataDepositBase;
+	type AttributeDepositBase = NftsAttributeDepositBase;
+	type DepositPerByte = NftsDepositPerByte;
+	type StringLimit = ConstU32<256>;
+	type KeyLimit = ConstU32<64>;
+	type ValueLimit = ConstU32<256>;
+	type ApprovalsLimit = ConstU32<20>;
+	type ItemAttributesApprovalsLimit = ConstU32<30>;
+	type MaxTips = ConstU32<10>;
+	type MaxDeadlineDuration = NftsMaxDeadlineDuration;
+	type MaxAttributesPerCall = ConstU32<10>;
+	type Features = NftsPalletFeatures;
+	type OffchainSignature = Signature;
+	type OffchainPublic = <Signature as Verify>::Signer;
+	type WeightInfo = pallet_nfts::weights::SubstrateWeight<Runtime>;
+	#[cfg(feature = "runtime-benchmarks")]
+	type Helper = ();
+}
+
+/// We allow root to execute privileged asset operations.
+pub type AssetsForceOrigin = EnsureRoot<AccountId>;
+
+parameter_types! {
+	pub const AssetDeposit: Balance = 10 * UNIT;
+	pub const AssetAccountDeposit: Balance = deposit(1, 16);
+	pub const ApprovalDeposit: Balance = EXISTENTIAL_DEPOSIT;
+	pub const AssetsStringLimit: u32 = 50;
+	/// Key = 32 bytes, Value = 36 bytes (32+1+1+1+1)
+	// https://github.com/paritytech/substrate/blob/069917b/frame/assets/src/lib.rs#L257L271
+	pub const MetadataDepositBase: Balance = deposit(1, 68);
+	pub const MetadataDepositPerByte: Balance = deposit(0, 1);
+}
+
+pub type TrustBackedAssets = pallet_assets::Instance1;
+impl pallet_assets::Config<TrustBackedAssets> for Runtime {
+	type RuntimeEvent = RuntimeEvent;
+	type Balance = Balance;
+	type AssetId = AssetIdForTrustBackedAssets;
+	type AssetIdParameter = codec::Compact<AssetIdForTrustBackedAssets>;
+	type Currency = Balances;
+	type CreateOrigin = AsEnsureOriginWithArg<EnsureSigned<AccountId>>;
+	type ForceOrigin = AssetsForceOrigin;
+	type AssetDeposit = AssetDeposit;
+	type MetadataDepositBase = MetadataDepositBase;
+	type MetadataDepositPerByte = MetadataDepositPerByte;
+	type ApprovalDeposit = ApprovalDeposit;
+	type StringLimit = AssetsStringLimit;
+	type Freezer = ();
+	type Extra = ();
+	type WeightInfo = pallet_assets::weights::SubstrateWeight<Runtime>;
+	type CallbackHandle = ();
+	type AssetAccountDeposit = AssetAccountDeposit;
+	type RemoveItemsLimit = ConstU32<1000>;
+	#[cfg(feature = "runtime-benchmarks")]
+	type BenchmarkHelper = ();
+}
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
@@ -517,6 +642,11 @@ construct_runtime!(
 		PolkadotXcm: pallet_xcm = 31,
 		CumulusXcm: cumulus_pallet_xcm = 32,
 		MessageQueue: pallet_message_queue = 33,
+
+		// Assets
+		Nfts: pallet_nfts = 40,
+		NftFractionalization: pallet_nft_fractionalization = 41,
+		Assets: pallet_assets::<Instance1> = 42,
 	}
 );
 
@@ -685,6 +815,50 @@ impl_runtime_apis! {
 	impl cumulus_primitives_core::CollectCollationInfo<Block> for Runtime {
 		fn collect_collation_info(header: &<Block as BlockT>::Header) -> cumulus_primitives_core::CollationInfo {
 			ParachainSystem::collect_collation_info(header)
+		}
+	}
+
+	impl pallet_nfts_runtime_api::NftsApi<Block, AccountId, u32, u32> for Runtime {
+		fn owner(collection: u32, item: u32) -> Option<AccountId> {
+			<Nfts as Inspect<AccountId>>::owner(&collection, &item)
+		}
+
+		fn collection_owner(collection: u32) -> Option<AccountId> {
+			<Nfts as Inspect<AccountId>>::collection_owner(&collection)
+		}
+
+		fn attribute(
+			collection: u32,
+			item: u32,
+			key: Vec<u8>,
+		) -> Option<Vec<u8>> {
+			<Nfts as Inspect<AccountId>>::attribute(&collection, &item, &key)
+		}
+
+		fn custom_attribute(
+			account: AccountId,
+			collection: u32,
+			item: u32,
+			key: Vec<u8>,
+		) -> Option<Vec<u8>> {
+			<Nfts as Inspect<AccountId>>::custom_attribute(
+				&account,
+				&collection,
+				&item,
+				&key,
+			)
+		}
+
+		fn system_attribute(
+			collection: u32,
+			item: Option<u32>,
+			key: Vec<u8>,
+		) -> Option<Vec<u8>> {
+			<Nfts as Inspect<AccountId>>::system_attribute(&collection, item.as_ref(), &key)
+		}
+
+		fn collection_attribute(collection: u32, key: Vec<u8>) -> Option<Vec<u8>> {
+			<Nfts as Inspect<AccountId>>::collection_attribute(&collection, &key)
 		}
 	}
 

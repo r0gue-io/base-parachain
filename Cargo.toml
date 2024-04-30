@@ -37,7 +37,7 @@ parachain-template-runtime = { path = "./runtime" }
 
 # Substrate
 sc-basic-authorship = "0.37.0"
-sc-chain-spec = "30.0.0"
+sc-chain-spec = "30.0.1"
 sc-cli = "0.39.0"
 sc-client-api = "31.0.0"
 sc-offchain = "32.0.0"
@@ -53,17 +53,21 @@ sc-tracing = "31.0.0"
 sc-transaction-pool = "31.0.0"
 sc-transaction-pool-api = "31.0.0"
 frame-benchmarking = { version = "31.0.0", default-features = false }
-frame-benchmarking-cli = "35.0.0"
+frame-benchmarking-cli = "35.0.1"
 frame-executive = { version = "31.0.0", default-features = false }
 frame-support = { version = "31.0.0", default-features = false }
 frame-system = { version = "31.0.0", default-features = false }
 frame-system-benchmarking = { version = "31.0.0", default-features = false }
 frame-system-rpc-runtime-api = { version = "29.0.0", default-features = false }
 frame-try-runtime = { version = "0.37.0", default-features = false }
+pallet-assets = { version = "32.0.0", default-features = false }
 pallet-aura = { version = "30.0.0", default-features = false }
 pallet-authorship = { version = "31.0.0", default-features = false }
 pallet-balances = { version = "31.0.0", default-features = false }
 pallet-message-queue = { version = "34.0.0", default-features = false }
+pallet-nfts = { version = "25.0.0", default-features = false }
+pallet-nfts-runtime-api = { version = "17.0.0", default-features = false }
+pallet-nft-fractionalization = { version = "13.0.0", default-features = false }
 pallet-session = { version = "31.0.0", default-features = false }
 pallet-sudo = { version = "31.0.0", default-features = false }
 pallet-timestamp = { version = "30.0.0", default-features = false }
@@ -90,14 +94,14 @@ sp-transaction-pool = { version = "29.0.0", default-features = false }
 sp-version = { version = "32.0.0", default-features = false }
 
 # Polkadot
-pallet-xcm = { version = "10.0.0", default-features = false }
+pallet-xcm = { version = "10.0.1", default-features = false }
 polkadot-cli = "10.0.0"
 polkadot-parachain-primitives = { version = "9.0.0", default-features = false }
 polkadot-primitives = "10.0.0"
-xcm = { package = "staging-xcm", version = "10.0.0", default-features = false }
+xcm = { version = "10.0.0", package = "staging-xcm", default-features = false }
 polkadot-runtime-common = { version = "10.0.0", default-features = false }
-xcm-builder = { package = "staging-xcm-builder", version = "10.0.0", default-features = false }
-xcm-executor = { package = "staging-xcm-executor", version = "10.0.0", default-features = false }
+xcm-builder = { version = "10.0.0", package = "staging-xcm-builder", default-features = false }
+xcm-executor = { version = "10.0.0", package = "staging-xcm-executor", default-features = false }
 
 # Cumulus
 cumulus-pallet-aura-ext = { version = "0.10.0", default-features = false }
@@ -109,9 +113,9 @@ cumulus-primitives-aura = { version = "0.10.0", default-features = false }
 cumulus-primitives-core = { version = "0.10.0", default-features = false }
 cumulus-primitives-utility = { version = "0.10.0", default-features = false }
 cumulus-primitives-storage-weight-reclaim = { version = "1.0.0", default-features = false }
-pallet-collator-selection = { version = "12.0.0", default-features = false }
+pallet-collator-selection = { version = "12.0.1", default-features = false }
 parachains-common = { version = "10.0.0", default-features = false }
-parachain-info = { package = "staging-parachain-info", version = "0.10.0", default-features = false }
+parachain-info = { version = "0.10.0", package = "staging-parachain-info", default-features = false }
 cumulus-primitives-parachain-inherent = "0.10.0"
 cumulus-relay-chain-interface = "0.10.0"
 color-print = "0.3.4"
