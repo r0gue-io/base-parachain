@@ -1,5 +1,5 @@
 [package]
-name = "parachain-template-node"
+name = "frontier-parachain-node"
 version = "0.1.0"
 authors.workspace = true
 description = "Parachain node template"
@@ -21,7 +21,7 @@ futures = { workspace = true }
 serde_json = { workspace = true }
 
 # Local
-parachain-template-runtime = { workspace = true, features = ["std"]  }
+frontier-parachain-runtime = { workspace = true, features = ["std"]  }
 
 # Substrate
 frame-benchmarking = { workspace = true }
@@ -95,14 +95,14 @@ runtime-benchmarks = [
 	"cumulus-primitives-core/runtime-benchmarks",
 	"frame-benchmarking-cli/runtime-benchmarks",
 	"frame-benchmarking/runtime-benchmarks",
-	"parachain-template-runtime/runtime-benchmarks",
+	"frontier-parachain-runtime/runtime-benchmarks",
 	"polkadot-cli/runtime-benchmarks",
 	"polkadot-primitives/runtime-benchmarks",
 	"sc-service/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 ]
 try-runtime = [
-	"parachain-template-runtime/try-runtime",
+	"frontier-parachain-runtime/try-runtime",
 	"polkadot-cli/try-runtime",
 	"sp-runtime/try-runtime",
 ]

@@ -33,7 +33,7 @@ substrate-wasm-builder = "20.0.0"
 substrate-build-script-utils = "11.0.0"
 
 # Local
-parachain-template-runtime = { path = "./runtime" }
+frontier-parachain-runtime = { path = "./runtime" }
 
 # Substrate
 sc-basic-authorship = "0.37.0"
