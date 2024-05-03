@@ -55,7 +55,7 @@ jobs:
         with:
           cache-on-failure: true
           cache-all-crates: true
-          key: clippy
+          key: check
 
       - name: Annotate with Clippy warnings
         uses: actions-rs/clippy-check@v1
