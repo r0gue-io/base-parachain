@@ -158,7 +158,7 @@ impl xcm_executor::Config for XcmConfig {
         // Delivery fees are sent to the treasury account.
         // These funds are not accessible without a module controlling such an account.
         // [pallet_treasury](https://github.com/paritytech/polkadot-sdk/tree/master/substrate/frame/treasury)
-        // could be suitable option.
+        // could be suitable option, configured using the same `TREASURY_PALLET_ID` used above as the pallet config's `PalletId`.
         XcmFeeToAccount<Self::AssetTransactor, AccountId, TreasuryAccount>,
     >;
     type MessageExporter = ();
