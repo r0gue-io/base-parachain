@@ -7,7 +7,7 @@ use cumulus_client_cli::CollatorOptions;
 // Local Runtime Types
 use frontier_parachain_runtime::{
     opaque::{Block, Hash},
-    RuntimeApi,
+    RuntimeApi, TransactionConverter,
 };
 
 // Cumulus Imports
@@ -36,8 +36,16 @@ use sc_network_sync::SyncingService;
 use sc_service::{Configuration, PartialComponents, TFullBackend, TFullClient, TaskManager};
 use sc_telemetry::{Telemetry, TelemetryHandle, TelemetryWorker, TelemetryWorkerHandle};
 use sc_transaction_pool_api::OffchainTransactionPoolFactory;
+use sp_core::U256;
 use sp_keystore::KeystorePtr;
 use substrate_prometheus_endpoint::Registry;
+// Frontier
+use crate::eth::{
+    db_config_dir, new_frontier_partial, spawn_frontier_tasks, EthConfiguration, FrontierBackend,
+    FrontierBlockImport as TFrontierBlockImport, FrontierPartialComponents,
+};
+
+type FrontierBlockImport = TFrontierBlockImport<Block, Arc<ParachainClient>, ParachainClient>;
 
 /// Native executor type.
 pub struct ParachainNativeExecutor;
@@ -63,7 +71,7 @@ type ParachainClient = TFullClient<Block, RuntimeApi, ParachainExecutor>;
 
 type ParachainBackend = TFullBackend<Block>;
 
-type ParachainBlockImport = TParachainBlockImport<Block, Arc<ParachainClient>, ParachainBackend>;
+type ParachainBlockImport = TParachainBlockImport<Block, FrontierBlockImport, ParachainBackend>;
 
 /// Assembly of PartialComponents (enough to run chain ops subcommands)
 pub type Service = PartialComponents<
@@ -76,6 +84,7 @@ pub type Service = PartialComponents<
         ParachainBlockImport,
         Option<Telemetry>,
         Option<TelemetryWorkerHandle>,
+        Arc<FrontierBackend>,
     ),
 >;
 
@@ -83,7 +92,10 @@ pub type Service = PartialComponents<
 ///
 /// Use this macro if you don't actually need the full service, but just the builder in order to
 /// be able to perform chain operations.
-pub fn new_partial(config: &Configuration) -> Result<Service, sc_service::Error> {
+pub fn new_partial(
+    config: &Configuration,
+    eth_config: &EthConfiguration,
+) -> Result<Service, sc_service::Error> {
     let telemetry = config
         .telemetry_endpoints
         .clone()
@@ -137,12 +149,21 @@ pub fn new_partial(config: &Configuration) -> Result<Service, sc_service::Error>
         client.clone(),
     );
 
-    let block_import = ParachainBlockImport::new(client.clone(), backend.clone());
+    let frontier_backend = Arc::new(FrontierBackend::open(
+        client.clone(),
+        &config.database,
+        &db_config_dir(config),
+    )?);
+    let frontier_block_import =
+        FrontierBlockImport::new(client.clone(), client.clone(), frontier_backend.clone());
+
+    let parachain_block_import = ParachainBlockImport::new(frontier_block_import, backend.clone());
 
     let import_queue = build_import_queue(
         client.clone(),
-        block_import.clone(),
+        parachain_block_import.clone(),
         config,
+        eth_config,
         telemetry.as_ref().map(|telemetry| telemetry.handle()),
         &task_manager,
     )?;
@@ -155,7 +176,12 @@ pub fn new_partial(config: &Configuration) -> Result<Service, sc_service::Error>
         task_manager,
         transaction_pool,
         select_chain: (),
-        other: (block_import, telemetry, telemetry_worker_handle),
+        other: (
+            parachain_block_import,
+            telemetry,
+            telemetry_worker_handl,
+            frontier_backend,
+        ),
     })
 }
 
@@ -166,14 +192,21 @@ pub fn new_partial(config: &Configuration) -> Result<Service, sc_service::Error>
 async fn start_node_impl(
     parachain_config: Configuration,
     polkadot_config: Configuration,
+    eth_config: EthConfiguration,
     collator_options: CollatorOptions,
     para_id: ParaId,
     hwbench: Option<sc_sysinfo::HwBench>,
 ) -> sc_service::error::Result<(TaskManager, Arc<ParachainClient>)> {
-    let parachain_config = prepare_node_config(parachain_config);
+    let mut parachain_config = prepare_node_config(parachain_config);
 
-    let params = new_partial(&parachain_config)?;
-    let (block_import, mut telemetry, telemetry_worker_handle) = params.other;
+    let params = new_partial(&parachain_config, &eth_config)?;
+    let (block_import, mut telemetry, telemetry_worker_handle, frontier_backend) = params.other;
+
+    let FrontierPartialComponents {
+        filter_pool,
+        fee_history_cache,
+        fee_history_cache_limit,
+    } = new_frontier_partial(&eth_config)?;
     let net_config = sc_network::config::FullNetworkConfiguration::new(&parachain_config.network);
 
     let client = params.client.clone();
@@ -233,22 +266,50 @@ async fn start_node_impl(
         );
     }
 
+    // for ethereum-compatibility rpc.
+    parachain_config.rpc_id_provider = Some(Box::new(fc_rpc::EthereumSubIdProvider));
+    let overrides = crate::rpc::overrides_handle(client.clone());
+    let eth_rpc_params = crate::rpc::EthDeps {
+        client: client.clone(),
+        pool: transaction_pool.clone(),
+        graph: transaction_pool.pool().clone(),
+        converter: Some(TransactionConverter),
+        is_authority: parachain_config.role.is_authority(),
+        enable_dev_signer: eth_config.enable_dev_signer,
+        network: network.clone(),
+        frontier_backend: frontier_backend.clone(),
+        overrides: overrides.clone(),
+        block_data_cache: Arc::new(fc_rpc::EthBlockDataCacheTask::new(
+            task_manager.spawn_handle(),
+            overrides.clone(),
+            eth_config.eth_log_block_cache,
+            eth_config.eth_statuses_cache,
+            prometheus_registry.clone(),
+        )),
+        filter_pool: filter_pool.clone(),
+        max_past_logs: eth_config.max_past_logs,
+        fee_history_cache: fee_history_cache.clone(),
+        fee_history_cache_limit,
+        execute_gas_limit_multiplier: eth_config.execute_gas_limit_multiplier,
+    };
+
     let rpc_builder = {
         let client = client.clone();
         let transaction_pool = transaction_pool.clone();
 
-        Box::new(move |deny_unsafe, _| {
+        Box::new(move |deny_unsafe, subscription_task_executor| {
             let deps = crate::rpc::FullDeps {
                 client: client.clone(),
                 pool: transaction_pool.clone(),
                 deny_unsafe,
+                eth: eth_rpc_params.clone(),
             };
 
-            crate::rpc::create_full(deps).map_err(Into::into)
+            crate::rpc::create_full(deps, subscription_task_executor).map_err(Into::into)
         })
     };
 
-    sc_service::spawn_tasks(sc_service::SpawnTasksParams {
+    let _rpc_handlers = sc_service::spawn_tasks(sc_service::SpawnTasksParams {
         rpc_builder,
         client: client.clone(),
         transaction_pool: transaction_pool.clone(),
@@ -262,6 +323,17 @@ async fn start_node_impl(
         tx_handler_controller,
         telemetry: telemetry.as_mut(),
     })?;
+
+    spawn_frontier_tasks(
+        &task_manager,
+        client.clone(),
+        backend,
+        frontier_backend,
+        filter_pool,
+        overrides,
+        fee_history_cache,
+        fee_history_cache_limit,
+    );
 
     if let Some(hwbench) = hwbench {
         sc_sysinfo::print_hwbench(&hwbench);
@@ -346,10 +418,23 @@ fn build_import_queue(
     client: Arc<ParachainClient>,
     block_import: ParachainBlockImport,
     config: &Configuration,
+    eth_config: &EthConfiguration,
     telemetry: Option<TelemetryHandle>,
     task_manager: &TaskManager,
 ) -> Result<sc_consensus::DefaultImportQueue<Block>, sc_service::Error> {
     let slot_duration = cumulus_client_consensus_aura::slot_duration(&*client)?;
+    let target_gas_price = eth_config.target_gas_price;
+
+    let create_inherent_data_providers = move |_, _| async move {
+        let timestamp = sp_timestamp::InherentDataProvider::from_system_time();
+        let slot =
+            sp_consensus_aura::inherents::InherentDataProvider::from_timestamp_and_slot_duration(
+                *timestamp,
+                slot_duration,
+            );
+        let dynamic_fee = fp_dynamic_fee::InherentDataProvider(U256::from(target_gas_price));
+        Ok((slot, timestamp, dynamic_fee))
+    };
 
     Ok(
         cumulus_client_consensus_aura::equivocation_import_queue::fully_verifying_import_queue::<
@@ -451,6 +536,7 @@ fn start_consensus(
 pub async fn start_parachain_node(
     parachain_config: Configuration,
     polkadot_config: Configuration,
+    eth_config: EthConfiguration,
     collator_options: CollatorOptions,
     para_id: ParaId,
     hwbench: Option<sc_sysinfo::HwBench>,
@@ -458,6 +544,7 @@ pub async fn start_parachain_node(
     start_node_impl(
         parachain_config,
         polkadot_config,
+        eth_config,
         collator_options,
         para_id,
         hwbench,

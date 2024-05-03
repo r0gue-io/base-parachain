@@ -55,8 +55,8 @@ sc-transaction-pool-api = "31.0.0"
 frame-benchmarking = { version = "31.0.0", default-features = false }
 frame-benchmarking-cli = "35.0.0"
 frame-executive = { version = "31.0.0", default-features = false }
-frame-support = { version = "31.0.0", default-features = false }
-frame-system = { version = "31.0.0", default-features = false }
+frame-support = { version = "30.0.0", default-features = false }
+frame-system = { version = "30.0.0", default-features = false }
 frame-system-benchmarking = { version = "31.0.0", default-features = false }
 frame-system-rpc-runtime-api = { version = "29.0.0", default-features = false }
 frame-try-runtime = { version = "0.37.0", default-features = false }

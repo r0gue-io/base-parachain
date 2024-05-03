@@ -102,10 +102,10 @@ impl SubstrateCli for RelayChainCli {
 }
 
 macro_rules! construct_async_run {
-	(|$components:ident, $cli:ident, $cmd:ident, $config:ident| $( $code:tt )* ) => {{
+	(|$components:ident, $cli:ident, $cmd:ident, $config:ident, $eth_config:ident| $( $code:tt )* ) => {{
 		let runner = $cli.create_runner($cmd)?;
 		runner.async_run(|$config| {
-			let $components = new_partial(&$config)?;
+			let $components = new_partial(&$config, &$eth_config)?;
 			let task_manager = $components.task_manager;
 			{ $( $code )* }.map(|v| (v, task_manager))
 		})
@@ -115,6 +115,7 @@ macro_rules! construct_async_run {
 /// Parse command line arguments into service configuration.
 pub fn run() -> Result<()> {
     let cli = Cli::from_args();
+    let eth_cfg = cli.eth.clone();
 
     match &cli.subcommand {
 		Some(Subcommand::BuildSpec(cmd)) => {
@@ -122,27 +123,27 @@ pub fn run() -> Result<()> {
 			runner.sync_run(|config| cmd.run(config.chain_spec, config.network))
 		},
 		Some(Subcommand::CheckBlock(cmd)) => {
-			construct_async_run!(|components, cli, cmd, config| {
+			construct_async_run!(|components, cli, cmd, config, eth_cfg| {
 				Ok(cmd.run(components.client, components.import_queue))
 			})
 		},
 		Some(Subcommand::ExportBlocks(cmd)) => {
-			construct_async_run!(|components, cli, cmd, config| {
+			construct_async_run!(|components, cli, cmd, config, eth_cfg| {
 				Ok(cmd.run(components.client, config.database))
 			})
 		},
 		Some(Subcommand::ExportState(cmd)) => {
-			construct_async_run!(|components, cli, cmd, config| {
+			construct_async_run!(|components, cli, cmd, config, eth_cfg| {
 				Ok(cmd.run(components.client, config.chain_spec))
 			})
 		},
 		Some(Subcommand::ImportBlocks(cmd)) => {
-			construct_async_run!(|components, cli, cmd, config| {
+			construct_async_run!(|components, cli, cmd, config, eth_cfg| {
 				Ok(cmd.run(components.client, components.import_queue))
 			})
 		},
 		Some(Subcommand::Revert(cmd)) => {
-			construct_async_run!(|components, cli, cmd, config| {
+			construct_async_run!(|components, cli, cmd, config, eth_cfg| {
 				Ok(cmd.run(components.client, components.backend, None))
 			})
 		},
@@ -193,7 +194,7 @@ pub fn run() -> Result<()> {
 							.into())
 					},
 				BenchmarkCmd::Block(cmd) => runner.sync_run(|config| {
-					let partials = new_partial(&config)?;
+					let partials = new_partial(&config, &eth_cfg)?;
 					cmd.run(partials.client)
 				}),
 				#[cfg(not(feature = "runtime-benchmarks"))]
@@ -206,7 +207,7 @@ pub fn run() -> Result<()> {
 					.into()),
 				#[cfg(feature = "runtime-benchmarks")]
 				BenchmarkCmd::Storage(cmd) => runner.sync_run(|config| {
-					let partials = new_partial(&config)?;
+					let partials = new_partial(&config, &eth_cfg)?;
 					let db = partials.backend.expose_db();
 					let storage = partials.backend.expose_storage();
 					cmd.run(config, partials.client.clone(), db, storage)
@@ -220,6 +221,15 @@ pub fn run() -> Result<()> {
 			}
 		},
 		Some(Subcommand::TryRuntime) => Err("The `try-runtime` subcommand has been migrated to a standalone CLI (https://github.com/paritytech/try-runtime-cli). It is no longer being maintained here and will be removed entirely some time after January 2024. Please remove this subcommand from your runtime and use the standalone CLI.".into()),
+		Some(Subcommand::FrontierDb(cmd)) => {
+			let runner = cli.create_runner(cmd)?;
+			runner.sync_run(|config| {
+				let params = crate::service::new_partial(&config, &cli.eth)?;
+				let client = params.client;
+				let (_, _, _, frontier_backend) = params.other;
+				cmd.run(client, frontier_backend)
+			})
+		},
 		None => {
 			let runner = cli.create_runner(&cli.run.normalize())?;
 			let collator_options = cli.run.collator_options();
@@ -259,6 +269,7 @@ pub fn run() -> Result<()> {
 				crate::service::start_parachain_node(
 					config,
 					polkadot_config,
+					eth_cfg,
 					collator_options,
 					id,
 					hwbench,

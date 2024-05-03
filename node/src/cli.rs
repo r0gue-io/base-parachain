@@ -1,3 +1,4 @@
+use crate::eth::EthConfiguration;
 use std::path::PathBuf;
 
 /// Sub-commands supported by the collator.
@@ -42,11 +43,13 @@ pub enum Subcommand {
     /// [CLI](<https://github.com/paritytech/try-runtime-cli>). The subcommand exists as a stub and
     /// deprecation notice. It will be removed entirely some time after January 2024.
     TryRuntime,
+    /// Db meta columns information.
+    FrontierDb(fc_cli::FrontierDbCmd),
 }
 
 const AFTER_HELP_EXAMPLE: &str = color_print::cstr!(
     r#"<bold><underline>Examples:</></>
-   <bold>frontier-parachain-node build-spec --disable-default-bootnode > plain-parachain-chainspec.json</>
+   <bold>parachain-template-node build-spec --disable-default-bootnode > plain-parachain-chainspec.json</>
            Export a chainspec for a local testnet in json format.
    <bold>frontier-parachain-node --chain plain-parachain-chainspec.json --tmp -- --chain rococo-local</>
            Launch a full node with chain specification loaded from plain-parachain-chainspec.json.
@@ -83,6 +86,9 @@ pub struct Cli {
     /// Relay chain arguments
     #[arg(raw = true)]
     pub relay_chain_args: Vec<String>,
+    // Frontier arguments
+    #[command(flatten)]
+    pub eth: EthConfiguration,
 }
 
 #[derive(Debug)]

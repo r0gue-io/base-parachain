@@ -21,7 +21,7 @@ futures = { workspace = true }
 serde_json = { workspace = true }
 
 # Local
-frontier-parachain-runtime = { workspace = true, features = ["std"]  }
+frontier-parachain-runtime = { workspace = true }
 
 # Substrate
 frame-benchmarking = { workspace = true }
