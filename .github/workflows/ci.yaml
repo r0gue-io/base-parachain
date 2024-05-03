@@ -2,7 +2,7 @@ name: Lint, check, clippy and test
 
 on:
   push:
-    branches: [ main, 'frank/ci' ]
+    branches: [ main ]
   pull_request:
     types: [ opened, synchronize, reopened, ready_for_review ]
 
@@ -10,7 +10,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Check formatting
         run: cargo fmt --all -- --check
@@ -23,7 +23,7 @@ jobs:
         shell: bash
         run: sudo apt update && sudo apt install -y protobuf-compiler
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2.7.3
@@ -48,7 +48,7 @@ jobs:
         shell: bash
         run: sudo apt update && sudo apt install -y protobuf-compiler
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2.7.3
@@ -71,14 +71,14 @@ jobs:
         shell: bash
         run: sudo apt update && sudo apt install -y protobuf-compiler
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Rust Cache
         uses: Swatinem/rust-cache@v2.7.3
         with:
           cache-on-failure: true
           cache-all-crates: true
-          key: clippy
+          key: test
 
       - name: Run tests
         run: cargo test --release --locked --all-features --workspace
