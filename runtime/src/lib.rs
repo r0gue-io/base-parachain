@@ -335,7 +335,7 @@ impl pallet_balances::Config for Runtime {
     type DustRemoval = ();
     type ExistentialDeposit = ExistentialDeposit;
     type AccountStore = System;
-    type WeightInfo = (); // Configure based on benchmarking results.
+    type WeightInfo = pallet_balances::weights::SubstrateWeight<Runtime>; // Configure based on benchmarking results.
     type MaxReserves = ConstU32<50>;
     type ReserveIdentifier = [u8; 8];
     type RuntimeHoldReason = RuntimeHoldReason;
