@@ -1,5 +1,3 @@
-use std::net::SocketAddr;
-
 use cumulus_client_service::storage_proof_size::HostFunctions as ReclaimHostFunctions;
 use cumulus_primitives_core::ParaId;
 use frame_benchmarking_cli::{BenchmarkCmd, SUBSTRATE_REFERENCE_HARDWARE};
@@ -9,8 +7,13 @@ use sc_cli::{
     ChainSpec, CliConfiguration, DefaultConfigurationValues, ImportParams, KeystoreParams,
     NetworkParams, Result, SharedParams, SubstrateCli,
 };
-use sc_service::config::{BasePath, PrometheusConfig};
+use sc_service::{
+    config::{BasePath, PrometheusConfig},
+    PartialComponents,
+};
 use sp_runtime::traits::AccountIdConversion;
+use std::net::SocketAddr;
+use std::sync::Arc;
 
 use crate::{
     chain_spec,
@@ -169,7 +172,7 @@ pub fn run() -> Result<()> {
 		Some(Subcommand::ExportGenesisHead(cmd)) => {
 			let runner = cli.create_runner(cmd)?;
 			runner.sync_run(|config| {
-				let partials = new_partial(&config)?;
+				let partials = new_partial(&config, &eth_cfg)?;
 
 				cmd.run(partials.client)
 			})
@@ -224,9 +227,13 @@ pub fn run() -> Result<()> {
 		Some(Subcommand::FrontierDb(cmd)) => {
 			let runner = cli.create_runner(cmd)?;
 			runner.sync_run(|config| {
-				let params = crate::service::new_partial(&config, &cli.eth)?;
-				let client = params.client;
-				let (_, _, _, frontier_backend) = params.other;
+				let PartialComponents { client, other, .. } =
+					crate::service::new_partial(&config, &cli.eth)?;
+				let (_, _, _, frontier_backend, _) = other;
+				let frontier_backend = match frontier_backend {
+					fc_db::Backend::KeyValue(kv) => Arc::new(kv),
+					_ => panic!("Only fc_db::Backend::KeyValue supported"),
+				};
 				cmd.run(client, frontier_backend)
 			})
 		},
