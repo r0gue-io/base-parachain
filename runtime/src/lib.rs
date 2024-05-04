@@ -434,11 +434,6 @@ impl pallet_base_fee::Config for Runtime {
     type DefaultElasticity = DefaultElasticity;
 }
 
-impl pallet_hotfix_sufficients::Config for Runtime {
-    type AddressMapping = HashedAddressMapping<BlakeTwo256>;
-    type WeightInfo = pallet_hotfix_sufficients::weights::SubstrateWeight<Runtime>;
-}
-
 impl pallet_authorship::Config for Runtime {
     type FindAuthor = pallet_session::FindAccountFromAuthorIndex<Self, Aura>;
     type EventHandler = (CollatorSelection,);
@@ -648,7 +643,6 @@ construct_runtime!(
         EVMChainId: pallet_evm_chain_id = 42,
         DynamicFee: pallet_dynamic_fee = 43,
         BaseFee: pallet_base_fee = 44,
-        HotfixSufficients: pallet_hotfix_sufficients = 45,
     }
 );
 
@@ -1125,14 +1119,13 @@ impl_runtime_apis! {
             Vec<frame_support::traits::StorageInfo>,
         ) {
             use frame_benchmarking::{Benchmarking, BenchmarkList};
+            use frame_benchmarking::list_benchmark;
             use frame_support::traits::StorageInfoTrait;
             use frame_system_benchmarking::Pallet as SystemBench;
             use cumulus_pallet_session_benchmarking::Pallet as SessionBench;
-            use pallet_hotfix_sufficients::Pallet as PalletHotfixSufficients;
 
             let mut list = Vec::<BenchmarkList>::new();
             list_benchmarks!(list, extra);
-            list_benchmark!(list, extra, pallet_hotfix_sufficients, PalletHotfixSufficients::<Runtime>);
 
             let storage_info = AllPalletsWithSystem::storage_info();
             (list, storage_info)
@@ -1141,11 +1134,12 @@ impl_runtime_apis! {
         fn dispatch_benchmark(
             config: frame_benchmarking::BenchmarkConfig
         ) -> Result<Vec<frame_benchmarking::BenchmarkBatch>, sp_runtime::RuntimeString> {
-            use frame_benchmarking::{Benchmarking, BenchmarkBatch, add_benchmark, TrackedStorageKey};
+            use frame_support::traits::TrackedStorageKey;
+            use frame_benchmarking::{Benchmarking, BenchmarkBatch, add_benchmark};
             use pallet_evm::Pallet as PalletEvmBench;
-            use pallet_hotfix_sufficients::Pallet as PalletHotfixSufficients;
 
             use frame_system_benchmarking::Pallet as SystemBench;
+            use frame_benchmarking::BenchmarkError;
             impl frame_system_benchmarking::Config for Runtime {
                 fn setup_set_code_requirements(code: &sp_std::vec::Vec<u8>) -> Result<(), BenchmarkError> {
                     ParachainSystem::initialize_for_set_code_benchmark(code.len() as u32);
@@ -1167,7 +1161,6 @@ impl_runtime_apis! {
             let params = (&config, &whitelist);
             add_benchmarks!(params, batches);
             add_benchmark!(params, batches, pallet_evm, PalletEvmBench::<Runtime>);
-            add_benchmark!(params, batches, pallet_hotfix_sufficients, PalletHotfixSufficients::<Runtime>);
 
             if batches.is_empty() { return Err("Benchmark not found for this pallet.".into()) }
             Ok(batches)
