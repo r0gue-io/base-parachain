@@ -3067,9 +3067,9 @@ dependencies = [
 
 [[package]]
 name = "frame-benchmarking-cli"
-version = "35.0.0"
+version = "35.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9b7edd9a74e34122245fe91248ca384221c7c3abd7f528e78c092ea444a7a7a2"
+checksum = "38f1660c2e59d206386658ca7fa867c2ccdb44429cc8a5a16a2975a338aa7047"
 dependencies = [
  "Inflector",
  "array-bytes 6.2.2",
@@ -6144,15 +6144,16 @@ dependencies = [
 
 [[package]]
 name = "pallet-collator-selection"
-version = "12.0.0"
+version = "12.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e777e84455b11e0a8798466566ebb23939f196145183665f5e67e94706ffa112"
+checksum = "26edc27ed73c658e6f3d37b4cc8822be3f293e1f0dc58830b42c272781ac8a44"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
  "frame-system",
  "log",
  "pallet-authorship",
+ "pallet-balances",
  "pallet-session",
  "parity-scale-codec",
  "rand",
@@ -6449,6 +6450,55 @@ dependencies = [
  "scale-info",
  "sp-io",
  "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-nft-fractionalization"
+version = "13.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "146f26bb84d332034fe4bb1d5938179b23bed20f8aaf3cf37c777014eb35cad6"
+dependencies = [
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "pallet-assets",
+ "pallet-nfts",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-nfts"
+version = "25.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6fed85cb8969cfbbf7681f16bc2d240cf377af021046c5628d563c8ed041aa26"
+dependencies = [
+ "enumflags2",
+ "frame-benchmarking",
+ "frame-support",
+ "frame-system",
+ "log",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "pallet-nfts-runtime-api"
+version = "17.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d3881d652cf44b1cb8fb6f2b2b25a950338692c3d5f49c5e621a5cf9a1a88c76"
+dependencies = [
+ "pallet-nfts",
+ "parity-scale-codec",
+ "sp-api",
  "sp-std",
 ]
 
@@ -7001,9 +7051,9 @@ dependencies = [
 
 [[package]]
 name = "pallet-xcm"
-version = "10.0.0"
+version = "10.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2e99985bc697d3548281b08e1893d3d2f97023498321c7348932d9cc0c7470a6"
+checksum = "bd52ee00a54f8b6ff3a90e97622b2403667ef25105dd08d71d45a7075c0ba478"
 dependencies = [
  "bounded-collections",
  "frame-benchmarking",
@@ -7123,11 +7173,15 @@ dependencies = [
  "frame-try-runtime",
  "hex-literal",
  "log",
+ "pallet-assets",
  "pallet-aura",
  "pallet-authorship",
  "pallet-balances",
  "pallet-collator-selection",
  "pallet-message-queue",
+ "pallet-nft-fractionalization",
+ "pallet-nfts",
+ "pallet-nfts-runtime-api",
  "pallet-session",
  "pallet-sudo",
  "pallet-timestamp",
@@ -9966,9 +10020,9 @@ dependencies = [
 
 [[package]]
 name = "sc-chain-spec"
-version = "30.0.0"
+version = "30.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "499fd59f6df4213edaf9b84aaebc466588b69dedf490c2bae3bc910fc37fbc42"
+checksum = "5dfb28048e5b2d168870e2205d3e41db1f387a781831a8b8b82c9f10536c2742"
 dependencies = [
  "array-bytes 6.2.2",
  "docify",
