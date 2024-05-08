@@ -339,7 +339,7 @@ impl pallet_timestamp::Config for Runtime {
     type MinimumPeriod = ConstU64<0>;
     #[cfg(not(feature = "experimental"))]
     type MinimumPeriod = ConstU64<{ SLOT_DURATION / 2 }>;
-    type WeightInfo = (); // Configure based on benchmarking results.
+    type WeightInfo = ();
 }
 // Frontier
 
@@ -1140,7 +1140,6 @@ impl_runtime_apis! {
             Vec<frame_support::traits::StorageInfo>,
         ) {
             use frame_benchmarking::{Benchmarking, BenchmarkList};
-            // use frame_benchmarking::list_benchmark;
             use frame_support::traits::StorageInfoTrait;
             use frame_system_benchmarking::Pallet as SystemBench;
             use cumulus_pallet_session_benchmarking::Pallet as SessionBench;
@@ -1155,7 +1154,6 @@ impl_runtime_apis! {
         fn dispatch_benchmark(
             config: frame_benchmarking::BenchmarkConfig
         ) -> Result<Vec<frame_benchmarking::BenchmarkBatch>, sp_runtime::RuntimeString> {
-            // use frame_support::traits::TrackedStorageKey;
             use frame_benchmarking::{Benchmarking, BenchmarkBatch, BenchmarkError, add_benchmark};
             use pallet_evm::Pallet as PalletEvmBench;
 
