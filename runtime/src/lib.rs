@@ -390,8 +390,7 @@ impl pallet_evm::Config for Runtime {
     type GasLimitPovSizeRatio = GasLimitPovSizeRatio;
     type SuicideQuickClearLimit = SuicideQuickClearLimit;
     type Timestamp = Timestamp;
-    type WeightInfo = pallet_evm::weights::SubstrateWeight<Self>;
-    // TODO: Configure based on benchmarking results.
+    type WeightInfo = (); // Configure based on benchmarking results.;
 }
 
 parameter_types! {
@@ -762,7 +761,6 @@ mod benches {
         [cumulus_pallet_xcmp_queue, XcmpQueue]
         [pallet_message_queue, MessageQueue]
         [pallet_evm, EVM]
-        // TODO: add other evm related pallets
     );
 }
 

@@ -1,7 +1,7 @@
-use std::{collections::BTreeMap, sync::Arc};
 use fc_rpc::pending::AuraConsensusDataProvider;
 use fc_rpc_core::EthApiServer;
 use jsonrpsee::RpcModule;
+use std::{collections::BTreeMap, sync::Arc};
 // Substrate
 use sc_client_api::{
     backend::{Backend, StorageProvider},
