@@ -11,7 +11,6 @@ mod weights;
 pub mod xcm_config;
 
 use cumulus_pallet_parachain_system::RelayNumberMonotonicallyIncreases;
-use polkadot_runtime_common::xcm_sender::NoPriceForMessageDelivery;
 use smallvec::smallvec;
 use sp_api::impl_runtime_apis;
 use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
@@ -60,7 +59,7 @@ use polkadot_runtime_common::{BlockHashCount, SlowAdjustingFeeUpdate};
 use weights::{BlockExecutionWeight, ExtrinsicBaseWeight, RocksDbWeight};
 
 // XCM Imports
-use xcm::latest::prelude::BodyId;
+use xcm::latest::prelude::{AssetId, BodyId};
 
 /// Alias to 512-bit hash when used in the context of a transaction signature on the chain.
 pub type Signature = MultiSignature;
@@ -208,6 +207,7 @@ pub const DAYS: BlockNumber = HOURS * 24;
 
 // Unit = the base number of indivisible units for balances
 pub const UNIT: Balance = 1_000_000_000_000;
+pub const CENTIUNIT: Balance = 10_000_000_000;
 pub const MILLIUNIT: Balance = 1_000_000_000;
 pub const MICROUNIT: Balance = 1_000_000;
 
@@ -323,7 +323,7 @@ impl pallet_timestamp::Config for Runtime {
     type MinimumPeriod = ConstU64<0>;
     #[cfg(not(feature = "experimental"))]
     type MinimumPeriod = ConstU64<{ SLOT_DURATION / 2 }>;
-    type WeightInfo = ();
+    type WeightInfo = (); // Configure based on benchmarking results.
 }
 
 impl pallet_authorship::Config for Runtime {
@@ -344,7 +344,7 @@ impl pallet_balances::Config for Runtime {
     type DustRemoval = ();
     type ExistentialDeposit = ExistentialDeposit;
     type AccountStore = System;
-    type WeightInfo = pallet_balances::weights::SubstrateWeight<Runtime>;
+    type WeightInfo = (); // Configure based on benchmarking results.
     type MaxReserves = ConstU32<50>;
     type ReserveIdentifier = [u8; 8];
     type RuntimeHoldReason = RuntimeHoldReason;
@@ -370,7 +370,7 @@ impl pallet_transaction_payment::Config for Runtime {
 impl pallet_sudo::Config for Runtime {
     type RuntimeEvent = RuntimeEvent;
     type RuntimeCall = RuntimeCall;
-    type WeightInfo = ();
+    type WeightInfo = (); // Configure based on benchmarking results.
 }
 
 parameter_types! {
@@ -387,7 +387,7 @@ type ConsensusHook = cumulus_pallet_aura_ext::FixedVelocityConsensusHook<
 >;
 
 impl cumulus_pallet_parachain_system::Config for Runtime {
-    type WeightInfo = ();
+    type WeightInfo = (); // Configure based on benchmarking results.
     type RuntimeEvent = RuntimeEvent;
     type OnSystemEvent = ();
     type SelfParaId = parachain_info::Pallet<Runtime>;
@@ -408,7 +408,7 @@ parameter_types! {
 
 impl pallet_message_queue::Config for Runtime {
     type RuntimeEvent = RuntimeEvent;
-    type WeightInfo = ();
+    type WeightInfo = (); // Configure based on benchmarking results.
     #[cfg(feature = "runtime-benchmarks")]
     type MessageProcessor = pallet_message_queue::mock_helpers::NoopMessageProcessor<
         cumulus_primitives_core::AggregateMessageOrigin,
@@ -430,6 +430,20 @@ impl pallet_message_queue::Config for Runtime {
 
 impl cumulus_pallet_aura_ext::Config for Runtime {}
 
+parameter_types! {
+    /// The asset ID for the asset that we use to pay for message delivery fees.
+    pub FeeAssetId: AssetId = AssetId(xcm_config::TokenLocation::get());
+    /// The base fee for the message delivery fees.
+    pub const BaseDeliveryFee: u128 = CENTIUNIT.saturating_mul(3);
+}
+
+pub type PriceForSiblingParachainDelivery = polkadot_runtime_common::xcm_sender::ExponentialPrice<
+    FeeAssetId,
+    BaseDeliveryFee,
+    TransactionByteFee,
+    XcmpQueue,
+>;
+
 impl cumulus_pallet_xcmp_queue::Config for Runtime {
     type RuntimeEvent = RuntimeEvent;
     type ChannelInfo = ParachainSystem;
@@ -439,8 +453,8 @@ impl cumulus_pallet_xcmp_queue::Config for Runtime {
     type MaxInboundSuspended = sp_core::ConstU32<1_000>;
     type ControllerOrigin = EnsureRoot<AccountId>;
     type ControllerOriginConverter = XcmOriginToTransactDispatchOrigin;
-    type WeightInfo = ();
-    type PriceForSiblingDelivery = NoPriceForMessageDelivery<ParaId>;
+    type WeightInfo = (); // Configure based on benchmarking results.
+    type PriceForSiblingDelivery = PriceForSiblingParachainDelivery;
 }
 
 parameter_types! {
@@ -459,7 +473,7 @@ impl pallet_session::Config for Runtime {
     // Essentially just Aura, but let's be pedantic.
     type SessionHandler = <SessionKeys as sp_runtime::traits::OpaqueKeys>::KeyTypeIdProviders;
     type Keys = SessionKeys;
-    type WeightInfo = ();
+    type WeightInfo = (); // Configure based on benchmarking results.
 }
 
 impl pallet_aura::Config for Runtime {
@@ -497,11 +511,13 @@ impl pallet_collator_selection::Config for Runtime {
     type ValidatorId = <Self as frame_system::Config>::AccountId;
     type ValidatorIdOf = pallet_collator_selection::IdentityCollator;
     type ValidatorRegistration = Session;
-    type WeightInfo = ();
+    type WeightInfo = (); // Configure based on benchmarking results.
 }
 
 // Create the runtime by composing the FRAME pallets that were previously configured.
 construct_runtime!(
+    // While this macro defines the pallets conforming the runtime,
+    // the ones to be benchmarked need to be explicitly passed to `define_benchmarks!`.
     pub enum Runtime {
         // System support stuff.
         System: frame_system = 0,
@@ -537,15 +553,16 @@ construct_runtime!(
 #[cfg(feature = "runtime-benchmarks")]
 mod benches {
     frame_benchmarking::define_benchmarks!(
+        // Only benchmark the following pallets
         [frame_system, SystemBench::<Runtime>]
-        [pallet_balances, Balances]
-        [pallet_session, SessionBench::<Runtime>]
+        [cumulus_pallet_parachain_system, ParachainSystem]
         [pallet_timestamp, Timestamp]
-        [pallet_message_queue, MessageQueue]
+        [pallet_balances, Balances]
         [pallet_sudo, Sudo]
         [pallet_collator_selection, CollatorSelection]
-        [cumulus_pallet_parachain_system, ParachainSystem]
+        [pallet_session, SessionBench::<Runtime>]
         [cumulus_pallet_xcmp_queue, XcmpQueue]
+        [pallet_message_queue, MessageQueue]
     );
 }
 
