@@ -1,6 +1,6 @@
 # Contracts Parachain Template
 
-A new [Cumulus](https://github.com/paritytech/polkadot-sdk/tree/master/cumulus)-based Substrate node, configured to support Wasm-based contracts.
+A new [Cumulus](https://github.com/paritytech/polkadot-sdk/tree/master/cumulus)-based Substrate node, configured to support WebAssembly smart contracts.
 
 This project is a fork of the [Base Parachain Template](https://github.com/r0gue-io/base-parachain). 
 
