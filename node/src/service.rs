@@ -6,8 +6,8 @@ use std::{sync::Arc, time::Duration};
 use cumulus_client_cli::CollatorOptions;
 // Local Runtime Types
 use parachain_template_runtime::{
+    apis::RuntimeApi,
     opaque::{Block, Hash},
-    RuntimeApi,
 };
 
 // Cumulus Imports
@@ -16,21 +16,17 @@ use cumulus_client_consensus_common::ParachainBlockImport as TParachainBlockImpo
 use cumulus_client_consensus_proposer::Proposer;
 use cumulus_client_service::{
     build_network, build_relay_chain_interface, prepare_node_config, start_relay_chain_tasks,
-    BuildNetworkParams, CollatorSybilResistance, DARecoveryProfile, StartRelayChainTasksParams,
+    BuildNetworkParams, CollatorSybilResistance, DARecoveryProfile, ParachainHostFunctions,
+    StartRelayChainTasksParams,
 };
-use cumulus_primitives_core::{
-    relay_chain::{CollatorPair, ValidationCode},
-    ParaId,
-};
+use cumulus_primitives_core::{relay_chain::CollatorPair, ParaId};
 use cumulus_relay_chain_interface::{OverseerHandle, RelayChainInterface};
 
 // Substrate Imports
 use frame_benchmarking_cli::SUBSTRATE_REFERENCE_HARDWARE;
 use sc_client_api::Backend;
 use sc_consensus::ImportQueue;
-use sc_executor::{
-    HeapAllocStrategy, NativeElseWasmExecutor, WasmExecutor, DEFAULT_HEAP_ALLOC_STRATEGY,
-};
+use sc_executor::{HeapAllocStrategy, WasmExecutor, DEFAULT_HEAP_ALLOC_STRATEGY};
 use sc_network::NetworkBlock;
 use sc_network_sync::SyncingService;
 use sc_service::{Configuration, PartialComponents, TFullBackend, TFullClient, TaskManager};
@@ -39,25 +35,7 @@ use sc_transaction_pool_api::OffchainTransactionPoolFactory;
 use sp_keystore::KeystorePtr;
 use substrate_prometheus_endpoint::Registry;
 
-/// Native executor type.
-pub struct ParachainNativeExecutor;
-
-impl sc_executor::NativeExecutionDispatch for ParachainNativeExecutor {
-    type ExtendHostFunctions = (
-        cumulus_client_service::storage_proof_size::HostFunctions,
-        frame_benchmarking::benchmarking::HostFunctions,
-    );
-
-    fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
-        parachain_template_runtime::api::dispatch(method, data)
-    }
-
-    fn native_version() -> sc_executor::NativeVersion {
-        parachain_template_runtime::native_version()
-    }
-}
-
-type ParachainExecutor = NativeElseWasmExecutor<ParachainNativeExecutor>;
+type ParachainExecutor = WasmExecutor<ParachainHostFunctions>;
 
 type ParachainClient = TFullClient<Block, RuntimeApi, ParachainExecutor>;
 
@@ -101,15 +79,13 @@ pub fn new_partial(config: &Configuration) -> Result<Service, sc_service::Error>
             extra_pages: h as _,
         });
 
-    let wasm = WasmExecutor::builder()
+    let executor = ParachainExecutor::builder()
         .with_execution_method(config.wasm_method)
         .with_onchain_heap_alloc_strategy(heap_pages)
         .with_offchain_heap_alloc_strategy(heap_pages)
         .with_max_runtime_instances(config.max_runtime_instances)
         .with_runtime_cache_size(config.runtime_cache_size)
         .build();
-
-    let executor = ParachainExecutor::new_with_wasm_executor(wasm);
 
     let (client, backend, keystore_container, task_manager) =
         sc_service::new_full_parts_record_import::<Block, RuntimeApi, _>(
@@ -255,7 +231,7 @@ async fn start_node_impl(
         task_manager: &mut task_manager,
         config: parachain_config,
         keystore: params.keystore_container.keystore(),
-        backend: backend.clone(),
+        backend,
         network: network.clone(),
         sync_service: sync_service.clone(),
         system_rpc_tx,
@@ -319,7 +295,6 @@ async fn start_node_impl(
     if validator {
         start_consensus(
             client.clone(),
-            backend.clone(),
             block_import,
             prometheus_registry.as_ref(),
             telemetry.as_ref().map(|t| t.handle()),
@@ -376,7 +351,6 @@ fn build_import_queue(
 #[allow(clippy::too_many_arguments)]
 fn start_consensus(
     client: Arc<ParachainClient>,
-    backend: Arc<ParachainBackend>,
     block_import: ParachainBlockImport,
     prometheus_registry: Option<&Registry>,
     telemetry: Option<TelemetryHandle>,
@@ -391,10 +365,14 @@ fn start_consensus(
     overseer_handle: OverseerHandle,
     announce_block: Arc<dyn Fn(Hash, Option<Vec<u8>>) + Send + Sync>,
 ) -> Result<(), sc_service::Error> {
-    use cumulus_client_consensus_aura::collators::lookahead::{self as aura, Params as AuraParams};
+    use cumulus_client_consensus_aura::collators::basic::{
+        self as basic_aura, Params as BasicAuraParams,
+    };
 
     // NOTE: because we use Aura here explicitly, we can use `CollatorSybilResistance::Resistant`
     // when starting the network.
+
+    let slot_duration = cumulus_client_consensus_aura::slot_duration(&*client)?;
 
     let proposer_factory = sc_basic_authorship::ProposerFactory::with_proof_recording(
         task_manager.spawn_handle(),
@@ -413,32 +391,27 @@ fn start_consensus(
         client.clone(),
     );
 
-    let params = AuraParams {
+    let params = BasicAuraParams {
         create_inherent_data_providers: move |_, ()| async move { Ok(()) },
         block_import,
-        para_client: client.clone(),
-        para_backend: backend.clone(),
+        para_client: client,
         relay_client: relay_chain_interface,
-        code_hash_provider: move |block_hash| {
-            client
-                .code_at(block_hash)
-                .ok()
-                .map(|c| ValidationCode::from(c).hash())
-        },
         sync_oracle,
         keystore,
         collator_key,
         para_id,
         overseer_handle,
+        slot_duration,
         relay_chain_slot_duration,
         proposer,
         collator_service,
-        authoring_duration: Duration::from_millis(1500),
-        reinitialize: false,
+        // Very limited proposal time.
+        authoring_duration: Duration::from_millis(500),
+        collation_request_receiver: None,
     };
 
     let fut =
-        aura::run::<Block, sp_consensus_aura::sr25519::AuthorityPair, _, _, _, _, _, _, _, _, _>(
+        basic_aura::run::<Block, sp_consensus_aura::sr25519::AuthorityPair, _, _, _, _, _, _, _>(
             params,
         );
     task_manager
