@@ -371,9 +371,6 @@ fn start_consensus(
     overseer_handle: OverseerHandle,
     announce_block: Arc<dyn Fn(Hash, Option<Vec<u8>>) + Send + Sync>,
 ) -> Result<(), sc_service::Error> {
-    // NOTE: because we use Aura here explicitly, we can use `CollatorSybilResistance::Resistant`
-    // when starting the network.
-
     let proposer_factory = sc_basic_authorship::ProposerFactory::with_proof_recording(
         task_manager.spawn_handle(),
         client.clone(),
