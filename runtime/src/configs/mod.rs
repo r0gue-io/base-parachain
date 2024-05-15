@@ -23,6 +23,7 @@
 //
 // For more information, please refer to <http://unlicense.org>
 
+#[path = "xcm.rs"]
 mod xcm_config;
 
 // Substrate and Polkadot dependencies

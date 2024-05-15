@@ -23,13 +23,13 @@ scale-info.workspace = true
 smallvec.workspace = true
 
 # Substrate
-frame-benchmarking.workspace = true
+frame-benchmarking = { optional = true, workspace = true }
 frame-executive.workspace = true
 frame-support.workspace = true
 frame-system.workspace = true
-frame-system-benchmarking.workspace = true
+frame-system-benchmarking = { optional = true, workspace = true }
 frame-system-rpc-runtime-api.workspace = true
-frame-try-runtime.workspace = true
+frame-try-runtime = { optional = true, workspace = true }
 pallet-aura.workspace = true
 pallet-authorship.workspace = true
 pallet-balances.workspace = true
