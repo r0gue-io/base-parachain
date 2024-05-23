@@ -1,6 +1,6 @@
 # Assets Parachain Template
 
-A new [Cumulus](https://github.com/paritytech/polkadot-sdk/tree/master/cumulus)-based Substrate node. 
+A new [Cumulus](https://github.com/paritytech/polkadot-sdk/tree/master/cumulus)-based Substrate node, configured with fungible and non-fungilble asset functionalities, including asset fractionalization.
 
 This project is a fork of the
 [Cumulus Parachain Template](https://github.com/paritytech/polkadot-sdk/tree/master/templates/parachain) from the [Polkadot SDK](https://github.com/paritytech/polkadot-sdk). 
