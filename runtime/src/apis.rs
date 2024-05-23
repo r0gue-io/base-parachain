@@ -42,11 +42,10 @@ use sp_version::RuntimeVersion;
 
 // Local module imports
 use super::{
-    AccountId, Balance, Block, BlockNumber, ConsensusHook, Contracts, Executive, Hash,
-    InherentDataExt, Nonce, ParachainSystem, Runtime, RuntimeCall, RuntimeGenesisConfig,
-    SessionKeys, System, TransactionPayment, CONTRACTS_DEBUG_OUTPUT, CONTRACTS_EVENTS,
-    SLOT_DURATION, VERSION,
-    configs::RuntimeBlockWeights,
+    configs::RuntimeBlockWeights, AccountId, Balance, Block, BlockNumber, ConsensusHook, Contracts,
+    Executive, Hash, InherentDataExt, Nonce, ParachainSystem, Runtime, RuntimeCall,
+    RuntimeGenesisConfig, SessionKeys, System, TransactionPayment, CONTRACTS_DEBUG_OUTPUT,
+    CONTRACTS_EVENTS, SLOT_DURATION, VERSION,
 };
 
 type EventRecord = frame_system::EventRecord<
