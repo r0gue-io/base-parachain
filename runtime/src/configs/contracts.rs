@@ -1,12 +1,14 @@
 use crate::{
-    Balance, Balances, BalancesCall, Perbill, Runtime, RuntimeCall, RuntimeEvent,
-    RuntimeHoldReason, Timestamp, MILLIUNIT, UNIT,
+    deposit, Balance, Balances, Perbill, Runtime, RuntimeCall, RuntimeEvent,
+    RuntimeHoldReason, Timestamp,
 };
 use frame_support::{
     parameter_types,
     traits::{ConstBool, ConstU32, Randomness},
 };
 use frame_system::{pallet_prelude::BlockNumberFor, EnsureSigned};
+
+use pallet_balances::Call as BalancesCall;
 
 pub enum AllowBalancesCall {}
 
@@ -19,10 +21,6 @@ impl frame_support::traits::Contains<RuntimeCall> for AllowBalancesCall {
     }
 }
 
-// Unit = the base number of indivisible units for balances
-const fn deposit(items: u32, bytes: u32) -> Balance {
-    (items as Balance * UNIT + (bytes as Balance) * (5 * MILLIUNIT / 100)) / 10
-}
 // randomness-collective-flip is insecure. Provide dummy randomness as placeholder for the
 // deprecated trait. https://github.com/paritytech/polkadot-sdk/blob/9bf1a5e23884921498b381728bfddaae93f83744/substrate/frame/contracts/mock-network/src/parachain/contracts_config.rs#L45
 pub struct DummyRandomness<T: pallet_contracts::Config>(sp_std::marker::PhantomData<T>);
