@@ -141,93 +141,98 @@ pub fn new_partial(config: &Configuration) -> Result<Service, sc_service::Error>
 
 /// Build the import queue for the parachain runtime.
 fn build_import_queue(
-	client: Arc<ParachainClient>,
-	block_import: ParachainBlockImport,
-	config: &Configuration,
-	telemetry: Option<TelemetryHandle>,
-	task_manager: &TaskManager,
+    client: Arc<ParachainClient>,
+    block_import: ParachainBlockImport,
+    config: &Configuration,
+    telemetry: Option<TelemetryHandle>,
+    task_manager: &TaskManager,
 ) -> sc_consensus::DefaultImportQueue<Block> {
-	cumulus_client_consensus_aura::equivocation_import_queue::fully_verifying_import_queue::<
-		sp_consensus_aura::sr25519::AuthorityPair,
-		_,
-		_,
-		_,
-		_,
-	>(
-		client,
-		block_import,
-		move |_, _| async move {
-			let timestamp = sp_timestamp::InherentDataProvider::from_system_time();
-			Ok(timestamp)
-		},
-		&task_manager.spawn_essential_handle(),
-		config.prometheus_registry(),
-		telemetry,
-	)
+    cumulus_client_consensus_aura::equivocation_import_queue::fully_verifying_import_queue::<
+        sp_consensus_aura::sr25519::AuthorityPair,
+        _,
+        _,
+        _,
+        _,
+    >(
+        client,
+        block_import,
+        move |_, _| async move {
+            let timestamp = sp_timestamp::InherentDataProvider::from_system_time();
+            Ok(timestamp)
+        },
+        &task_manager.spawn_essential_handle(),
+        config.prometheus_registry(),
+        telemetry,
+    )
 }
 
 fn start_consensus(
-	client: Arc<ParachainClient>,
-	backend: Arc<ParachainBackend>,
-	block_import: ParachainBlockImport,
-	prometheus_registry: Option<&Registry>,
-	telemetry: Option<TelemetryHandle>,
-	task_manager: &TaskManager,
-	relay_chain_interface: Arc<dyn RelayChainInterface>,
-	transaction_pool: Arc<sc_transaction_pool::FullPool<Block, ParachainClient>>,
-	sync_oracle: Arc<SyncingService<Block>>,
-	keystore: KeystorePtr,
-	relay_chain_slot_duration: Duration,
-	para_id: ParaId,
-	collator_key: CollatorPair,
-	overseer_handle: OverseerHandle,
-	announce_block: Arc<dyn Fn(Hash, Option<Vec<u8>>) + Send + Sync>,
+    client: Arc<ParachainClient>,
+    backend: Arc<ParachainBackend>,
+    block_import: ParachainBlockImport,
+    prometheus_registry: Option<&Registry>,
+    telemetry: Option<TelemetryHandle>,
+    task_manager: &TaskManager,
+    relay_chain_interface: Arc<dyn RelayChainInterface>,
+    transaction_pool: Arc<sc_transaction_pool::FullPool<Block, ParachainClient>>,
+    sync_oracle: Arc<SyncingService<Block>>,
+    keystore: KeystorePtr,
+    relay_chain_slot_duration: Duration,
+    para_id: ParaId,
+    collator_key: CollatorPair,
+    overseer_handle: OverseerHandle,
+    announce_block: Arc<dyn Fn(Hash, Option<Vec<u8>>) + Send + Sync>,
 ) -> Result<(), sc_service::Error> {
-	let proposer_factory = sc_basic_authorship::ProposerFactory::with_proof_recording(
-		task_manager.spawn_handle(),
-		client.clone(),
-		transaction_pool,
-		prometheus_registry,
-		telemetry.clone(),
-	);
+    let proposer_factory = sc_basic_authorship::ProposerFactory::with_proof_recording(
+        task_manager.spawn_handle(),
+        client.clone(),
+        transaction_pool,
+        prometheus_registry,
+        telemetry.clone(),
+    );
 
-	let proposer = Proposer::new(proposer_factory);
+    let proposer = Proposer::new(proposer_factory);
 
-	let collator_service = CollatorService::new(
-		client.clone(),
-		Arc::new(task_manager.spawn_handle()),
-		announce_block,
-		client.clone(),
-	);
+    let collator_service = CollatorService::new(
+        client.clone(),
+        Arc::new(task_manager.spawn_handle()),
+        announce_block,
+        client.clone(),
+    );
 
-	let params = AuraParams {
-		create_inherent_data_providers: move |_, ()| async move { Ok(()) },
-		block_import,
-		para_client: client.clone(),
-		para_backend: backend,
-		relay_client: relay_chain_interface,
-		code_hash_provider: move |block_hash| {
-			client.code_at(block_hash).ok().map(|c| ValidationCode::from(c).hash())
-		},
-		sync_oracle,
-		keystore,
-		collator_key,
-		para_id,
-		overseer_handle,
-		relay_chain_slot_duration,
-		proposer,
-		collator_service,
-		authoring_duration: Duration::from_millis(2000),
-		reinitialize: false,
-	};
+    let params = AuraParams {
+        create_inherent_data_providers: move |_, ()| async move { Ok(()) },
+        block_import,
+        para_client: client.clone(),
+        para_backend: backend,
+        relay_client: relay_chain_interface,
+        code_hash_provider: move |block_hash| {
+            client
+                .code_at(block_hash)
+                .ok()
+                .map(|c| ValidationCode::from(c).hash())
+        },
+        sync_oracle,
+        keystore,
+        collator_key,
+        para_id,
+        overseer_handle,
+        relay_chain_slot_duration,
+        proposer,
+        collator_service,
+        authoring_duration: Duration::from_millis(2000),
+        reinitialize: false,
+    };
 
-	let fut =
-		aura::run::<Block, sp_consensus_aura::sr25519::AuthorityPair, _, _, _, _, _, _, _, _, _>(
-			params,
-		);
-	task_manager.spawn_essential_handle().spawn("aura", None, fut);
+    let fut =
+        aura::run::<Block, sp_consensus_aura::sr25519::AuthorityPair, _, _, _, _, _, _, _, _, _>(
+            params,
+        );
+    task_manager
+        .spawn_essential_handle()
+        .spawn("aura", None, fut);
 
-	Ok(())
+    Ok(())
 }
 
 /// Start a node with the given parachain `Configuration` and relay chain `Configuration`.
@@ -246,10 +251,10 @@ pub async fn start_parachain_node(
     let params = new_partial(&parachain_config)?;
     let (block_import, mut telemetry, telemetry_worker_handle) = params.other;
     let net_config = sc_network::config::FullNetworkConfiguration::<
-		_,
-		_,
-		sc_network::NetworkWorker<Block, Hash>,
-	>::new(&parachain_config.network);
+        _,
+        _,
+        sc_network::NetworkWorker<Block, Hash>,
+    >::new(&parachain_config.network);
 
     let client = params.client.clone();
     let backend = params.backend.clone();
@@ -272,7 +277,7 @@ pub async fn start_parachain_node(
     let import_queue_service = params.import_queue.service();
 
     // NOTE: because we use Aura here explicitly, we can use `CollatorSybilResistance::Resistant`
-	// when starting the network.
+    // when starting the network.
     let (network, system_rpc_tx, tx_handler_controller, start_network, sync_service) =
         build_network(BuildNetworkParams {
             parachain_config: &parachain_config,
