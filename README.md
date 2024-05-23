@@ -1,4 +1,4 @@
-# Base Parachain Template
+# Assets Parachain Template
 
 A new [Cumulus](https://github.com/paritytech/polkadot-sdk/tree/master/cumulus)-based Substrate node. 
 
