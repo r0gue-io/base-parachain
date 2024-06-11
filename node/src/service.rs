@@ -165,7 +165,7 @@ fn build_import_queue(
         telemetry,
     )
 }
-
+#[allow(clippy::too_many_arguments)]
 fn start_consensus(
     client: Arc<ParachainClient>,
     backend: Arc<ParachainBackend>,
