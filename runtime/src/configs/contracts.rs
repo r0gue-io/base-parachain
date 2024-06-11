@@ -1,12 +1,39 @@
+// This is free and unencumbered software released into the public domain.
+//
+// Anyone is free to copy, modify, publish, use, compile, sell, or
+// distribute this software, either in source code form or as a compiled
+// binary, for any purpose, commercial or non-commercial, and by any
+// means.
+//
+// In jurisdictions that recognize copyright laws, the author or authors
+// of this software dedicate any and all copyright interest in the
+// software to the public domain. We make this dedication for the benefit
+// of the public at large and to the detriment of our heirs and
+// successors. We intend this dedication to be an overt act of
+// relinquishment in perpetuity of all present and future rights to this
+// software under copyright law.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+// IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+// OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+// ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+// OTHER DEALINGS IN THE SOFTWARE.
+//
+// For more information, please refer to <http://unlicense.org>
+
 use crate::{
-    Balance, Balances, BalancesCall, Perbill, Runtime, RuntimeCall, RuntimeEvent,
-    RuntimeHoldReason, Timestamp, MILLIUNIT, UNIT,
+    deposit, Balance, Balances, Perbill, Runtime, RuntimeCall, RuntimeEvent, RuntimeHoldReason,
+    Timestamp,
 };
 use frame_support::{
     parameter_types,
     traits::{ConstBool, ConstU32, Randomness},
 };
 use frame_system::{pallet_prelude::BlockNumberFor, EnsureSigned};
+
+use pallet_balances::Call as BalancesCall;
 
 pub enum AllowBalancesCall {}
 
@@ -19,10 +46,6 @@ impl frame_support::traits::Contains<RuntimeCall> for AllowBalancesCall {
     }
 }
 
-// Unit = the base number of indivisible units for balances
-const fn deposit(items: u32, bytes: u32) -> Balance {
-    (items as Balance * UNIT + (bytes as Balance) * (5 * MILLIUNIT / 100)) / 10
-}
 // randomness-collective-flip is insecure. Provide dummy randomness as placeholder for the
 // deprecated trait. https://github.com/paritytech/polkadot-sdk/blob/9bf1a5e23884921498b381728bfddaae93f83744/substrate/frame/contracts/mock-network/src/parachain/contracts_config.rs#L45
 pub struct DummyRandomness<T: pallet_contracts::Config>(sp_std::marker::PhantomData<T>);
