@@ -165,6 +165,7 @@ fn build_import_queue(
         telemetry,
     )
 }
+
 #[allow(clippy::too_many_arguments)]
 fn start_consensus(
     client: Arc<ParachainClient>,
@@ -236,8 +237,6 @@ fn start_consensus(
 }
 
 /// Start a node with the given parachain `Configuration` and relay chain `Configuration`.
-///
-/// This is the actual implementation that is abstract over the executor and the runtime api.
 #[sc_tracing::logging::prefix_logs_with("Parachain")]
 pub async fn start_parachain_node(
     parachain_config: Configuration,

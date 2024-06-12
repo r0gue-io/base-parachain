@@ -32,6 +32,8 @@
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 pub mod apis;
+#[cfg(feature = "runtime-benchmarks")]
+mod benchmarks;
 mod configs;
 mod weights;
 
@@ -292,6 +294,3 @@ cumulus_pallet_parachain_system::register_validate_block! {
     Runtime = Runtime,
     BlockExecutor = cumulus_pallet_aura_ext::BlockExecutor::<Runtime, Executive>,
 }
-
-#[cfg(feature = "runtime-benchmarks")]
-mod benchmarks;
