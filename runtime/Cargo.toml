@@ -21,6 +21,7 @@ hex-literal.workspace = true
 log.workspace = true
 scale-info.workspace = true
 smallvec.workspace = true
+docify.workspace = true
 
 # Substrate
 frame-benchmarking = { optional = true, workspace = true }
