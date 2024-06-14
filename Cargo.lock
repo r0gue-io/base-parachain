@@ -8486,6 +8486,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f276b38deaab6bff3ddfe061331901196ff992f76398bd0abc78382f4f115cf0"
 dependencies = [
  "async-trait",
+ "bitvec",
  "frame-benchmarking",
  "frame-benchmarking-cli",
  "frame-support",
@@ -8541,6 +8542,7 @@ dependencies = [
  "polkadot-runtime-parachains",
  "polkadot-statement-distribution",
  "rococo-runtime",
+ "rococo-runtime-constants",
  "sc-authority-discovery",
  "sc-basic-authorship",
  "sc-block-builder",
