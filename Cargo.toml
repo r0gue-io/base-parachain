@@ -10,8 +10,8 @@ repository = "https://github.com/r0gue-io/base-parachain"
 
 [workspace]
 members = [
-	"node",
-	"runtime",
+    "node",
+    "runtime",
 ]
 resolver = "2"
 
@@ -30,7 +30,8 @@ smallvec = "1.11.2"
 
 # Build
 substrate-build-script-utils = "11.0.0"
-substrate-wasm-builder = "22.0.0"
+substrate-wasm-builder = "22.0.1"
+docify = "0.2.8"
 
 # Local
 parachain-template-runtime = { path = "./runtime" }
@@ -39,6 +40,7 @@ parachain-template-runtime = { path = "./runtime" }
 frame-benchmarking = { version = "33.0.0", default-features = false }
 frame-benchmarking-cli = "37.0.0"
 frame-executive = { version = "33.0.0", default-features = false }
+frame-metadata-hash-extension = { version = "0.2.0", default-features = false }
 frame-support = { version = "33.0.0", default-features = false }
 frame-system = { version = "33.0.0", default-features = false }
 frame-system-benchmarking = { version = "33.0.0", default-features = false }
