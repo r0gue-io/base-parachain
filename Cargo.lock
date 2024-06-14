@@ -3285,6 +3285,22 @@ dependencies = [
 ]
 
 [[package]]
+name = "frame-metadata-hash-extension"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c51ead97e4ac8fdd3b62258bf5f97d2d82412ec0386388ce8296aa23d561536f"
+dependencies = [
+ "array-bytes 6.2.3",
+ "docify",
+ "frame-support",
+ "frame-system",
+ "log",
+ "parity-scale-codec",
+ "scale-info",
+ "sp-runtime",
+]
+
+[[package]]
 name = "frame-support"
 version = "33.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5344,6 +5360,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "merkleized-metadata"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f313fcff1d2a4bcaa2deeaa00bf7530d77d5f7bd0467a117dde2e29a75a7a17a"
+dependencies = [
+ "array-bytes 6.2.3",
+ "blake3",
+ "frame-metadata",
+ "parity-scale-codec",
+ "scale-decode",
+ "scale-info",
+]
+
+[[package]]
 name = "merlin"
 version = "3.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -7348,8 +7378,10 @@ dependencies = [
  "cumulus-primitives-core",
  "cumulus-primitives-storage-weight-reclaim",
  "cumulus-primitives-utility",
+ "docify",
  "frame-benchmarking",
  "frame-executive",
+ "frame-metadata-hash-extension",
  "frame-support",
  "frame-system",
  "frame-system-benchmarking",
@@ -11366,6 +11398,29 @@ dependencies = [
 ]
 
 [[package]]
+name = "scale-bits"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "e57b1e7f6b65ed1f04e79a85a57d755ad56d76fdf1e9bddcc9ae14f71fcdcf54"
+dependencies = [
+ "parity-scale-codec",
+ "scale-type-resolver",
+]
+
+[[package]]
+name = "scale-decode"
+version = "0.13.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b12ebca36cec2a3f983c46295b282b35e5f8496346fb859a8776dad5389e5389"
+dependencies = [
+ "derive_more",
+ "parity-scale-codec",
+ "scale-bits",
+ "scale-type-resolver",
+ "smallvec",
+]
+
+[[package]]
 name = "scale-info"
 version = "2.11.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -11390,6 +11445,12 @@ dependencies = [
  "quote",
  "syn 1.0.109",
 ]
+
+[[package]]
+name = "scale-type-resolver"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "f0cded6518aa0bd6c1be2b88ac81bf7044992f0f154bfbabd5ad34f43512abcb"
 
 [[package]]
 name = "schannel"
@@ -13102,13 +13163,22 @@ version = "22.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6567b61eca9459dbe71385caef9f6eab826abbd4a0743abf27034d96d34b9062"
 dependencies = [
+ "array-bytes 6.2.3",
  "build-helper",
  "cargo_metadata",
  "console",
  "filetime",
+ "frame-metadata",
+ "merkleized-metadata",
+ "parity-scale-codec",
  "parity-wasm",
  "polkavm-linker",
+ "sc-executor",
+ "sp-core",
+ "sp-io",
  "sp-maybe-compressed-blob",
+ "sp-tracing",
+ "sp-version",
  "strum 0.26.2",
  "tempfile",
  "toml 0.8.13",
