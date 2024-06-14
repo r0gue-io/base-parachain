@@ -13098,9 +13098,9 @@ dependencies = [
 
 [[package]]
 name = "substrate-wasm-builder"
-version = "22.0.0"
+version = "22.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "6072b8321a784d2425529bc8ac53149c15f1ac40e294af282500ff536004ccd3"
+checksum = "6567b61eca9459dbe71385caef9f6eab826abbd4a0743abf27034d96d34b9062"
 dependencies = [
  "build-helper",
  "cargo_metadata",

@@ -30,7 +30,7 @@ smallvec = "1.11.2"
 
 # Build
 substrate-build-script-utils = "11.0.0"
-substrate-wasm-builder = "22.0.0"
+substrate-wasm-builder = "22.0.1"
 
 # Local
 parachain-template-runtime = { path = "./runtime" }
