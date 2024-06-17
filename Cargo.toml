@@ -9,21 +9,22 @@ license = "Unlicense"
 repository = "https://github.com/r0gue-io/base-parachain"
 
 [workspace]
-members = [
-    "node",
-    "runtime",
-]
+members = ["node", "runtime"]
 resolver = "2"
 
 [workspace.dependencies]
 clap = { version = "4.5.3", features = ["derive"] }
-codec = { package = "parity-scale-codec", version = "3.0.0", default-features = false, features = ["derive"] }
+codec = { package = "parity-scale-codec", version = "3.0.0", default-features = false, features = [
+    "derive",
+] }
 color-print = "0.3.4"
 futures = "0.3.30"
 hex-literal = "0.4.1"
 jsonrpsee = { version = "0.22", features = ["server"] }
 log = { version = "0.4.20", default-features = false }
-scale-info = { version = "2.11.1", default-features = false, features = ["derive"] }
+scale-info = { version = "2.11.1", default-features = false, features = [
+    "derive",
+] }
 serde = "1.0.197"
 serde_json = "1.0.114"
 smallvec = "1.11.2"
@@ -40,7 +41,6 @@ parachain-template-runtime = { path = "./runtime" }
 frame-benchmarking = { version = "33.0.0", default-features = false }
 frame-benchmarking-cli = "37.0.0"
 frame-executive = { version = "33.0.0", default-features = false }
-frame-metadata-hash-extension = { version = "0.2.0", default-features = false }
 frame-support = { version = "33.0.0", default-features = false }
 frame-system = { version = "33.0.0", default-features = false }
 frame-system-benchmarking = { version = "33.0.0", default-features = false }
@@ -109,7 +109,9 @@ cumulus-client-consensus-common = "0.12.0"
 cumulus-client-consensus-proposer = "0.12.0"
 cumulus-client-service = "0.12.0"
 cumulus-pallet-aura-ext = { version = "0.12.0", default-features = false }
-cumulus-pallet-parachain-system = { version = "0.12.0", default-features = false, features = ["parameterized-consensus-hook"] }
+cumulus-pallet-parachain-system = { version = "0.12.0", default-features = false, features = [
+    "parameterized-consensus-hook",
+] }
 cumulus-pallet-session-benchmarking = { version = "14.0.0", default-features = false }
 cumulus-pallet-xcm = { version = "0.12.0", default-features = false }
 cumulus-pallet-xcmp-queue = { version = "0.12.0", default-features = false }
