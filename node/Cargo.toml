@@ -61,7 +61,7 @@ substrate-frame-rpc-system.workspace = true
 substrate-prometheus-endpoint.workspace = true
 
 # Polkadot
-polkadot-cli.workspace = true
+polkadot-cli = { workspace = true, features = ["rococo-native"] }
 polkadot-primitives.workspace = true
 xcm.workspace = true
 
@@ -79,17 +79,17 @@ cumulus-relay-chain-interface.workspace = true
 [features]
 default = []
 runtime-benchmarks = [
-	"cumulus-primitives-core/runtime-benchmarks",
-	"frame-benchmarking-cli/runtime-benchmarks",
-	"frame-benchmarking/runtime-benchmarks",
-	"parachain-template-runtime/runtime-benchmarks",
-	"polkadot-cli/runtime-benchmarks",
-	"polkadot-primitives/runtime-benchmarks",
-	"sc-service/runtime-benchmarks",
-	"sp-runtime/runtime-benchmarks",
+    "cumulus-primitives-core/runtime-benchmarks",
+    "frame-benchmarking-cli/runtime-benchmarks",
+    "frame-benchmarking/runtime-benchmarks",
+    "parachain-template-runtime/runtime-benchmarks",
+    "polkadot-cli/runtime-benchmarks",
+    "polkadot-primitives/runtime-benchmarks",
+    "sc-service/runtime-benchmarks",
+    "sp-runtime/runtime-benchmarks",
 ]
 try-runtime = [
-	"parachain-template-runtime/try-runtime",
-	"polkadot-cli/try-runtime",
-	"sp-runtime/try-runtime",
+    "parachain-template-runtime/try-runtime",
+    "polkadot-cli/try-runtime",
+    "sp-runtime/try-runtime",
 ]
