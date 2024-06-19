@@ -32,6 +32,8 @@
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 pub mod apis;
+#[cfg(feature = "runtime-benchmarks")]
+mod benchmarks;
 mod configs;
 mod weights;
 
@@ -107,6 +109,7 @@ pub type SignedExtra = (
     frame_system::CheckWeight<Runtime>,
     pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
     cumulus_primitives_storage_weight_reclaim::StorageWeightReclaim<Runtime>,
+    frame_metadata_hash_extension::CheckMetadataHash<Runtime>,
 );
 
 /// Unchecked extrinsic type as expected by this runtime.
@@ -300,22 +303,6 @@ construct_runtime!(
         Contracts: pallet_contracts = 40,
     }
 );
-
-#[cfg(feature = "runtime-benchmarks")]
-mod benches {
-    frame_benchmarking::define_benchmarks!(
-        // Only benchmark the following pallets
-        [frame_system, SystemBench::<Runtime>]
-        [cumulus_pallet_parachain_system, ParachainSystem]
-        [pallet_timestamp, Timestamp]
-        [pallet_balances, Balances]
-        [pallet_sudo, Sudo]
-        [pallet_collator_selection, CollatorSelection]
-        [pallet_session, SessionBench::<Runtime>]
-        [cumulus_pallet_xcmp_queue, XcmpQueue]
-        [pallet_message_queue, MessageQueue]
-    );
-}
 
 cumulus_pallet_parachain_system::register_validate_block! {
     Runtime = Runtime,
