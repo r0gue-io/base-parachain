@@ -4,7 +4,7 @@ use cumulus_client_service::storage_proof_size::HostFunctions as ReclaimHostFunc
 use cumulus_primitives_core::ParaId;
 use frame_benchmarking_cli::{BenchmarkCmd, SUBSTRATE_REFERENCE_HARDWARE};
 use log::info;
-use parachain_template_runtime::Block;
+use {{crate_name}}_runtime::Block;
 use sc_cli::{
     ChainSpec, CliConfiguration, DefaultConfigurationValues, ImportParams, KeystoreParams,
     NetworkParams, Result, SharedParams, SubstrateCli,
@@ -30,7 +30,7 @@ fn load_spec(id: &str) -> std::result::Result<Box<dyn ChainSpec>, String> {
 
 impl SubstrateCli for Cli {
     fn impl_name() -> String {
-        "Parachain Collator Template".into()
+        "{{project-name}}".into()
     }
 
     fn impl_version() -> String {
@@ -39,7 +39,7 @@ impl SubstrateCli for Cli {
 
     fn description() -> String {
         format!(
-            "Parachain Collator Template\n\nThe command-line arguments provided first will be \
+            "{{project-name}}\n\nThe command-line arguments provided first will be \
 		passed to the parachain node, while the arguments provided after -- will be passed \
 		to the relay chain node.\n\n\
 		{} <parachain-args> -- <relay-chain-args>",
@@ -66,7 +66,7 @@ impl SubstrateCli for Cli {
 
 impl SubstrateCli for RelayChainCli {
     fn impl_name() -> String {
-        "Parachain Collator Template".into()
+        "{{project-name}}".into()
     }
 
     fn impl_version() -> String {
@@ -75,7 +75,7 @@ impl SubstrateCli for RelayChainCli {
 
     fn description() -> String {
         format!(
-            "Parachain Collator Template\n\nThe command-line arguments provided first will be \
+            "{{project-name}}\n\nThe command-line arguments provided first will be \
 		passed to the parachain node, while the arguments provided after -- will be passed \
 		to the relay chain node.\n\n\
 		{} <parachain-args> -- <relay-chain-args>",
@@ -100,19 +100,10 @@ impl SubstrateCli for RelayChainCli {
     }
 }
 
-macro_rules! construct_async_run {
-	(|$components:ident, $cli:ident, $cmd:ident, $config:ident| $( $code:tt )* ) => {{
-		let runner = $cli.create_runner($cmd)?;
-		runner.async_run(|$config| {
-			let $components = new_partial(&$config)?;
-			let task_manager = $components.task_manager;
-			{ $( $code )* }.map(|v| (v, task_manager))
-		})
-	}}
-}
-
 /// Parse command line arguments into service configuration.
 pub fn run() -> Result<()> {
+    use crate::construct_async_run;
+
     let cli = Cli::from_args();
 
     match &cli.subcommand {
