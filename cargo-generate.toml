@@ -26,4 +26,5 @@ exclude = [
     "rust-toolchain.toml",
     ".gitignore",
     ".github",
+    ".git",
 ]

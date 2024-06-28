@@ -65,8 +65,8 @@ pub fn {{crate_name}}_session_keys(keys: AuraId) -> runtime::SessionKeys {
 pub fn development_config() -> ChainSpec {
     // Give your base currency a unit name and decimal places
     let mut properties = sc_chain_spec::Properties::new();
-    properties.insert("tokenSymbol".into(), "UNIT".into());
-    properties.insert("tokenDecimals".into(), 12.into());
+    properties.insert("tokenSymbol".into(), "{{token-ticker}}".into());
+    properties.insert("tokenDecimals".into(), {{token-decimals}}.into());
     properties.insert("ss58Format".into(), 42.into());
 
     ChainSpec::builder(
@@ -115,8 +115,8 @@ pub fn development_config() -> ChainSpec {
 pub fn local_testnet_config() -> ChainSpec {
     // Give your base currency a unit name and decimal places
     let mut properties = sc_chain_spec::Properties::new();
-    properties.insert("tokenSymbol".into(), "UNIT".into());
-    properties.insert("tokenDecimals".into(), 12.into());
+    properties.insert("tokenSymbol".into(), "{{token-ticker}}".into());
+    properties.insert("tokenDecimals".into(), {{token-decimals}}.into());
     properties.insert("ss58Format".into(), 42.into());
 
     #[allow(deprecated)]
@@ -173,7 +173,7 @@ fn testnet_genesis(
 ) -> serde_json::Value {
     serde_json::json!({
         "balances": {
-            "balances": endowed_accounts.iter().cloned().map(|k| (k, 1u64 << 60)).collect::<Vec<_>>(),
+            "balances": endowed_accounts.iter().cloned().map(|k| (k, {{initial-endowment}})).collect::<Vec<_>>(),
         },
         "parachainInfo": {
             "parachainId": id,
