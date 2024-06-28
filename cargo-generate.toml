@@ -27,4 +27,5 @@ exclude = [
     ".gitignore",
     ".github",
     ".git",
+    "cargo-generate.toml"
 ]
