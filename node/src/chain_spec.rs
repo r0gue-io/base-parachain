@@ -1,5 +1,5 @@
 use cumulus_primitives_core::ParaId;
-use parachain_template_runtime as runtime;
+use {{crate_name}}_runtime as runtime;
 use runtime::{AccountId, AuraId, Signature, EXISTENTIAL_DEPOSIT};
 use sc_chain_spec::{ChainSpecExtension, ChainSpecGroup};
 use sc_service::ChainType;
@@ -58,15 +58,15 @@ where
 /// Generate the session keys from individual elements.
 ///
 /// The input must be a tuple of individual keys (a single arg for now since we have just one key).
-pub fn template_session_keys(keys: AuraId) -> runtime::SessionKeys {
+pub fn {{crate_name}}_session_keys(keys: AuraId) -> runtime::SessionKeys {
     runtime::SessionKeys { aura: keys }
 }
 
 pub fn development_config() -> ChainSpec {
     // Give your base currency a unit name and decimal places
     let mut properties = sc_chain_spec::Properties::new();
-    properties.insert("tokenSymbol".into(), "UNIT".into());
-    properties.insert("tokenDecimals".into(), 12.into());
+    properties.insert("tokenSymbol".into(), "{{token-symbol}}".into());
+    properties.insert("tokenDecimals".into(), {{token-decimals}}.into());
     properties.insert("ss58Format".into(), 42.into());
 
     ChainSpec::builder(
@@ -115,8 +115,8 @@ pub fn development_config() -> ChainSpec {
 pub fn local_testnet_config() -> ChainSpec {
     // Give your base currency a unit name and decimal places
     let mut properties = sc_chain_spec::Properties::new();
-    properties.insert("tokenSymbol".into(), "UNIT".into());
-    properties.insert("tokenDecimals".into(), 12.into());
+    properties.insert("tokenSymbol".into(), "{{token-symbol}}".into());
+    properties.insert("tokenDecimals".into(), {{token-decimals}}.into());
     properties.insert("ss58Format".into(), 42.into());
 
     #[allow(deprecated)]
@@ -160,7 +160,7 @@ pub fn local_testnet_config() -> ChainSpec {
         get_account_id_from_seed::<sr25519::Public>("Alice"),
         2000.into(),
     ))
-    .with_protocol_id("template-local")
+    .with_protocol_id("{{crate_name}}-local")
     .with_properties(properties)
     .build()
 }
@@ -173,7 +173,7 @@ fn testnet_genesis(
 ) -> serde_json::Value {
     serde_json::json!({
         "balances": {
-            "balances": endowed_accounts.iter().cloned().map(|k| (k, 1u64 << 60)).collect::<Vec<_>>(),
+            "balances": endowed_accounts.iter().cloned().map(|k| (k, {{initial-endowment}})).collect::<Vec<_>>(),
         },
         "parachainInfo": {
             "parachainId": id,
@@ -189,7 +189,7 @@ fn testnet_genesis(
                     (
                         acc.clone(),                 // account id
                         acc,                         // validator id
-                        template_session_keys(aura), // session keys
+                        {{crate_name}}_session_keys(aura), // session keys
                     )
                 })
             .collect::<Vec<_>>(),

@@ -1,8 +1,8 @@
 [package]
-name = "parachain-template-runtime"
+name = "{{project-name}}-runtime"
 version = "0.1.0"
 authors.workspace = true
-description = "Parachain runtime template"
+description = "{{project-name}} Runtime"
 license.workspace = true
 homepage.workspace = true
 repository.workspace = true

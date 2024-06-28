@@ -30,13 +30,16 @@ serde = "1.0.197"
 serde_json = "1.0.114"
 smallvec = "1.11.2"
 
+
+
+
+
+{{project-name}}-runtime = { path = "./runtime" }
+
 # Build
 substrate-build-script-utils = "11.0.0"
 substrate-wasm-builder = "22.0.0"
-
 # Local
-parachain-template-runtime = { path = "./runtime" }
-
 # Substrate
 frame-benchmarking = { version = "34.0.0", default-features = false }
 frame-benchmarking-cli = "38.0.0"
