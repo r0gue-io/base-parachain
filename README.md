@@ -9,6 +9,11 @@ It is used to generate parachains using [Pop CLI](https://github.com/r0gue-io/po
 
 ## Next Steps
 
+👷 Start with building a new pallet (experimental):
+```
+pop new pallet <pallet_name>
+```
+
 💥 Learn more about Pop CLI [here](https://learn.onpop.io/pop/v/pop-cli).
 
 🚀 Learn about how to run your own parachain testnet using Pop CLI [here](https://learn.onpop.io/pop/v/pop-cli/parachains/running-your-parachain).
