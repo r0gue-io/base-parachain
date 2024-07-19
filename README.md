@@ -9,15 +9,17 @@ It is used to generate parachains using [Pop CLI](https://github.com/r0gue-io/po
 
 ## Next Steps
 
+💻 Install the Pop CLI [here](https://learn.onpop.io/v/cli/installing-pop-cli)
+
 👷 Start with building a new pallet (experimental):
 ```
 pop new pallet <pallet_name>
 ```
 
-💥 Learn more about Pop CLI [here](https://learn.onpop.io/pop/v/pop-cli).
+💥 Learn more about Pop CLI [here](https://learn.onpop.io/v/cli).
 
-🚀 Learn about how to run your own parachain testnet using Pop CLI [here](https://learn.onpop.io/pop/v/pop-cli/parachains/running-your-parachain).
+🚀 Learn about how to run your own parachain testnet using Pop CLI [here](https://learn.onpop.io/v/appchains/guides/running-your-parachain).
 
 👉 Learn more about parachains [here](https://wiki.polkadot.network/docs/learn-parachains).
 
-🧙 Learn about how to build using this template [here](https://docs.substrate.io/tutorials/).
+🧙 Learn about how to build using this template [here](https://subdaily.io/dev/learn-to-build-substrate-pallets-from-scratch-dissecting-the-frame-pallet/).
