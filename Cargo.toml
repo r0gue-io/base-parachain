@@ -42,7 +42,9 @@ parachain-template-runtime = { path = "./runtime" }
 frame-benchmarking = { version = "35.0.0", default-features = false }
 frame-benchmarking-cli = "39.0.0"
 frame-executive = { version = "35.0.0", default-features = false }
-frame-support = { version = "35.0.0", default-features = false }
+frame-support = { version = "35.0.0", default-features = false, features = [
+    "experimental",
+] }
 frame-system = { version = "35.0.0", default-features = false }
 frame-system-benchmarking = { version = "35.0.0", default-features = false }
 frame-system-rpc-runtime-api = { version = "33.0.0", default-features = false }
@@ -87,7 +89,6 @@ sp-keystore = "0.40.0"
 sp-offchain = { version = "33.0.0", default-features = false }
 sp-runtime = { version = "38.0.0", default-features = false }
 sp-session = { version = "34.0.0", default-features = false }
-sp-std = { version = "14.0.0", default-features = false }
 sp-timestamp = "33.0.0"
 sp-transaction-pool = { version = "33.0.0", default-features = false }
 sp-version = { version = "36.0.0", default-features = false }
