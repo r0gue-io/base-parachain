@@ -31,6 +31,8 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
+extern crate alloc;
+
 pub mod apis;
 #[cfg(feature = "runtime-benchmarks")]
 mod benchmarks;
@@ -44,10 +46,6 @@ use sp_runtime::{
     MultiSignature,
 };
 
-extern crate alloc;
-
-use alloc::{vec, vec::Vec};
-use sp_std::prelude::*;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
 use sp_version::RuntimeVersion;
