@@ -44,6 +44,9 @@ use sp_runtime::{
     MultiSignature,
 };
 
+extern crate alloc;
+
+use alloc::{vec, vec::Vec};
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;

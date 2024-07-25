@@ -38,6 +38,7 @@ substrate-wasm-builder = "23.0.0"
 parachain-template-runtime = { path = "./runtime" }
 
 # Substrate
+# Failed here
 frame-benchmarking = { version = "35.0.0", default-features = false }
 frame-benchmarking-cli = "39.0.0"
 frame-executive = { version = "35.0.0", default-features = false }
@@ -63,7 +64,9 @@ sc-client-api = "35.0.0"
 sc-offchain = "36.0.0"
 sc-consensus = "0.40.0"
 sc-executor = "0.39.0"
+# Failed here
 sc-network = "0.41.0"
+# Failed here
 sc-network-sync = "0.40.0"
 sc-rpc = "36.0.0"
 sc-service = "0.42.0"
