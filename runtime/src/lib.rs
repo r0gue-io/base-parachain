@@ -33,6 +33,8 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 extern crate alloc;
 
+use alloc::{boxed::Box, vec::Vec};
+
 pub mod apis;
 #[cfg(feature = "runtime-benchmarks")]
 mod benchmarks;

@@ -26,6 +26,7 @@
 use alloc::vec::Vec;
 
 // External crates imports
+use alloc::vec::Vec;
 use frame_support::{
     genesis_builder_helper::{build_state, get_preset},
     weights::Weight,

@@ -2,6 +2,8 @@
 
 #![warn(missing_docs)]
 
+extern crate alloc;
+
 mod chain_spec;
 mod cli;
 mod command;
