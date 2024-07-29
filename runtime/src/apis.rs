@@ -23,7 +23,7 @@
 //
 // For more information, please refer to <http://unlicense.org>
 
-use alloc::vec::Vec;
+extern crate alloc;
 
 // External crates imports
 use alloc::vec::Vec;
