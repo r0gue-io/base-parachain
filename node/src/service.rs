@@ -422,7 +422,7 @@ async fn start_node_impl<Network: sc_network::NetworkBackend<Block, Hash>>(
 }
 
 /// Start a node with the given parachain `Configuration` and relay chain `Configuration`.
-pub async fn start_parachain_node<Network: sc_network::NetworkBackend<Block, Hash>>(
+pub async fn start_parachain_node(
     parachain_config: Configuration,
     polkadot_config: Configuration,
     collator_options: CollatorOptions,
