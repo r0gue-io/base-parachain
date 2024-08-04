@@ -23,8 +23,6 @@
 //
 // For more information, please refer to <http://unlicense.org>
 
-extern crate alloc;
-
 frame_benchmarking::define_benchmarks!(
     // Only benchmark the following pallets
     [frame_system, SystemBench::<Runtime>]
