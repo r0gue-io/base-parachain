@@ -10494,9 +10494,9 @@ dependencies = [
 
 [[package]]
 name = "sc-client-api"
-version = "35.1.0"
+version = "35.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1bb517f4418644aeefd7c29bbe34bfc56ba8b5ea56e0b661a48a4d4d6afef40b"
+checksum = "5b1c4e71765e679439a7e5af3f92ad4ebdccc36c02ef485de604bb3dc5d98267"
 dependencies = [
  "fnv",
  "futures",
@@ -12692,9 +12692,9 @@ dependencies = [
 
 [[package]]
 name = "sp-runtime"
-version = "38.0.1"
+version = "38.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5273900f0b0bef48b2e1ff9c4fb5e188b8168ee5891418a427f4be2af92ee40f"
+checksum = "89ef409c414546b655ec1e94aaea178e4a97e21284a91b24c762aebf836d3b49"
 dependencies = [
  "docify",
  "either",
@@ -12714,7 +12714,6 @@ dependencies = [
  "sp-io",
  "sp-std",
  "sp-weights",
- "tracing",
 ]
 
 [[package]]

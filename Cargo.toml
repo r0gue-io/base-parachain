@@ -59,7 +59,7 @@ pallet-transaction-payment-rpc-runtime-api = { version = "35.0.0", default-featu
 sc-basic-authorship = "0.41.0"
 sc-chain-spec = "34.0.0"
 sc-cli = "0.43.0"
-sc-client-api = "35.0.0"
+sc-client-api = "=35.0.0"
 sc-offchain = "36.0.0"
 sc-consensus = "0.40.0"
 sc-executor = "0.39.0"
@@ -82,7 +82,7 @@ sp-genesis-builder = { version = "0.14.0", default-features = false }
 sp-inherents = { version = "33.0.0", default-features = false }
 sp-keystore = "0.40.0"
 sp-offchain = { version = "33.0.0", default-features = false }
-sp-runtime = { version = "38.0.0", default-features = false }
+sp-runtime = { version = "=38.0.0", default-features = false }
 sp-session = { version = "34.0.0", default-features = false }
 sp-std = { version = "14.0.0", default-features = false }
 sp-timestamp = "33.0.0"

@@ -31,8 +31,6 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
-use alloc::{boxed::Box, vec::Vec};
-
 pub mod apis;
 #[cfg(feature = "runtime-benchmarks")]
 mod benchmarks;
