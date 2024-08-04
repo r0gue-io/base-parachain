@@ -23,10 +23,7 @@
 //
 // For more information, please refer to <http://unlicense.org>
 
-extern crate alloc;
-
 // External crates imports
-use alloc::vec::Vec;
 use frame_support::{
     genesis_builder_helper::{build_state, get_preset},
     weights::Weight,
@@ -40,6 +37,7 @@ use sp_runtime::{
     transaction_validity::{TransactionSource, TransactionValidity},
     ApplyExtrinsicResult,
 };
+use sp_std::prelude::Vec;
 use sp_version::RuntimeVersion;
 
 // Local module imports

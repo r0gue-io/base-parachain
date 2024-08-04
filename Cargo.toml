@@ -84,6 +84,7 @@ sp-keystore = "0.40.0"
 sp-offchain = { version = "33.0.0", default-features = false }
 sp-runtime = { version = "38.0.0", default-features = false }
 sp-session = { version = "34.0.0", default-features = false }
+sp-std = { version = "14.0.0", default-features = false }
 sp-timestamp = "33.0.0"
 sp-transaction-pool = { version = "33.0.0", default-features = false }
 sp-version = { version = "36.0.0", default-features = false }
