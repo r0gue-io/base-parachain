@@ -238,8 +238,9 @@ fn start_consensus(
     Ok(())
 }
 
+/// Start a node with the given parachain `Configuration` and relay chain `Configuration`.
 #[sc_tracing::logging::prefix_logs_with("Parachain")]
-async fn start_node_impl<Network: sc_network::NetworkBackend<Block, Hash>>(
+pub async fn start_parachain_node(
     parachain_config: Configuration,
     polkadot_config: Configuration,
     collator_options: CollatorOptions,
@@ -250,9 +251,11 @@ async fn start_node_impl<Network: sc_network::NetworkBackend<Block, Hash>>(
 
     let params = new_partial(&parachain_config)?;
     let (block_import, mut telemetry, telemetry_worker_handle) = params.other;
-    let net_config = sc_network::config::FullNetworkConfiguration::<Block, Hash, Network>::new(
-        &parachain_config.network,
-    );
+    let net_config = sc_network::config::FullNetworkConfiguration::<
+        _,
+        _,
+        sc_network::NetworkWorker<Block, Hash>,
+    >::new(&parachain_config.network);
 
     let client = params.client.clone();
     let backend = params.backend.clone();
@@ -419,36 +422,4 @@ async fn start_node_impl<Network: sc_network::NetworkBackend<Block, Hash>>(
     start_network.start_network();
 
     Ok((task_manager, client))
-}
-
-/// Start a node with the given parachain `Configuration` and relay chain `Configuration`.
-pub async fn start_parachain_node(
-    parachain_config: Configuration,
-    polkadot_config: Configuration,
-    collator_options: CollatorOptions,
-    para_id: ParaId,
-    hwbench: Option<sc_sysinfo::HwBench>,
-) -> sc_service::error::Result<(TaskManager, Arc<ParachainClient>)> {
-    match polkadot_config.network.network_backend {
-        sc_network::config::NetworkBackendType::Libp2p => {
-            start_node_impl::<sc_network::NetworkWorker<_, _>>(
-                parachain_config,
-                polkadot_config,
-                collator_options,
-                para_id,
-                hwbench,
-            )
-            .await
-        }
-        sc_network::config::NetworkBackendType::Litep2p => {
-            start_node_impl::<sc_network::Litep2pNetworkBackend>(
-                parachain_config,
-                polkadot_config,
-                collator_options,
-                para_id,
-                hwbench,
-            )
-            .await
-        }
-    }
 }
