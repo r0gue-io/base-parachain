@@ -22,11 +22,11 @@ hex-literal.workspace = true
 log.workspace = true
 scale-info.workspace = true
 smallvec.workspace = true
+docify.workspace = true
 
 # Substrate
 frame-benchmarking = { optional = true, workspace = true }
 frame-executive.workspace = true
-frame-metadata-hash-extension.workspace = true
 frame-support.workspace = true
 frame-system.workspace = true
 frame-system-benchmarking = { optional = true, workspace = true }
@@ -83,25 +83,24 @@ parachain-info.workspace = true
 [features]
 default = ["std"]
 std = [
-	"codec/std",
-	"cumulus-pallet-aura-ext/std",
-	"cumulus-pallet-parachain-system/std",
-	"cumulus-pallet-session-benchmarking/std",
-	"cumulus-pallet-xcm/std",
-	"cumulus-pallet-xcmp-queue/std",
-	"cumulus-primitives-aura/std",
-	"cumulus-primitives-core/std",
-	"cumulus-primitives-storage-weight-reclaim/std",
-	"cumulus-primitives-utility/std",
-	"frame-benchmarking/std",
-	"frame-executive/std",
-	"frame-metadata-hash-extension/std",
-	"frame-support/std",
-	"frame-system-benchmarking/std",
-	"frame-system-rpc-runtime-api/std",
-	"frame-system/std",
-	"frame-try-runtime/std",
-	"log/std",
+    "codec/std",
+    "cumulus-pallet-aura-ext/std",
+    "cumulus-pallet-parachain-system/std",
+    "cumulus-pallet-session-benchmarking/std",
+    "cumulus-pallet-xcm/std",
+    "cumulus-pallet-xcmp-queue/std",
+    "cumulus-primitives-aura/std",
+    "cumulus-primitives-core/std",
+    "cumulus-primitives-storage-weight-reclaim/std",
+    "cumulus-primitives-utility/std",
+    "frame-benchmarking/std",
+    "frame-executive/std",
+    "frame-support/std",
+    "frame-system-benchmarking/std",
+    "frame-system-rpc-runtime-api/std",
+    "frame-system/std",
+    "frame-try-runtime/std",
+    "log/std",
 	"pallet-assets/std",
 	"pallet-aura/std",
 	"pallet-authorship/std",
@@ -111,32 +110,32 @@ std = [
 	"pallet-nfts/std",
 	"pallet-nfts-runtime-api/std",
 	"pallet-nft-fractionalization/std",
-	"pallet-session/std",
-	"pallet-sudo/std",
-	"pallet-timestamp/std",
-	"pallet-transaction-payment-rpc-runtime-api/std",
-	"pallet-transaction-payment/std",
-	"pallet-xcm/std",
-	"parachain-info/std",
-	"parachains-common/std",
-	"polkadot-parachain-primitives/std",
-	"polkadot-runtime-common/std",
-	"scale-info/std",
-	"sp-api/std",
-	"sp-block-builder/std",
-	"sp-consensus-aura/std",
-	"sp-core/std",
-	"sp-genesis-builder/std",
-	"sp-inherents/std",
-	"sp-offchain/std",
-	"sp-runtime/std",
-	"sp-session/std",
-	"sp-std/std",
-	"sp-transaction-pool/std",
-	"sp-version/std",
-	"xcm-builder/std",
-	"xcm-executor/std",
-	"xcm/std",
+    "pallet-session/std",
+    "pallet-sudo/std",
+    "pallet-timestamp/std",
+    "pallet-transaction-payment-rpc-runtime-api/std",
+    "pallet-transaction-payment/std",
+    "pallet-xcm/std",
+    "parachain-info/std",
+    "parachains-common/std",
+    "polkadot-parachain-primitives/std",
+    "polkadot-runtime-common/std",
+    "scale-info/std",
+    "sp-api/std",
+    "sp-block-builder/std",
+    "sp-consensus-aura/std",
+    "sp-core/std",
+    "sp-genesis-builder/std",
+    "sp-inherents/std",
+    "sp-offchain/std",
+    "sp-runtime/std",
+    "sp-session/std",
+    "sp-std/std",
+    "sp-transaction-pool/std",
+    "sp-version/std",
+    "xcm-builder/std",
+    "xcm-executor/std",
+    "xcm/std",
 ]
 
 runtime-benchmarks = [
@@ -192,16 +191,3 @@ try-runtime = [
 	"polkadot-runtime-common/try-runtime",
 	"sp-runtime/try-runtime",
 ]
-
-# Enable the metadata hash generation.
-#
-# This is hidden behind a feature because it increases the compile time.
-# The wasm binary needs to be compiled twice, once to fetch the metadata,
-# generate the metadata hash and then a second time with the
-# `RUNTIME_METADATA_HASH` environment variable set for the `CheckMetadataHash`
-# extension.
-metadata-hash = ["substrate-wasm-builder/metadata-hash"]
-
-# A convenience feature for enabling things when doing a build
-# for an on-chain release.
-on-chain-release-build = ["metadata-hash"]
