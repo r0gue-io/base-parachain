@@ -92,7 +92,7 @@ substrate-frame-rpc-system = "34.0.0"
 substrate-prometheus-endpoint = "0.17.0"
 
 # Contracts
-pallet-contracts = { version = "32.0.0", default-features = false }
+pallet-contracts = { version = "33.0.0", default-features = false }
 
 # Polkadot
 pallet-xcm = { version = "13.0.0", default-features = false }
