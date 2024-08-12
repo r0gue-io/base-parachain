@@ -6524,9 +6524,9 @@ dependencies = [
 
 [[package]]
 name = "pallet-contracts"
-version = "33.0.0"
+version = "34.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5ca700e816a32739ab9480065a2546181f83e743c93f74b244463dd87b48e5aa"
+checksum = "c30c5fb9fae081c95545017bac69ca78f875fccf3bebfd142e1388bb2251fb66"
 dependencies = [
  "bitflags 1.3.2",
  "environmental",
@@ -6558,9 +6558,9 @@ dependencies = [
 
 [[package]]
 name = "pallet-contracts-proc-macro"
-version = "21.0.0"
+version = "22.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "de0cb1d904c58964cf5015adc7683fb9467b8b7e8f281619aae403f43dc2c48c"
+checksum = "32b5eaf092c699d6a7e4904ccc871868f2cb715ad7e2e4dd72b7ff0720fd203a"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -6569,9 +6569,9 @@ dependencies = [
 
 [[package]]
 name = "pallet-contracts-uapi"
-version = "10.0.1"
+version = "11.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c611f7343efdff673fec3090ab4ed5c32c63f9756f25f666fb453ef33b26bafb"
+checksum = "e1330375dcced95509e3cca7ef6b1c3fac648df995b86d39467d082ba981dc46"
 dependencies = [
  "bitflags 1.3.2",
  "parity-scale-codec",
