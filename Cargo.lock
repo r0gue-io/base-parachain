@@ -6811,9 +6811,9 @@ dependencies = [
 
 [[package]]
 name = "pallet-nft-fractionalization"
-version = "16.0.0"
+version = "17.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "9c5d6354e983ac14f96de5fce89f0adaaccf33d51ddb88842b2d4baafe045fe9"
+checksum = "a37b1df43074592e190bc0a9ba443e7520e07db10de8c09aa73b22197a56d77a"
 dependencies = [
  "frame-benchmarking",
  "frame-support",
@@ -6829,9 +6829,9 @@ dependencies = [
 
 [[package]]
 name = "pallet-nfts"
-version = "28.0.0"
+version = "29.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "be0cdd439ccc9d3e8281dfd2b80cbedfa4ee37f73ccfe2db685d71552fbe71b4"
+checksum = "49c68c96f03ef2dd6c23072f315d6ef3e1b4664795f29aab5962db8cc9062ad3"
 dependencies = [
  "enumflags2",
  "frame-benchmarking",
@@ -6848,9 +6848,9 @@ dependencies = [
 
 [[package]]
 name = "pallet-nfts-runtime-api"
-version = "20.0.0"
+version = "21.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "263d42503a6a337965bebd3f63ee0555812100c913c59dfd2fec2bb49800f195"
+checksum = "f1c2745697dcd469b5d8f37e50b116e48198dd5df4c3a6ea7af98c20c548cc30"
 dependencies = [
  "pallet-nfts",
  "parity-scale-codec",
