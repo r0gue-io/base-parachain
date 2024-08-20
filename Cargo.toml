@@ -90,7 +90,7 @@ sp-timestamp = "33.0.0"
 sp-transaction-pool = { version = "33.0.0", default-features = false }
 sp-version = { version = "36.0.0", default-features = false }
 substrate-frame-rpc-system = "36.0.0"
-substrate-prometheus-endpoint = "0.17.0"
+prometheus-endpoint = { version = "0.17.0", default-features = false, package = "substrate-prometheus-endpoint" }
 
 # Polkadot
 pallet-xcm = { version = "15.0.0", default-features = false }
