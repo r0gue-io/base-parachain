@@ -57,6 +57,7 @@ pallet-timestamp = { version = "35.0.0", default-features = false }
 pallet-transaction-payment = { version = "36.0.0", default-features = false }
 pallet-transaction-payment-rpc = "38.0.0"
 pallet-transaction-payment-rpc-runtime-api = { version = "36.0.0", default-features = false }
+prometheus-endpoint = { version = "0.17.0", default-features = false, package = "substrate-prometheus-endpoint" }
 sc-basic-authorship = "0.42.0"
 sc-chain-spec = "35.0.0"
 sc-cli = "0.44.0"
@@ -90,7 +91,6 @@ sp-timestamp = "33.0.0"
 sp-transaction-pool = { version = "33.0.0", default-features = false }
 sp-version = { version = "36.0.0", default-features = false }
 substrate-frame-rpc-system = "36.0.0"
-prometheus-endpoint = { version = "0.17.0", default-features = false, package = "substrate-prometheus-endpoint" }
 
 # Polkadot
 pallet-xcm = { version = "15.0.0", default-features = false }
