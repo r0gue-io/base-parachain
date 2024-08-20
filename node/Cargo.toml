@@ -32,6 +32,7 @@ parachain-template-runtime.workspace = true
 frame-benchmarking.workspace = true
 frame-benchmarking-cli.workspace = true
 pallet-transaction-payment-rpc.workspace = true
+prometheus-endpoint.workspace = true
 sc-basic-authorship.workspace = true
 sc-chain-spec.workspace = true
 sc-cli.workspace = true
@@ -58,7 +59,6 @@ sp-io.workspace = true
 sp-runtime.workspace = true
 sp-timestamp.workspace = true
 substrate-frame-rpc-system.workspace = true
-substrate-prometheus-endpoint.workspace = true
 
 # Polkadot
 polkadot-cli = { workspace = true, features = ["rococo-native"] }
