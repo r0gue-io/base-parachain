@@ -34,10 +34,7 @@ use frame_support::{
 };
 use frame_system::EnsureRoot;
 use pallet_xcm::XcmPassthrough;
-use parachains_common::{
-    xcm_config::{AllSiblingSystemParachains, RelayOrOtherSystemParachains},
-    TREASURY_PALLET_ID,
-};
+use parachains_common::TREASURY_PALLET_ID;
 use polkadot_parachain_primitives::primitives::Sibling;
 use polkadot_runtime_common::impls::ToAuthor;
 use sp_runtime::traits::AccountIdConversion;
