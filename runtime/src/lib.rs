@@ -322,6 +322,14 @@ mod runtime {
     pub type CumulusXcm = cumulus_pallet_xcm::Pallet<Runtime>;
     #[runtime::pallet_index(33)]
     pub type MessageQueue = pallet_message_queue::Pallet<Runtime>;
+
+    // Assets
+    #[runtime::pallet_index(40)]
+    pub type Nfts = pallet_nfts::Pallet<Runtime>;
+    #[runtime::pallet_index(41)]
+    pub type NftFractionalization = pallet_nft_fractionalization::Pallet<Runtime>;
+    #[runtime::pallet_index(42)]
+    pub type Assets = pallet_assets::Pallet<Runtime, Instance1>;
 }
 
 cumulus_pallet_parachain_system::register_validate_block! {
