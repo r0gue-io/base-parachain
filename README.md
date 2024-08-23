@@ -5,7 +5,11 @@
 <img height="70px" alt="Polkadot SDK Logo" src="https://github.com/paritytech/polkadot-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_White.png#gh-dark-mode-only"/>
 <img height="70px" alt="Polkadot SDK Logo" src="https://github.com/paritytech/polkadot-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_Black.png#gh-light-mode-only"/>
 <br /><br />
-<a href="https://imgbb.com/"><img src="https://i.ibb.co/2grWnSd/R0-GUE-logo.png" alt="R0-GUE-logo" border="0"></a>
+<a href="r0gue.io"><img src="https://avatars.githubusercontent.com/u/149763986?s=200&v=4" alt="R0GUE Logo" /></a>
+
+[![Twitter URL](https://img.shields.io/twitter/follow/Pop?style=social)](https://x.com/onpopio/)
+[![Twitter URL](https://img.shields.io/twitter/follow/R0GUE?style=social)](https://twitter.com/gor0gue)
+[![Telegram](https://img.shields.io/badge/Telegram-gray?logo=telegram)](https://t.me/onpopio)
 
 > This template is used to generate parachains using [Pop CLI](https://github.com/r0gue-io/pop-cli) - an all-in-one tool for Polkadot development.
 
@@ -48,7 +52,7 @@ pop up parachain -f ./network.toml
 ```
 > 👉 https://learn.onpop.io/v/appchains/guides/running-your-parachain
 
-### Learning
+### Learning Resources
 
 * 🧑‍🏫 To learn about Polkadot in general, [Polkadot.network](https://polkadot.network/) website is a good starting point.
 
