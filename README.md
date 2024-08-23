@@ -1,18 +1,68 @@
+<div align="center">
+
 # Base Parachain Template
 
-A new [Cumulus](https://github.com/paritytech/polkadot-sdk/tree/master/cumulus)-based Substrate node. 
+<img height="70px" alt="Polkadot SDK Logo" src="https://github.com/paritytech/polkadot-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_White.png#gh-dark-mode-only"/>
+<img height="70px" alt="Polkadot SDK Logo" src="https://github.com/paritytech/polkadot-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_Black.png#gh-light-mode-only"/>
+<br /><br />
+<a href="https://imgbb.com/"><img src="https://i.ibb.co/2grWnSd/R0-GUE-logo.png" alt="R0-GUE-logo" border="0"></a>
 
-This project is a fork of the
-[Cumulus Parachain Template](https://github.com/paritytech/polkadot-sdk/tree/master/templates/parachain) from the [Polkadot SDK](https://github.com/paritytech/polkadot-sdk). 
+> This template is used to generate parachains using [Pop CLI](https://github.com/r0gue-io/pop-cli) - an all-in-one tool for Polkadot development.
 
-It is used to generate parachains using [Pop CLI](https://github.com/r0gue-io/pop-cli), an all-in-one tool for Polkadot development.
+> It is based on the [Polkadot SDK](https://github.com/paritytech/polkadot-sdk) and is updated by [R0GUE](r0gue.io) after releases in the main [Polkadot SDK monorepo](https://github.com/paritytech/polkadot-sdk).
 
-## Next Steps
+</div>
 
-💥 Learn more about Pop CLI [here](https://learn.onpop.io/pop/v/pop-cli).
+* ⏫ This template provides a starting point to build a [parachain](https://wiki.polkadot.network/docs/learn-parachains).
 
-🚀 Learn about how to run your own parachain testnet using Pop CLI [here](https://learn.onpop.io/pop/v/pop-cli/parachains/running-your-parachain).
+* ☁️ It is based on the
+[Cumulus](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/polkadot_sdk/cumulus/index.html) framework.
 
-👉 Learn more about parachains [here](https://wiki.polkadot.network/docs/learn-parachains).
+* 🔧 Its runtime is configured with a single custom pallet as a starting point, and a handful of ready-made pallets
+such as a [Balances pallet](https://paritytech.github.io/polkadot-sdk/master/pallet_balances/index.html).
 
-🧙 Learn about how to build using this template [here](https://docs.substrate.io/tutorials/).
+## Template Structure
+
+A Polkadot SDK based project such as this one consists of:
+
+* 💿 a [Node](./node/README.md) - the binary application.
+* 🧮 the [Runtime](./runtime/README.md) - the core logic of the parachain.
+* 🎨 the [Pallets](./pallets/README.md) - from which the runtime is constructed.
+
+## Getting Started
+
+#### Install [Pop CLI](https://github.com/r0gue-io/pop-cli) - the all-in-one Polkadot development tool:
+> Detailed installation instructions can be found [here](https://learn.onpop.io/v/cli/installing-pop-cli).
+```
+cargo install --force --locked pop-cli
+```
+
+#### Start a new parachain project with this template:
+```
+pop new parachain
+```
+
+#### Learn how to run your parachain using the `pop up` command:
+```sh
+pop up parachain -f ./network.toml
+```
+> 👉 https://learn.onpop.io/v/appchains/guides/running-your-parachain
+
+### Learning
+
+* 🧑‍🏫 To learn about Polkadot in general, [Polkadot.network](https://polkadot.network/) website is a good starting point.
+
+  * ⭕ Learn more about parachains [here](https://wiki.polkadot.network/docs/learn-parachains).
+
+* 🧑‍🔧 For technical introduction, [here](https://github.com/paritytech/polkadot-sdk#-documentation) are
+the Polkadot SDK documentation resources.
+
+* 📖 To learn how to develop parachains with Pop CLI, read the [guides](https://learn.onpop.io/v/appchains).
+
+### Support
+
+* 💡 Be part of our passionate community of Web3 pioneers. [Join our Telegram](https://t.me/onpopio)!
+
+* 👥 Additionally, there are [GitHub issues](https://github.com/r0gue-io/base-parachain/issues) and
+[Polkadot Stack Exchange](https://polkadot.stackexchange.com/).
+
