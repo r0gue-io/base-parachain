@@ -31,7 +31,7 @@ A Polkadot SDK based project such as this one consists of:
 
 * 💿 [Node](./node/README.md) - the binary application.
 * 🧮 [Runtime](./runtime/README.md) - the core logic of the parachain.
-* 🎨 the [Pallets](./pallets/README.md) - from which the runtime is constructed.
+* 🎨 [Pallets](./pallets/README.md) - from which the runtime is constructed.
 
 ## Getting Started
 
