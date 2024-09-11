@@ -5,7 +5,7 @@
 🔗 It communicates with other nodes in the network, and aims for
 [consensus](https://wiki.polkadot.network/docs/learn-consensus) among them.
 
-⚙️ It acts as a remote procedure call (RPC) server, allowing interaction with the blockchain.
+⚙️ It can act as a remote procedure call (RPC) server, allowing interaction with the blockchain.
 
 👉 Learn more about the architecture, and the difference between a node and a runtime
 [here](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/reference_docs/wasm_meta_protocol/index.html).
