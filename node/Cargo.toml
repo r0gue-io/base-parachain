@@ -77,7 +77,8 @@ cumulus-primitives-parachain-inherent.workspace = true
 cumulus-relay-chain-interface.workspace = true
 
 [features]
-default = []
+default = ["std"]
+std = ["log/std", "xcm/std"]
 runtime-benchmarks = [
     "cumulus-primitives-core/runtime-benchmarks",
     "frame-benchmarking-cli/runtime-benchmarks",
