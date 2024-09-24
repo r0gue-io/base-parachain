@@ -17,57 +17,62 @@
 
 </div>
 
-* ⏫ This template provides a starting point to build an assets [parachain](https://wiki.polkadot.network/docs/learn-parachains).
+- ⏫ This template provides a starting point to build an assets [parachain](https://wiki.polkadot.network/docs/learn-parachains).
 
-* ☁️ It is based on the
-[Cumulus](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/polkadot_sdk/cumulus/index.html) framework.
+- ☁️ It is based on the
+  [Cumulus](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/polkadot_sdk/cumulus/index.html) framework.
 
-* 🔧 Its [runtime](./runtime) is configured with fungible and non-fungilble asset functionalities, including asset fractionalization.
+- 🔧 Its [runtime](./runtime) is configured with fungible and non-fungilble asset functionalities, including asset fractionalization.
 
 ## Template Structure
 
 A Polkadot SDK based project such as this one consists of:
 
-* 💿 [Node](./node/README.md) - the binary application.
-* 🧮 [Runtime](./runtime/README.md) - the core logic of the parachain.
+- 💿 [Node](./node/README.md) - the binary application.
+- 🧮 [Runtime](./runtime/README.md) - the core logic of the parachain.
 
 ## Getting Started
 
 #### Install [Pop CLI](https://github.com/r0gue-io/pop-cli) - the all-in-one Polkadot development tool:
+
 > Detailed installation instructions can be found [here](https://learn.onpop.io/v/cli/installing-pop-cli).
+
 ```
 cargo install --force --locked pop-cli
 ```
 
 #### Start a new parachain project with this template:
+
 ```
 pop new parachain
 ```
+
 > When prompted, select 'Pop' as the template provider and 'Assets' as the type of parachain.
 >
 > More info can be found [here](https://learn.onpop.io/v/appchains/guides/create-a-new-parachain/create-an-assets-parachain).
 
 #### Learn how to run your parachain using the `pop up` command:
+
 ```sh
 pop up parachain -f ./network.toml
 ```
+
 > 👉 https://learn.onpop.io/v/appchains/guides/running-your-parachain
 
 ### Learning Resources
 
-* 🧑‍🏫 To learn about Polkadot in general, [Polkadot.network](https://polkadot.network/) website is a good starting point.
+- 🧑‍🏫 To learn about Polkadot in general, [Polkadot.network](https://polkadot.network/) website is a good starting point.
 
-  * ⭕ Learn more about parachains [here](https://wiki.polkadot.network/docs/learn-parachains).
+  - ⭕ Learn more about parachains [here](https://wiki.polkadot.network/docs/learn-parachains).
 
-* 🧑‍🔧 For technical introduction, [here](https://github.com/paritytech/polkadot-sdk#-documentation) are
-the Polkadot SDK documentation resources.
+- 🧑‍🔧 For technical introduction, [here](https://github.com/paritytech/polkadot-sdk#-documentation) are
+  the Polkadot SDK documentation resources.
 
-* 📖 To learn how to develop parachains with Pop CLI, read the [guides](https://learn.onpop.io/v/appchains).
+- 📖 To learn how to develop parachains with Pop CLI, read the [guides](https://learn.onpop.io/v/appchains).
 
 ### Support
 
-* 💡 Be part of our passionate community of Web3 pioneers. [Join our Telegram](https://t.me/onpopio)!
+- 💡 Be part of our passionate community of Web3 pioneers. [Join our Telegram](https://t.me/onpopio)!
 
-* 👥 Additionally, there are [GitHub issues](https://github.com/r0gue-io/base-parachain/issues) and
-[Polkadot Stack Exchange](https://polkadot.stackexchange.com/).
-
+- 👥 Additionally, there are [GitHub issues](https://github.com/r0gue-io/base-parachain/issues) and
+  [Polkadot Stack Exchange](https://polkadot.stackexchange.com/).
