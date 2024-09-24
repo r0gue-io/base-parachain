@@ -42,7 +42,7 @@ frame-benchmarking = { version = "37.0.0", default-features = false }
 frame-benchmarking-cli = "42.0.0"
 frame-executive = { version = "37.0.0", default-features = false }
 frame-support = { version = "37.0.0", default-features = false }
-frame-support-procedural = { vesion = "30.0.2", default-features = false }
+frame-support-procedural = { version = "30.0.2", default-features = false }
 frame-system = { version = "37.1.0", default-features = false }
 frame-system-benchmarking = { version = "37.0.0", default-features = false }
 frame-system-rpc-runtime-api = { version = "34.0.0", default-features = false }
