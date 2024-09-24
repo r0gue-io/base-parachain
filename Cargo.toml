@@ -42,23 +42,23 @@ frame-benchmarking = { version = "37.0.0", default-features = false }
 frame-benchmarking-cli = "42.0.0"
 frame-executive = { version = "37.0.0", default-features = false }
 frame-support = { version = "37.0.0", default-features = false }
-frame-support-procedural = { vesion = "30.0.2", default-features = false }
+frame-support-procedural = { version = "30.0.2", default-features = false }
 frame-system = { version = "37.1.0", default-features = false }
 frame-system-benchmarking = { version = "37.0.0", default-features = false }
 frame-system-rpc-runtime-api = { version = "34.0.0", default-features = false }
 frame-try-runtime = { version = "0.43.0", default-features = false }
 frame-metadata-hash-extension = { version = "0.5.0", default-features = false }
-pallet-assets = { version = "37.0.0", default-features = false }
+pallet-assets = { version = "39.0.0", default-features = false }
 pallet-aura = { version = "36.0.0", default-features = false }
 pallet-authorship = { version = "37.0.0", default-features = false }
 pallet-balances = { version = "38.0.0", default-features = false }
 pallet-message-queue = { version = "40.0.0", default-features = false }
-pallet-nfts = { version = "30.0.0", default-features = false }
-pallet-nfts-runtime-api = { version = "22.0.0", default-features = false }
-pallet-nft-fractionalization = { version = "18.0.0", default-features = false }
+pallet-nfts = { version = "31.0.0", default-features = false }
+pallet-nfts-runtime-api = { version = "23.0.0", default-features = false }
+pallet-nft-fractionalization = { version = "20.0.0", default-features = false }
 pallet-session = { version = "37.0.0", default-features = false }
 pallet-sudo = { version = "37.0.0", default-features = false }
-pallet-timestamp = { version = "36.0.0", default-features = false }
+pallet-timestamp = { version = "36.0.1", default-features = false }
 pallet-transaction-payment = { version = "37.0.0", default-features = false }
 pallet-transaction-payment-rpc = "40.0.0"
 pallet-transaction-payment-rpc-runtime-api = { version = "37.0.0", default-features = false }
@@ -110,7 +110,7 @@ xcm-executor = { version = "16.0.0", package = "staging-xcm-executor", default-f
 # Cumulus
 cumulus-client-cli = "0.17.0"
 cumulus-client-collator = "0.17.0"
-cumulus-client-consensus-aura = "0.17.0"
+cumulus-client-consensus-aura = "0.17.1"
 cumulus-client-consensus-common = "0.17.0"
 cumulus-client-consensus-proposer = "0.15.0"
 cumulus-client-service = "0.17.0"
