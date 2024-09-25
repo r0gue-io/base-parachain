@@ -54,7 +54,7 @@ pallet-balances = { version = "38.0.0", default-features = false }
 pallet-message-queue = { version = "40.0.0", default-features = false }
 pallet-session = { version = "37.0.0", default-features = false }
 pallet-sudo = { version = "37.0.0", default-features = false }
-pallet-timestamp = { version = "36.0.0", default-features = false }
+pallet-timestamp = { version = "36.0.1", default-features = false }
 pallet-transaction-payment = { version = "37.0.0", default-features = false }
 pallet-transaction-payment-rpc = "40.0.0"
 pallet-transaction-payment-rpc-runtime-api = { version = "37.0.0", default-features = false }
@@ -94,7 +94,7 @@ sp-version = { version = "37.0.0", default-features = false }
 substrate-frame-rpc-system = "38.0.0"
 
 # Contracts
-pallet-contracts = { version = "35.0.0", default-features = false }
+pallet-contracts = { version = "37.0.0", default-features = false }
 
 # Polkadot
 pallet-xcm = { version = "16.0.0", default-features = false }
@@ -109,7 +109,7 @@ xcm-executor = { version = "16.0.0", package = "staging-xcm-executor", default-f
 # Cumulus
 cumulus-client-cli = "0.17.0"
 cumulus-client-collator = "0.17.0"
-cumulus-client-consensus-aura = "0.17.0"
+cumulus-client-consensus-aura = "0.17.1"
 cumulus-client-consensus-common = "0.17.0"
 cumulus-client-consensus-proposer = "0.15.0"
 cumulus-client-service = "0.17.0"
