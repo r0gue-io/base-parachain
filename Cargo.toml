@@ -14,15 +14,15 @@ resolver = "2"
 
 [workspace.dependencies]
 clap = { version = "4.5.3", features = ["derive"] }
-codec = { package = "parity-scale-codec", version = "3.0.0", default-features = false, features = [
+codec = { package = "parity-scale-codec", version = "3.6.12", default-features = false, features = [
     "derive",
 ] }
 color-print = "0.3.4"
 docify = "0.2.8"
 futures = "0.3.30"
 hex-literal = "0.4.1"
-jsonrpsee = { version = "0.22", features = ["server"] }
-log = { version = "0.4.20", default-features = false }
+jsonrpsee = { version = "0.23.2", features = ["server"] }
+log = { version = "0.4.21", default-features = false }
 scale-info = { version = "2.11.1", default-features = false, features = [
     "derive",
 ] }
@@ -32,95 +32,95 @@ smallvec = "1.11.2"
 
 # Build
 substrate-build-script-utils = "11.0.0"
-substrate-wasm-builder = "22.0.0"
+substrate-wasm-builder = "24.0.0"
 
 # Local
 parachain-template-runtime = { path = "./runtime" }
 
 # Substrate
-frame-benchmarking = { version = "34.0.0", default-features = false }
-frame-benchmarking-cli = "38.0.0"
-frame-executive = { version = "34.0.0", default-features = false }
-frame-support = { version = "34.0.0", default-features = false }
-frame-system = { version = "34.0.1", default-features = false }
-frame-system-benchmarking = { version = "34.0.0", default-features = false }
-frame-system-rpc-runtime-api = { version = "32.0.0", default-features = false }
-frame-try-runtime = { version = "0.40.0", default-features = false }
-pallet-aura = { version = "33.0.0", default-features = false }
-pallet-authorship = { version = "34.0.0", default-features = false }
-pallet-balances = { version = "35.0.0", default-features = false }
-pallet-message-queue = { version = "37.0.0", default-features = false }
-pallet-session = { version = "34.0.0", default-features = false }
-pallet-sudo = { version = "34.0.0", default-features = false }
-pallet-timestamp = { version = "33.0.0", default-features = false }
-pallet-transaction-payment = { version = "34.0.0", default-features = false }
-pallet-transaction-payment-rpc = "36.0.0"
-pallet-transaction-payment-rpc-runtime-api = { version = "34.0.0", default-features = false }
-sc-basic-authorship = "0.40.0"
-sc-chain-spec = "33.0.0"
-sc-cli = "0.42.0"
-sc-client-api = "34.0.0"
-sc-offchain = "35.0.0"
-sc-consensus = "0.39.1"
-sc-executor = "0.38.0"
-sc-network = "0.40.0"
-sc-network-sync = "0.39.0"
-sc-rpc = "35.0.0"
-sc-service = "0.41.0"
-sc-sysinfo = "33.0.0"
-sc-telemetry = "20.0.0"
-sc-tracing = "34.0.0"
-sc-transaction-pool = "34.0.0"
-sc-transaction-pool-api = "34.0.0"
-sp-api = { version = "32.0.0", default-features = false }
-sp-block-builder = { version = "32.0.0", default-features = false }
-sp-blockchain = "34.0.0"
-sp-consensus-aura = { version = "0.38.0", default-features = false }
-sp-core = { version = "33.0.1", default-features = false }
-sp-io = { version = "36.0.0", default-features = false }
-sp-genesis-builder = { version = "0.13.0", default-features = false }
-sp-inherents = { version = "32.0.0", default-features = false }
-sp-keystore = "0.39.0"
-sp-offchain = { version = "32.0.0", default-features = false }
-sp-runtime = { version = "37.0.0", default-features = false }
-sp-session = { version = "33.0.0", default-features = false }
+frame-benchmarking = { version = "37.0.0", default-features = false }
+frame-benchmarking-cli = "42.0.0"
+frame-executive = { version = "37.0.0", default-features = false }
+frame-support = { version = "37.0.0", default-features = false }
+frame-support-procedural = { version = "30.0.2", default-features = false }
+frame-system = { version = "37.1.0", default-features = false }
+frame-system-benchmarking = { version = "37.0.0", default-features = false }
+frame-system-rpc-runtime-api = { version = "34.0.0", default-features = false }
+frame-try-runtime = { version = "0.43.0", default-features = false }
+frame-metadata-hash-extension = { version = "0.5.0", default-features = false }
+pallet-aura = { version = "36.0.0", default-features = false }
+pallet-authorship = { version = "37.0.0", default-features = false }
+pallet-balances = { version = "38.0.0", default-features = false }
+pallet-message-queue = { version = "40.0.0", default-features = false }
+pallet-session = { version = "37.0.0", default-features = false }
+pallet-sudo = { version = "37.0.0", default-features = false }
+pallet-timestamp = { version = "36.0.0", default-features = false }
+pallet-transaction-payment = { version = "37.0.0", default-features = false }
+pallet-transaction-payment-rpc = "40.0.0"
+pallet-transaction-payment-rpc-runtime-api = { version = "37.0.0", default-features = false }
+prometheus-endpoint = { version = "0.17.0", default-features = false, package = "substrate-prometheus-endpoint" }
+sc-basic-authorship = "0.44.0"
+sc-chain-spec = "37.0.0"
+sc-cli = "0.46.0"
+sc-client-api = "37.0.0"
+sc-offchain = "39.0.0"
+sc-consensus = "0.43.0"
+sc-executor = "0.40.0"
+sc-network = "0.44.0"
+sc-network-sync = "0.43.0"
+sc-rpc = "39.0.0"
+sc-service = "0.45.0"
+sc-sysinfo = "37.0.0"
+sc-telemetry = "24.0.0"
+sc-tracing = "37.0.0"
+sc-transaction-pool = "37.0.0"
+sc-transaction-pool-api = "37.0.0"
+sp-api = { version = "34.0.0", default-features = false }
+sp-block-builder = { version = "34.0.0", default-features = false }
+sp-blockchain = "37.0.1"
+sp-consensus-aura = { version = "0.40.0", default-features = false }
+sp-core = { version = "34.0.0", default-features = false }
+sp-io = { version = "38.0.0", default-features = false }
+sp-genesis-builder = { version = "0.15.0", default-features = false }
+sp-inherents = { version = "34.0.0", default-features = false }
+sp-keystore = "0.40.0"
+sp-offchain = { version = "34.0.0", default-features = false }
+sp-runtime = { version = "39.0.0", default-features = false }
+sp-session = { version = "35.0.0", default-features = false }
 sp-std = { version = "14.0.0", default-features = false }
-sp-timestamp = "32.0.0"
-sp-transaction-pool = { version = "32.0.0", default-features = false }
-sp-version = { version = "35.0.0", default-features = false }
-substrate-frame-rpc-system = "34.0.0"
-substrate-prometheus-endpoint = "0.17.0"
+sp-timestamp = "34.0.0"
+sp-transaction-pool = { version = "34.0.0", default-features = false }
+sp-version = { version = "37.0.0", default-features = false }
+substrate-frame-rpc-system = "38.0.0"
 
 # Polkadot
-pallet-xcm = { version = "13.0.0", default-features = false }
-polkadot-cli = "13.0.0"
-polkadot-parachain-primitives = { version = "12.0.0", default-features = false }
-polkadot-primitives = "13.0.0"
-polkadot-runtime-common = { version = "13.0.0", default-features = false }
-xcm = { version = "13.0.1", package = "staging-xcm", default-features = false }
-xcm-builder = { version = "13.0.0", package = "staging-xcm-builder", default-features = false }
-xcm-executor = { version = "13.0.0", package = "staging-xcm-executor", default-features = false }
+pallet-xcm = { version = "16.0.0", default-features = false }
+polkadot-cli = "17.0.0"
+polkadot-parachain-primitives = { version = "14.0.0", default-features = false }
+polkadot-primitives = "15.0.0"
+polkadot-runtime-common = { version = "16.0.0", default-features = false }
+xcm = { version = "14.1.0", package = "staging-xcm", default-features = false }
+xcm-builder = { version = "16.0.0", package = "staging-xcm-builder", default-features = false }
+xcm-executor = { version = "16.0.0", package = "staging-xcm-executor", default-features = false }
 
 # Cumulus
-cumulus-client-cli = "0.13.0"
-cumulus-client-collator = "0.13.0"
-cumulus-client-consensus-aura = "0.13.0"
-cumulus-client-consensus-common = "0.13.0"
-cumulus-client-consensus-proposer = "0.13.0"
-cumulus-client-service = "0.13.0"
-cumulus-pallet-aura-ext = { version = "0.13.0", default-features = false }
-cumulus-pallet-parachain-system = { version = "0.13.0", default-features = false, features = [
-    "parameterized-consensus-hook",
-] }
-cumulus-pallet-session-benchmarking = { version = "15.0.0", default-features = false }
-cumulus-pallet-xcm = { version = "0.13.0", default-features = false }
-cumulus-pallet-xcmp-queue = { version = "0.13.0", default-features = false }
-cumulus-primitives-aura = { version = "0.13.0", default-features = false }
-cumulus-primitives-core = { version = "0.13.0", default-features = false }
-cumulus-primitives-parachain-inherent = "0.13.0"
-cumulus-primitives-storage-weight-reclaim = { version = "4.0.0", default-features = false }
-cumulus-primitives-utility = { version = "0.13.0", default-features = false }
-cumulus-relay-chain-interface = "0.13.0"
-pallet-collator-selection = { version = "15.0.0", default-features = false }
-parachains-common = { version = "13.0.0", default-features = false }
-parachain-info = { version = "0.13.0", package = "staging-parachain-info", default-features = false }
+cumulus-client-cli = "0.17.0"
+cumulus-client-collator = "0.17.0"
+cumulus-client-consensus-aura = "0.17.0"
+cumulus-client-consensus-common = "0.17.0"
+cumulus-client-consensus-proposer = "0.15.0"
+cumulus-client-service = "0.17.0"
+cumulus-pallet-aura-ext = { version = "0.16.0", default-features = false }
+cumulus-pallet-parachain-system = { version = "0.16.0", default-features = false }
+cumulus-pallet-session-benchmarking = { version = "18.0.0", default-features = false }
+cumulus-pallet-xcm = { version = "0.16.0", default-features = false }
+cumulus-pallet-xcmp-queue = { version = "0.16.0", default-features = false }
+cumulus-primitives-aura = { version = "0.15.0", default-features = false }
+cumulus-primitives-core = { version = "0.15.0", default-features = false }
+cumulus-primitives-parachain-inherent = "0.15.0"
+cumulus-primitives-storage-weight-reclaim = { version = "7.0.1", default-features = false }
+cumulus-primitives-utility = { version = "0.16.0", default-features = false }
+cumulus-relay-chain-interface = "0.17.0"
+pallet-collator-selection = { version = "18.0.0", default-features = false }
+parachains-common = { version = "17.0.0", default-features = false }
+parachain-info = { version = "0.16.0", package = "staging-parachain-info", default-features = false }
