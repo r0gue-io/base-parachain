@@ -20,7 +20,7 @@
 * ⏫ This template provides a starting point to build an assets [parachain](https://wiki.polkadot.network/docs/learn-parachains).
 
 * ☁️ It is based on the
-[Cumulus](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/polkadot_sdk/cumulus/index.html) framework.
+  [Cumulus](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/polkadot_sdk/cumulus/index.html) framework.
 
 * 🔧 Its [runtime](./runtime) is configured with fungible and non-fungilble asset functionalities, including asset fractionalization.
 
@@ -60,7 +60,7 @@ pop up parachain -f ./network.toml
   * ⭕ Learn more about parachains [here](https://wiki.polkadot.network/docs/learn-parachains).
 
 * 🧑‍🔧 For technical introduction, [here](https://github.com/paritytech/polkadot-sdk#-documentation) are
-the Polkadot SDK documentation resources.
+  the Polkadot SDK documentation resources.
 
 * 📖 To learn how to develop parachains with Pop CLI, read the [guides](https://learn.onpop.io/v/appchains).
 
@@ -69,5 +69,4 @@ the Polkadot SDK documentation resources.
 * 💡 Be part of our passionate community of Web3 pioneers. [Join our Telegram](https://t.me/onpopio)!
 
 * 👥 Additionally, there are [GitHub issues](https://github.com/r0gue-io/base-parachain/issues) and
-[Polkadot Stack Exchange](https://polkadot.stackexchange.com/).
-
+  [Polkadot Stack Exchange](https://polkadot.stackexchange.com/).
