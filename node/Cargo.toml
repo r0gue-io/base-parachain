@@ -54,6 +54,8 @@ sp-block-builder.workspace = true
 sp-blockchain.workspace = true
 sp-consensus-aura.workspace = true
 sp-core.workspace = true
+sp-genesis-builder.workspace = true
+sp-genesis-builder.default-features = true
 sp-keystore.workspace = true
 sp-io.workspace = true
 sp-runtime.workspace = true
@@ -78,19 +80,19 @@ cumulus-relay-chain-interface.workspace = true
 
 [features]
 default = ["std"]
-std = ["log/std", "xcm/std"]
+std = ["xcm/std"]
 runtime-benchmarks = [
-    "cumulus-primitives-core/runtime-benchmarks",
-    "frame-benchmarking-cli/runtime-benchmarks",
-    "frame-benchmarking/runtime-benchmarks",
-    "parachain-template-runtime/runtime-benchmarks",
-    "polkadot-cli/runtime-benchmarks",
-    "polkadot-primitives/runtime-benchmarks",
-    "sc-service/runtime-benchmarks",
-    "sp-runtime/runtime-benchmarks",
+  "cumulus-primitives-core/runtime-benchmarks",
+  "frame-benchmarking-cli/runtime-benchmarks",
+  "frame-benchmarking/runtime-benchmarks",
+  "parachain-template-runtime/runtime-benchmarks",
+  "polkadot-cli/runtime-benchmarks",
+  "polkadot-primitives/runtime-benchmarks",
+  "sc-service/runtime-benchmarks",
+  "sp-runtime/runtime-benchmarks",
 ]
 try-runtime = [
-    "parachain-template-runtime/try-runtime",
-    "polkadot-cli/try-runtime",
-    "sp-runtime/try-runtime",
+  "parachain-template-runtime/try-runtime",
+  "polkadot-cli/try-runtime",
+  "sp-runtime/try-runtime",
 ]
