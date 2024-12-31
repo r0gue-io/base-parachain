@@ -97,7 +97,7 @@ fn local_testnet_genesis() -> Value {
             get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
         ],
         get_account_id_from_seed::<sr25519::Public>("Alice"),
-        1000.into(),
+        2000.into(),
     )
 }
 
@@ -129,7 +129,7 @@ fn development_config_genesis() -> Value {
             get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
         ],
         get_account_id_from_seed::<sr25519::Public>("Alice"),
-        1000.into(),
+        2000.into(),
     )
 }
 
