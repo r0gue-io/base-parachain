@@ -96,6 +96,9 @@ substrate-frame-rpc-system = "39.0.0"
 # Contracts
 pallet-contracts = { version = "38.0.0", default-features = false }
 
+# Revive
+pallet-revive = { version = "0.2.0", default-features = false }
+
 # Polkadot
 pallet-xcm = { version = "17.0.1", default-features = false }
 polkadot-cli = "19.0.0"
