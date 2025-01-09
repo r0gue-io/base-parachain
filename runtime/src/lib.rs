@@ -34,8 +34,11 @@ include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 pub mod apis;
 #[cfg(feature = "runtime-benchmarks")]
 mod benchmarks;
-mod configs;
+pub mod configs;
+mod genesis_config_presets;
 mod weights;
+
+extern crate alloc;
 
 use smallvec::smallvec;
 use sp_runtime::{
@@ -53,6 +56,7 @@ use frame_support::weights::{
     constants::WEIGHT_REF_TIME_PER_SECOND, Weight, WeightToFeeCoefficient, WeightToFeeCoefficients,
     WeightToFeePolynomial,
 };
+pub use pallet_balances::Call as BalancesCall;
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 pub use sp_runtime::{MultiAddress, Perbill, Permill};
 
@@ -247,12 +251,14 @@ const BLOCK_PROCESSING_VELOCITY: u32 = 1;
 /// Relay chain slot duration, in milliseconds.
 const RELAY_CHAIN_SLOT_DURATION_MILLIS: u32 = 6000;
 
-// Prints debug output of the `contracts` pallet to stdout if the node is
-// started with `-lruntime::contracts=debug`.
+// Prints debug output of the `revive` or `contracts` pallet to stdout if the node is
+// started with `-lruntime::revive=trace` or `-lruntime::contracts=debug`, respectively.
 const CONTRACTS_DEBUG_OUTPUT: pallet_contracts::DebugInfo =
     pallet_contracts::DebugInfo::UnsafeDebug;
 const CONTRACTS_EVENTS: pallet_contracts::CollectEvents =
     pallet_contracts::CollectEvents::UnsafeCollect;
+const REVIVE_DEBUG_OUTPUT: pallet_revive::DebugInfo = pallet_revive::DebugInfo::UnsafeDebug;
+const REVIVE_EVENTS: pallet_revive::CollectEvents = pallet_revive::CollectEvents::UnsafeCollect;
 /// Aura consensus hook
 type ConsensusHook = cumulus_pallet_aura_ext::FixedVelocityConsensusHook<
     Runtime,
@@ -332,6 +338,10 @@ mod runtime {
     // Contracts
     #[runtime::pallet_index(40)]
     pub type Contracts = pallet_contracts::Pallet<Runtime>;
+
+    // Revive
+    #[runtime::pallet_index(41)]
+    pub type Revive = pallet_revive::Pallet<Runtime>;
 }
 
 cumulus_pallet_parachain_system::register_validate_block! {
