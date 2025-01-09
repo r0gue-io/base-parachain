@@ -22,7 +22,7 @@
 * ☁️ It is based on the
 [Cumulus](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/polkadot_sdk/cumulus/index.html) framework.
 
-* 🔧 Its [runtime](./runtime) is configured to support WebAssembly smart contracts.
+* 🔧 Its [runtime](./runtime) is configured to support [WebAssembly smart contracts](https://crates.io/crates/pallet-contracts) and [PolkaVM smart contracts](https://crates.io/crates/pallet-revive).
 
 
 ## Template Structure
@@ -54,6 +54,12 @@ pop up parachain -f ./network.toml
 ```
 > 👉 https://learn.onpop.io/v/appchains/guides/running-your-parachain
 
+#### PolkaVM smart contract development:
+
+- To emulate the Ethereum JSON RPC, a [proxy server](https://github.com/paritytech/polkadot-sdk/tree/master/substrate/frame/revive/rpc) needs to be deployed, allowing users to connect to it instead of directly connecting to the node.
+- Modified version of Remix IDE for the PolkaVM smart contract development: https://github.com/paritytech/revive-remix.
+
+
 ### Learning Resources
 
 * 🧑‍🏫 To learn about Polkadot in general, [Polkadot.network](https://polkadot.network/) website is a good starting point.
@@ -71,4 +77,3 @@ the Polkadot SDK documentation resources.
 
 * 👥 Additionally, there are [GitHub issues](https://github.com/r0gue-io/base-parachain/issues) and
 [Polkadot Stack Exchange](https://polkadot.stackexchange.com/).
-
