@@ -107,11 +107,11 @@ fn development_config_genesis() -> Value {
         vec![
             (
                 get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
-                get_public_from_string_or_panic::<AuraId>("Alice").into(),
+                get_public_from_string_or_panic::<AuraId>("Alice"),
             ),
             (
                 get_public_from_string_or_panic::<sr25519::Public>("Bob").into(),
-                get_public_from_string_or_panic::<AuraId>("Bob").into(),
+                get_public_from_string_or_panic::<AuraId>("Bob"),
             ),
         ],
         vec![
