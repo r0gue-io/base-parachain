@@ -6,7 +6,7 @@ use alloc::{vec, vec::Vec};
 use cumulus_primitives_core::ParaId;
 use parachains_common::AuraId;
 use serde_json::Value;
-use sp_core::{sr25519, crypto::get_public_from_string_or_panic};
+use sp_core::{crypto::get_public_from_string_or_panic, sr25519};
 use sp_genesis_builder::PresetId;
 
 /// The default XCM version to set in genesis config.

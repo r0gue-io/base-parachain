@@ -42,9 +42,9 @@ extern crate alloc;
 
 use smallvec::smallvec;
 use sp_runtime::{
-    Cow, generic, impl_opaque_keys,
+    generic, impl_opaque_keys,
     traits::{BlakeTwo256, IdentifyAccount, Verify},
-    MultiSignature,
+    Cow, MultiSignature,
 };
 
 use sp_std::prelude::*;

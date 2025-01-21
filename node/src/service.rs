@@ -49,12 +49,16 @@ type ParachainBlockImport = TParachainBlockImport<Block, Arc<ParachainClient>, P
 
 /// Assembly of PartialComponents (enough to run chain ops subcommands)
 pub type Service = PartialComponents<
-	ParachainClient,
-	ParachainBackend,
-	(),
-	sc_consensus::DefaultImportQueue<Block>,
-	sc_transaction_pool::TransactionPoolHandle<Block, ParachainClient>,
-	(ParachainBlockImport, Option<Telemetry>, Option<TelemetryWorkerHandle>),
+    ParachainClient,
+    ParachainBackend,
+    (),
+    sc_consensus::DefaultImportQueue<Block>,
+    sc_transaction_pool::TransactionPoolHandle<Block, ParachainClient>,
+    (
+        ParachainBlockImport,
+        Option<Telemetry>,
+        Option<TelemetryWorkerHandle>,
+    ),
 >;
 
 /// Starts a `ServiceBuilder` for a full service.
@@ -108,15 +112,15 @@ pub fn new_partial(config: &Configuration) -> Result<Service, sc_service::Error>
     });
 
     let transaction_pool = Arc::from(
-		sc_transaction_pool::Builder::new(
-			task_manager.spawn_essential_handle(),
-			client.clone(),
-			config.role.is_authority().into(),
-		)
-		.with_options(config.transaction_pool.clone())
-		.with_prometheus(config.prometheus_registry())
-		.build(),
-	);
+        sc_transaction_pool::Builder::new(
+            task_manager.spawn_essential_handle(),
+            client.clone(),
+            config.role.is_authority().into(),
+        )
+        .with_options(config.transaction_pool.clone())
+        .with_prometheus(config.prometheus_registry())
+        .build(),
+    );
 
     let block_import = ParachainBlockImport::new(client.clone(), backend.clone());
 
@@ -293,23 +297,25 @@ pub async fn start_parachain_node(
         use futures::FutureExt;
 
         let offchain_workers =
-        sc_offchain::OffchainWorkers::new(sc_offchain::OffchainWorkerOptions {
-            runtime_api_provider: client.clone(),
-            keystore: Some(params.keystore_container.keystore()),
-            offchain_db: backend.offchain_storage(),
-            transaction_pool: Some(OffchainTransactionPoolFactory::new(
-                transaction_pool.clone(),
-            )),
-            network_provider: Arc::new(network.clone()),
-            is_validator: parachain_config.role.is_authority(),
-            enable_http_requests: false,
-            custom_extensions: move |_| vec![],
-        })?;
-    task_manager.spawn_handle().spawn(
-        "offchain-workers-runner",
-        "offchain-work",
-        offchain_workers.run(client.clone(), task_manager.spawn_handle()).boxed(),
-    );
+            sc_offchain::OffchainWorkers::new(sc_offchain::OffchainWorkerOptions {
+                runtime_api_provider: client.clone(),
+                keystore: Some(params.keystore_container.keystore()),
+                offchain_db: backend.offchain_storage(),
+                transaction_pool: Some(OffchainTransactionPoolFactory::new(
+                    transaction_pool.clone(),
+                )),
+                network_provider: Arc::new(network.clone()),
+                is_validator: parachain_config.role.is_authority(),
+                enable_http_requests: false,
+                custom_extensions: move |_| vec![],
+            })?;
+        task_manager.spawn_handle().spawn(
+            "offchain-workers-runner",
+            "offchain-work",
+            offchain_workers
+                .run(client.clone(), task_manager.spawn_handle())
+                .boxed(),
+        );
     }
 
     let rpc_builder = {
