@@ -6,7 +6,6 @@ use alloc::{vec, vec::Vec};
 use cumulus_primitives_core::ParaId;
 use parachains_common::AuraId;
 use serde_json::Value;
-use sp_core::{crypto::get_public_from_string_or_panic, sr25519};
 use sp_genesis_builder::PresetId;
 use sp_keyring::Sr25519Keyring;
 
@@ -107,7 +106,7 @@ fn development_config_genesis() -> Value {
         Sr25519Keyring::well_known()
             .map(|k| k.to_account_id())
             .collect(),
-        get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
+        Sr25519Keyring::Alice.public().into(),
         2000.into(),
     )
 }
