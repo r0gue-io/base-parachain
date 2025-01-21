@@ -8,6 +8,7 @@ use parachains_common::AuraId;
 use serde_json::Value;
 use sp_core::{crypto::get_public_from_string_or_panic, sr25519};
 use sp_genesis_builder::PresetId;
+use sp_keyring::Sr25519Keyring;
 
 /// The default XCM version to set in genesis config.
 const SAFE_XCM_VERSION: u32 = xcm::prelude::XCM_VERSION;
@@ -74,29 +75,18 @@ fn local_testnet_genesis() -> Value {
         // initial collators.
         vec![
             (
-                get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
-                get_public_from_string_or_panic::<AuraId>("Alice"),
+                Sr25519Keyring::Alice.to_account_id(),
+                Sr25519Keyring::Alice.public().into(),
             ),
             (
-                get_public_from_string_or_panic::<sr25519::Public>("Bob").into(),
-                get_public_from_string_or_panic::<AuraId>("Bob"),
+                Sr25519Keyring::Bob.to_account_id(),
+                Sr25519Keyring::Bob.public().into(),
             ),
         ],
-        vec![
-            get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Bob").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Charlie").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Dave").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Eve").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Ferdie").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Alice//stash").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Bob//stash").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Charlie//stash").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Dave//stash").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Eve//stash").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Ferdie//stash").into(),
-        ],
-        get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
+        Sr25519Keyring::well_known()
+            .map(|k| k.to_account_id())
+            .collect(),
+        Sr25519Keyring::Alice.to_account_id(),
         2000.into(),
     )
 }
@@ -106,28 +96,17 @@ fn development_config_genesis() -> Value {
         // initial collators.
         vec![
             (
-                get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
-                get_public_from_string_or_panic::<AuraId>("Alice"),
+                Sr25519Keyring::Alice.to_account_id(),
+                Sr25519Keyring::Alice.public().into(),
             ),
             (
-                get_public_from_string_or_panic::<sr25519::Public>("Bob").into(),
-                get_public_from_string_or_panic::<AuraId>("Bob"),
+                Sr25519Keyring::Bob.to_account_id(),
+                Sr25519Keyring::Bob.public().into(),
             ),
         ],
-        vec![
-            get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Bob").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Charlie").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Dave").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Eve").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Ferdie").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Alice//stash").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Bob//stash").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Charlie//stash").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Dave//stash").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Eve//stash").into(),
-            get_public_from_string_or_panic::<sr25519::Public>("Ferdie//stash").into(),
-        ],
+        Sr25519Keyring::well_known()
+            .map(|k| k.to_account_id())
+            .collect(),
         get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
         2000.into(),
     )
