@@ -4,9 +4,9 @@ use crate::{
 };
 use alloc::{vec, vec::Vec};
 use cumulus_primitives_core::ParaId;
-use parachains_common::{genesis_config_helpers::*, AuraId};
+use parachains_common::AuraId;
 use serde_json::Value;
-use sp_core::sr25519;
+use sp_core::{sr25519, crypto::get_public_from_string_or_panic};
 use sp_genesis_builder::PresetId;
 
 /// The default XCM version to set in genesis config.
@@ -74,29 +74,29 @@ fn local_testnet_genesis() -> Value {
         // initial collators.
         vec![
             (
-                get_account_id_from_seed::<sr25519::Public>("Alice"),
-                get_collator_keys_from_seed::<AuraId>("Alice"),
+                get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
+                get_public_from_string_or_panic::<AuraId>("Alice"),
             ),
             (
-                get_account_id_from_seed::<sr25519::Public>("Bob"),
-                get_collator_keys_from_seed::<AuraId>("Bob"),
+                get_public_from_string_or_panic::<sr25519::Public>("Bob").into(),
+                get_public_from_string_or_panic::<AuraId>("Bob"),
             ),
         ],
         vec![
-            get_account_id_from_seed::<sr25519::Public>("Alice"),
-            get_account_id_from_seed::<sr25519::Public>("Bob"),
-            get_account_id_from_seed::<sr25519::Public>("Charlie"),
-            get_account_id_from_seed::<sr25519::Public>("Dave"),
-            get_account_id_from_seed::<sr25519::Public>("Eve"),
-            get_account_id_from_seed::<sr25519::Public>("Ferdie"),
-            get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
-            get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
-            get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
-            get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
-            get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
-            get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
+            get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Bob").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Charlie").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Dave").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Eve").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Ferdie").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Alice//stash").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Bob//stash").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Charlie//stash").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Dave//stash").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Eve//stash").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Ferdie//stash").into(),
         ],
-        get_account_id_from_seed::<sr25519::Public>("Alice"),
+        get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
         2000.into(),
     )
 }
@@ -106,38 +106,38 @@ fn development_config_genesis() -> Value {
         // initial collators.
         vec![
             (
-                get_account_id_from_seed::<sr25519::Public>("Alice"),
-                get_collator_keys_from_seed::<AuraId>("Alice"),
+                get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
+                get_public_from_string_or_panic::<AuraId>("Alice").into(),
             ),
             (
-                get_account_id_from_seed::<sr25519::Public>("Bob"),
-                get_collator_keys_from_seed::<AuraId>("Bob"),
+                get_public_from_string_or_panic::<sr25519::Public>("Bob").into(),
+                get_public_from_string_or_panic::<AuraId>("Bob").into(),
             ),
         ],
         vec![
-            get_account_id_from_seed::<sr25519::Public>("Alice"),
-            get_account_id_from_seed::<sr25519::Public>("Bob"),
-            get_account_id_from_seed::<sr25519::Public>("Charlie"),
-            get_account_id_from_seed::<sr25519::Public>("Dave"),
-            get_account_id_from_seed::<sr25519::Public>("Eve"),
-            get_account_id_from_seed::<sr25519::Public>("Ferdie"),
-            get_account_id_from_seed::<sr25519::Public>("Alice//stash"),
-            get_account_id_from_seed::<sr25519::Public>("Bob//stash"),
-            get_account_id_from_seed::<sr25519::Public>("Charlie//stash"),
-            get_account_id_from_seed::<sr25519::Public>("Dave//stash"),
-            get_account_id_from_seed::<sr25519::Public>("Eve//stash"),
-            get_account_id_from_seed::<sr25519::Public>("Ferdie//stash"),
+            get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Bob").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Charlie").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Dave").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Eve").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Ferdie").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Alice//stash").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Bob//stash").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Charlie//stash").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Dave//stash").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Eve//stash").into(),
+            get_public_from_string_or_panic::<sr25519::Public>("Ferdie//stash").into(),
         ],
-        get_account_id_from_seed::<sr25519::Public>("Alice"),
+        get_public_from_string_or_panic::<sr25519::Public>("Alice").into(),
         2000.into(),
     )
 }
 
 /// Provides the JSON representation of predefined genesis config for given `id`.
 pub fn get_preset(id: &PresetId) -> Option<vec::Vec<u8>> {
-    let patch = match id.try_into() {
-        Ok(sp_genesis_builder::LOCAL_TESTNET_RUNTIME_PRESET) => local_testnet_genesis(),
-        Ok(sp_genesis_builder::DEV_RUNTIME_PRESET) => development_config_genesis(),
+    let patch = match id.as_ref() {
+        sp_genesis_builder::LOCAL_TESTNET_RUNTIME_PRESET => local_testnet_genesis(),
+        sp_genesis_builder::DEV_RUNTIME_PRESET => development_config_genesis(),
         _ => return None,
     };
     Some(
