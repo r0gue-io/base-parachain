@@ -51,13 +51,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y protobuf-compiler gcc-aarch64-linux-gnu g++-aarch64-linux-gnu
           protoc --version
-
       - name: Install dependencies (macOS)
         if: contains(matrix.platform.target, 'apple')
         run: |
           brew install protobuf
           protoc --version
-
       - name: Add target
         run: rustup target add ${{ matrix.platform.target }}
 
@@ -75,7 +73,6 @@ jobs:
             shasum -a 256 parachain-template-node > parachain-template-node.sha256
           fi
           tar -czf ${{ env.package }} parachain-template-node parachain-template-node.sha256
-
       - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
@@ -97,7 +94,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ github.event.inputs.release_tag }}
-          release_name: "${{ github.event.inputs.release_name }}"
+          name: "${{ github.event.inputs.release_name }}"
           target_commitish: ${{ github.event.inputs.ref }}
           generate_release_notes: true
           body: " "
