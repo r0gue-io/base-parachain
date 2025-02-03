@@ -97,6 +97,6 @@ jobs:
           name: "${{ github.event.inputs.release_name }}"
           target_commitish: ${{ github.event.inputs.ref }}
           generate_release_notes: true
-          body: " "
+          body: "This release contains the following builds:\n\n- Linux (x86_64)\n- Linux (AArch64)\n- macOS (x86_64)\n- macOS (AArch64)\n\nSHA256 checksums included."
           files: |
             release-artifacts/**/*.tar.gz
