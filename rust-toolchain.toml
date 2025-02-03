@@ -1,4 +1,4 @@
 [toolchain]
-channel = "1.82" 
+channel = "1.82" # Currently set to 1.82 to appease https://github.com/r0gue-io/assets-parachain/actions/runs/13109926510/job/36571493175
 components = ["rust-src", "rustfmt", "clippy"]
 targets = ["wasm32-unknown-unknown"]
