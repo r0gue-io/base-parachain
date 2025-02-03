@@ -24,7 +24,6 @@
 // For more information, please refer to <http://unlicense.org>
 
 mod contracts;
-mod revive;
 #[path = "xcm.rs"]
 mod xcm_config;
 

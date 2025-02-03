@@ -257,8 +257,6 @@ const CONTRACTS_DEBUG_OUTPUT: pallet_contracts::DebugInfo =
     pallet_contracts::DebugInfo::UnsafeDebug;
 const CONTRACTS_EVENTS: pallet_contracts::CollectEvents =
     pallet_contracts::CollectEvents::UnsafeCollect;
-const REVIVE_DEBUG_OUTPUT: pallet_revive::DebugInfo = pallet_revive::DebugInfo::UnsafeDebug;
-const REVIVE_EVENTS: pallet_revive::CollectEvents = pallet_revive::CollectEvents::UnsafeCollect;
 /// Aura consensus hook
 type ConsensusHook = cumulus_pallet_aura_ext::FixedVelocityConsensusHook<
     Runtime,
@@ -339,9 +337,6 @@ mod runtime {
     #[runtime::pallet_index(40)]
     pub type Contracts = pallet_contracts::Pallet<Runtime>;
 
-    // Revive
-    #[runtime::pallet_index(41)]
-    pub type Revive = pallet_revive::Pallet<Runtime>;
 }
 
 cumulus_pallet_parachain_system::register_validate_block! {
