@@ -13,7 +13,7 @@ members = ["node", "runtime"]
 resolver = "2"
 
 [workspace.dependencies]
-clap = { version = "4.5.26", features = ["derive"] }
+clap = { version = "4.5.27", features = ["derive"] }
 codec = { package = "parity-scale-codec", version = "3.6.12", default-features = false, features = [
   "derive",
 ] }
@@ -104,7 +104,7 @@ polkadot-cli = "21.0.0"
 polkadot-parachain-primitives = { version = "15.0.0", default-features = false }
 polkadot-primitives = "17.0.0"
 polkadot-runtime-common = { version = "18.0.0", default-features = false }
-xcm = { version = "15.0.0", package = "staging-xcm", default-features = false }
+xcm = { version = "15.0.1", package = "staging-xcm", default-features = false }
 xcm-builder = { version = "18.0.0", package = "staging-xcm-builder", default-features = false }
 xcm-executor = { version = "18.0.0", package = "staging-xcm-executor", default-features = false }
 
