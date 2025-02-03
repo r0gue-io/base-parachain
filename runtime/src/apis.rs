@@ -45,8 +45,7 @@ use super::{
     configs::RuntimeBlockWeights, AccountId, Balance, Block, BlockNumber, ConsensusHook, Contracts,
     Executive, Hash, InherentDataExt, Nonce, ParachainSystem, Runtime, RuntimeCall,
     RuntimeGenesisConfig, RuntimeOrigin, SessionKeys, System, TransactionPayment,
-    CONTRACTS_DEBUG_OUTPUT, CONTRACTS_EVENTS, SLOT_DURATION,
-    VERSION,
+    CONTRACTS_DEBUG_OUTPUT, CONTRACTS_EVENTS, SLOT_DURATION, VERSION,
 };
 
 type EventRecord = frame_system::EventRecord<

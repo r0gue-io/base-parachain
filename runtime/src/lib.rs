@@ -336,7 +336,6 @@ mod runtime {
     // Contracts
     #[runtime::pallet_index(40)]
     pub type Contracts = pallet_contracts::Pallet<Runtime>;
-
 }
 
 cumulus_pallet_parachain_system::register_validate_block! {
