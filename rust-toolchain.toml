@@ -1,4 +1,4 @@
 [toolchain]
-channel = "1.77" # pinned to version used with polkadot release
+channel = "1.82" # Currently set to 1.82 to appease https://doc.rust-lang.org/std/option/enum.Option.html#method.is_none_or
 components = ["rust-src", "rustfmt", "clippy"]
 targets = ["wasm32-unknown-unknown"]

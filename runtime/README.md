@@ -4,7 +4,7 @@
 responsible for validating blocks and executing the state changes they define.
 
 💁 The runtime in this template is constructed using ready-made FRAME pallets that ship with
-[Polkadot SDK](https://github.com/paritytech/polkadot-sdk).
+[Polkadot SDK](https://github.com/paritytech/polkadot-sdk), and a [template for a custom pallet](../pallets/README.md).
 
 👉 Learn more about FRAME
 [here](https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/polkadot_sdk/frame_runtime/index.html).
