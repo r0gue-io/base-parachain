@@ -68,5 +68,5 @@ impl pallet_revive::Config for Runtime {
     type InstantiateOrigin = EnsureSigned<Self::AccountId>;
     type AddressMapper = pallet_revive::AccountId32Mapper<Runtime>;
     type ChainId = ChainId;
-	type NativeToEthRatio = ConstU32<{(ETH_UNIT / UNIT) as u32}>;
+    type NativeToEthRatio = ConstU32<{ (ETH_UNIT / UNIT) as u32 }>;
 }

@@ -57,9 +57,9 @@ use frame_support::weights::{
     WeightToFeePolynomial,
 };
 pub use pallet_balances::Call as BalancesCall;
+use pallet_revive::evm::runtime::EthExtra;
 pub use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 pub use sp_runtime::{MultiAddress, Perbill, Permill};
-use pallet_revive::evm::runtime::EthExtra;
 
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
@@ -192,26 +192,25 @@ impl_opaque_keys! {
 pub struct EthExtraImpl;
 
 impl EthExtra for EthExtraImpl {
-	type Config = Runtime;
-	type Extension = TxExtension;
+    type Config = Runtime;
+    type Extension = TxExtension;
 
-	fn get_eth_extension(nonce: u32, tip: Balance) -> Self::Extension {
-		(
-			frame_system::CheckNonZeroSender::<Runtime>::new(),
-			frame_system::CheckSpecVersion::<Runtime>::new(),
-			frame_system::CheckTxVersion::<Runtime>::new(),
-			frame_system::CheckGenesis::<Runtime>::new(),
-			frame_system::CheckMortality::from(generic::Era::Immortal),
-			frame_system::CheckNonce::<Runtime>::from(nonce),
-			frame_system::CheckWeight::<Runtime>::new(),
-			pallet_transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
+    fn get_eth_extension(nonce: u32, tip: Balance) -> Self::Extension {
+        (
+            frame_system::CheckNonZeroSender::<Runtime>::new(),
+            frame_system::CheckSpecVersion::<Runtime>::new(),
+            frame_system::CheckTxVersion::<Runtime>::new(),
+            frame_system::CheckGenesis::<Runtime>::new(),
+            frame_system::CheckMortality::from(generic::Era::Immortal),
+            frame_system::CheckNonce::<Runtime>::from(nonce),
+            frame_system::CheckWeight::<Runtime>::new(),
+            pallet_transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
             cumulus_primitives_storage_weight_reclaim::StorageWeightReclaim::<Runtime>::new(),
-			frame_metadata_hash_extension::CheckMetadataHash::<Runtime>::new(false),
-		)
-			.into()
-	}
+            frame_metadata_hash_extension::CheckMetadataHash::<Runtime>::new(false),
+        )
+            .into()
+    }
 }
-
 
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
