@@ -307,8 +307,8 @@ impl_runtime_apis! {
 				gas_limit.unwrap_or(RuntimeBlockWeights::get().max_block),
 				storage_deposit_limit.unwrap_or(u128::MAX),
 				input_data,
-                DebugInfo::Skip,
-                CollectEvents::Skip,
+                REVIVE_DEBUG_OUTPUT,
+                REVIVE_EVENTS,
 			)
 		}
 
@@ -330,8 +330,8 @@ impl_runtime_apis! {
 				code,
 				data,
 				salt,
-                DebugInfo::Skip,
-                CollectEvents::Skip,
+                REVIVE_DEBUG_OUTPUT,
+                REVIVE_EVENTS,
 			)
 		}
 
@@ -350,7 +350,8 @@ impl_runtime_apis! {
 				uxt.encoded_size() as u32
 			};
 			let account = <Runtime as pallet_revive::Config>::AddressMapper::to_account_id(&origin);
-			Revive::bare_eth_transact(account, dest, value, input, gas_limit.unwrap_or(RuntimeBlockWeights::get().max_block), storage_deposit_limit.unwrap_or(u128::MAX), utx_encoded_size, DebugInfo::Skip, CollectEvents::Skip).into()
+			Revive::bare_eth_transact(account, dest, value, input, gas_limit.unwrap_or(RuntimeBlockWeights::get().max_block), storage_deposit_limit.unwrap_or(u128::MAX), utx_encoded_size,REVIVE_DEBUG_OUTPUT,
+            REVIVE_EVENTS,).into()
 		}
 
 		fn upload_code(
