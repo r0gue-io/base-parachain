@@ -20,6 +20,7 @@ impl frame_support::traits::Contains<RuntimeCall> for AllowBalancesCall {
 }
 
 // Unit = the base number of indivisible units for balances
+const ETH_UNIT: u128 = 1_000_000_000_000_000;
 const UNIT: Balance = 1_000_000_000_000;
 const MILLIUNIT: Balance = 1_000_000_000;
 
@@ -33,6 +34,7 @@ parameter_types! {
     pub const DefaultDepositLimit: Balance = deposit(1024, 1024 * 1024);
     pub const CodeHashLockupDepositPercent: Perbill = Perbill::from_percent(0);
     pub const MaxDelegateDependencies: u32 = 32;
+    pub const ChainId: u32 = 1;
 }
 
 impl pallet_revive::Config for Runtime {
@@ -52,19 +54,19 @@ impl pallet_revive::Config for Runtime {
     type WeightPrice = pallet_transaction_payment::Pallet<Self>;
     type WeightInfo = pallet_revive::weights::SubstrateWeight<Self>;
     type ChainExtension = ();
-    type AddressGenerator = pallet_revive::DefaultAddressGenerator;
-    type MaxCodeLen = ConstU32<{ 128 * 1024 }>;
     type RuntimeMemory = ConstU32<{ 128 * 1024 * 1024 }>;
     type PVFMemory = ConstU32<{ 512 * 1024 * 1024 }>;
     type UnsafeUnstableInterface = ConstBool<true>;
     type CodeHashLockupDepositPercent = CodeHashLockupDepositPercent;
     type RuntimeHoldReason = RuntimeHoldReason;
     type Debug = ();
-    type Migrations = ();
     #[cfg(feature = "parachain")]
     type Xcm = pallet_xcm::Pallet<Self>;
     #[cfg(not(feature = "parachain"))]
     type Xcm = ();
     type UploadOrigin = EnsureSigned<Self::AccountId>;
     type InstantiateOrigin = EnsureSigned<Self::AccountId>;
+    type AddressMapper = pallet_revive::AccountId32Mapper<Runtime>;
+    type ChainId = ChainId;
+	type NativeToEthRatio = ConstU32<{(ETH_UNIT / UNIT) as u32}>;
 }

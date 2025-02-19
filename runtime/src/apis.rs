@@ -23,22 +23,28 @@
 //
 // For more information, please refer to <http://unlicense.org>
 
+use core::fmt::Debug;
+
 // External crates imports
 use frame_support::{
     genesis_builder_helper::{build_state, get_preset},
     weights::Weight,
+    dispatch::DispatchInfo,
 };
 use pallet_aura::Authorities;
+use pallet_revive::{evm::Address, AddressMapper, CollectEvents, DebugInfo, evm::H160, InstantiateReturnValue, ExecReturnValue};
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_core::{crypto::KeyTypeId, OpaqueMetadata};
 use sp_runtime::{
-    traits::Block as BlockT,
+    traits::{Block as BlockT, Get},
     transaction_validity::{TransactionSource, TransactionValidity},
     ApplyExtrinsicResult,
 };
 use sp_std::prelude::Vec;
 use sp_version::RuntimeVersion;
+use frame_system::limits::BlockWeights;
+use codec::Encode;
 
 // Local module imports
 use super::{
@@ -46,7 +52,7 @@ use super::{
     Executive, Hash, InherentDataExt, Nonce, ParachainSystem, Revive, Runtime, RuntimeCall,
     RuntimeGenesisConfig, RuntimeOrigin, SessionKeys, System, TransactionPayment,
     CONTRACTS_DEBUG_OUTPUT, CONTRACTS_EVENTS, REVIVE_DEBUG_OUTPUT, REVIVE_EVENTS, SLOT_DURATION,
-    VERSION,
+    VERSION, UncheckedExtrinsic, EthExtraImpl, Balances
 };
 
 type EventRecord = frame_system::EventRecord<
@@ -274,74 +280,103 @@ impl_runtime_apis! {
         }
     }
 
-    impl pallet_revive::ReviveApi<Block, AccountId, Balance, BlockNumber, Hash, EventRecord> for Runtime
-    {
+    impl pallet_revive::ReviveApi<Block, AccountId, Balance, Nonce, BlockNumber, EventRecord> for Runtime
+	{
+		fn balance(address: H160) -> Balance {
+			let account = <Runtime as pallet_revive::Config>::AddressMapper::to_account_id(&address);
+            Balances::free_balance(account).saturating_mul(<<Runtime as pallet_revive::Config>::NativeToEthRatio as Get<u32>>::get().into())
+		}
+
+		fn nonce(address: H160) -> Nonce {
+			let account = <Runtime as pallet_revive::Config>::AddressMapper::to_account_id(&address);
+			System::account_nonce(account)
+		}
+
         fn call(
-            origin: AccountId,
-            dest: AccountId,
-            value: Balance,
-            gas_limit: Option<Weight>,
-            storage_deposit_limit: Option<Balance>,
-            input_data: Vec<u8>,
-        ) -> pallet_revive::ContractExecResult<Balance, EventRecord> {
-            Revive::bare_call(
-                RuntimeOrigin::signed(origin),
-                dest,
-                value,
-                gas_limit.unwrap_or(RuntimeBlockWeights::get().max_block),
-                storage_deposit_limit.unwrap_or(u128::MAX),
-                input_data,
-                REVIVE_DEBUG_OUTPUT,
-                REVIVE_EVENTS,
-            )
-        }
+			origin: AccountId,
+			dest: H160,
+			value: Balance,
+			gas_limit: Option<Weight>,
+			storage_deposit_limit: Option<Balance>,
+			input_data: Vec<u8>,
+		) -> pallet_revive::ContractResult<ExecReturnValue, Balance, EventRecord> {
+			Revive::bare_call(
+				RuntimeOrigin::signed(origin),
+				dest,
+				value,
+				gas_limit.unwrap_or(RuntimeBlockWeights::get().max_block),
+				storage_deposit_limit.unwrap_or(u128::MAX),
+				input_data,
+                DebugInfo::Skip,
+                CollectEvents::Skip,
+			)
+		}
 
         fn instantiate(
-            origin: AccountId,
-            value: Balance,
-            gas_limit: Option<Weight>,
-            storage_deposit_limit: Option<Balance>,
-            code: pallet_revive::Code<Hash>,
-            data: Vec<u8>,
-            salt: Vec<u8>,
-        ) -> pallet_revive::ContractInstantiateResult<AccountId, Balance, EventRecord>
-        {
-            Revive::bare_instantiate(
-                RuntimeOrigin::signed(origin),
-                value,
-                gas_limit.unwrap_or(RuntimeBlockWeights::get().max_block),
-                storage_deposit_limit.unwrap_or(u128::MAX),
-                code,
-                data,
-                salt,
-                REVIVE_DEBUG_OUTPUT,
-                REVIVE_EVENTS,
-            )
-        }
+			origin: AccountId,
+			value: Balance,
+			gas_limit: Option<Weight>,
+			storage_deposit_limit: Option<Balance>,
+			code: pallet_revive::Code,
+			data: Vec<u8>,
+			salt: Option<[u8; 32]>,
+		) ->  pallet_revive::ContractResult<InstantiateReturnValue, Balance, EventRecord>
+		{
+			Revive::bare_instantiate(
+				RuntimeOrigin::signed(origin),
+				value,
+				gas_limit.unwrap_or(RuntimeBlockWeights::get().max_block),
+				storage_deposit_limit.unwrap_or(u128::MAX),
+				code,
+				data,
+				salt,
+                DebugInfo::Skip,
+                CollectEvents::Skip,
+			)
+		}
 
-        fn upload_code(
-            origin: AccountId,
-            code: Vec<u8>,
-            storage_deposit_limit: Option<Balance>,
-        ) -> pallet_revive::CodeUploadResult<Hash, Balance>
-        {
-            Revive::bare_upload_code(
-                RuntimeOrigin::signed(origin),
-                code,
-                storage_deposit_limit.unwrap_or(u128::MAX),
-            )
-        }
+		fn eth_transact(
+            origin: H160,
+			dest: Option<H160>,
+			value: Balance,
+			input: Vec<u8>,
+			gas_limit: Option<Weight>,
+			storage_deposit_limit: Option<Balance>,
+        ) -> pallet_revive::EthContractResult<Balance>
+		{
+			let utx_encoded_size = |pallet_call| {
+				let call = RuntimeCall::Revive(pallet_call);
+				let uxt: UncheckedExtrinsic = sp_runtime::generic::UncheckedExtrinsic::new_bare(call).into();
+				uxt.encoded_size() as u32
+			};
+			let account = <Runtime as pallet_revive::Config>::AddressMapper::to_account_id(&origin);
+			Revive::bare_eth_transact(account, dest, value, input, gas_limit.unwrap_or(RuntimeBlockWeights::get().max_block), storage_deposit_limit.unwrap_or(u128::MAX), utx_encoded_size, DebugInfo::Skip, CollectEvents::Skip).into()
+		}
 
-        fn get_storage(
-            address: AccountId,
-            key: Vec<u8>,
-        ) -> pallet_revive::GetStorageResult {
-            Revive::get_storage(
-                address,
-                key
-            )
-        }
-    }
+		fn upload_code(
+			origin: AccountId,
+			code: Vec<u8>,
+			storage_deposit_limit: Option<Balance>,
+		) -> pallet_revive::CodeUploadResult<Balance>
+		{
+			Revive::bare_upload_code(
+				RuntimeOrigin::signed(origin),
+				code,
+				storage_deposit_limit.unwrap_or(u128::MAX),
+			)
+		}
+
+		fn get_storage(
+			address: H160,
+			key: [u8; 32],
+		) -> pallet_revive::GetStorageResult {
+			Revive::get_storage(
+				address,
+				key
+			)
+		}
+	}
+
 
     #[cfg(feature = "try-runtime")]
     impl frame_try_runtime::TryRuntime<Block> for Runtime {

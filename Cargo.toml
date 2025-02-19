@@ -95,10 +95,10 @@ sp-version = { version = "38.0.0", default-features = false }
 substrate-frame-rpc-system = "41.0.0"
 
 # Contracts
-pallet-contracts = { version = "38.0.0", default-features = false }
+pallet-contracts = { version = "39.0.0", default-features = false }
 
 # Revive
-pallet-revive = { version = "0.2.0", default-features = false }
+pallet-revive = { version = "0.4.0", default-features = false }
 
 # Polkadot
 pallet-xcm = { version = "18.0.0", default-features = false }
