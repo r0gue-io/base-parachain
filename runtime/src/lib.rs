@@ -40,6 +40,7 @@ mod weights;
 
 extern crate alloc;
 
+use alloc::vec::Vec;
 use cumulus_pallet_weight_reclaim::StorageWeightReclaim;
 use smallvec::smallvec;
 use sp_runtime::{
@@ -47,7 +48,6 @@ use sp_runtime::{
     traits::{BlakeTwo256, IdentifyAccount, Verify},
     Cow, MultiSignature,
 };
-use alloc::vec::Vec;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
 use sp_version::RuntimeVersion;
