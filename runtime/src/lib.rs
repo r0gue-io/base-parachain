@@ -47,8 +47,7 @@ use sp_runtime::{
     traits::{BlakeTwo256, IdentifyAccount, Verify},
     Cow, MultiSignature,
 };
-
-use sp_std::prelude::*;
+use alloc::vec::Vec;
 #[cfg(feature = "std")]
 use sp_version::NativeVersion;
 use sp_version::RuntimeVersion;
