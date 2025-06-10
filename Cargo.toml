@@ -21,7 +21,7 @@ color-print = "0.3.7"
 docify = "0.4.1"
 futures = "0.3.31"
 hex-literal = "1.0.0"
-jsonrpsee = { version = "0.25.1", features = ["server"] }
+jsonrpsee = { version = "0.24.9", features = ["server"] }
 log = { version = "0.4.25", default-features = false }
 scale-info = { version = "2.11.6", default-features = false, features = [
   "derive",
@@ -114,12 +114,12 @@ cumulus-client-service = "0.23.0"
 cumulus-pallet-aura-ext = { version = "0.20.0", default-features = false }
 cumulus-pallet-parachain-system = { version = "0.20.0", default-features = false }
 cumulus-pallet-session-benchmarking = { version = "21.0.0", default-features = false }
+cumulus-pallet-weight-reclaim = { version = "0.2.0", default-features = false }
 cumulus-pallet-xcm = { version = "0.19.1", default-features = false }
 cumulus-pallet-xcmp-queue = { version = "0.20.0", default-features = false }
 cumulus-primitives-aura = { version = "0.17.0", default-features = false }
 cumulus-primitives-core = { version = "0.18.1", default-features = false }
 cumulus-primitives-parachain-inherent = "0.18.1"
-cumulus-primitives-storage-weight-reclaim = { version = "11.0.0", default-features = false }
 cumulus-primitives-utility = { version = "0.20.0", default-features = false }
 cumulus-relay-chain-interface = "0.22.0"
 pallet-collator-selection = { version = "21.0.0", default-features = false }
