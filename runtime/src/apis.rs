@@ -26,7 +26,7 @@
 use core::fmt::Debug;
 
 // External crates imports
-use codec::Encode;
+use alloc::vec::Vec;
 use frame_support::{
     dispatch::DispatchInfo,
     genesis_builder_helper::{build_state, get_preset},
@@ -46,7 +46,6 @@ use sp_runtime::{
     transaction_validity::{TransactionSource, TransactionValidity},
     ApplyExtrinsicResult,
 };
-use sp_std::prelude::Vec;
 use sp_version::RuntimeVersion;
 
 // Local module imports
