@@ -32,6 +32,7 @@ fn testnet_genesis(
                 .cloned()
                 .map(|k| (k, 1u128 << 60))
                 .collect::<Vec<_>>(),
+            ..Default::default()
         },
         parachain_info: ParachainInfoConfig {
             parachain_id: id,
