@@ -96,13 +96,13 @@ impl_runtime_apis! {
     }
 
     impl frame_support::view_functions::runtime_api::RuntimeViewFunction<Block> for Runtime {
-		fn execute_view_function(
-			id: frame_support::view_functions::ViewFunctionId,
-			input: Vec<u8>
-		) -> Result<Vec<u8>, frame_support::view_functions::ViewFunctionDispatchError> {
-			Runtime::execute_view_function(id, input)
-		}
-	}
+        fn execute_view_function(
+            id: frame_support::view_functions::ViewFunctionId,
+            input: Vec<u8>
+        ) -> Result<Vec<u8>, frame_support::view_functions::ViewFunctionDispatchError> {
+            Runtime::execute_view_function(id, input)
+        }
+    }
 
     impl sp_block_builder::BlockBuilder<Block> for Runtime {
         fn apply_extrinsic(extrinsic: <Block as BlockT>::Extrinsic) -> ApplyExtrinsicResult {
@@ -249,7 +249,6 @@ impl_runtime_apis! {
             (list, storage_info)
         }
 
-        #[allow(non_local_definitions)]
         fn dispatch_benchmark(
             config: frame_benchmarking::BenchmarkConfig
         ) -> Result<Vec<frame_benchmarking::BenchmarkBatch>, alloc::string::String> {

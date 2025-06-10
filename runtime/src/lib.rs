@@ -40,13 +40,13 @@ mod weights;
 
 extern crate alloc;
 
+use cumulus_pallet_weight_reclaim::StorageWeightReclaim;
 use smallvec::smallvec;
 use sp_runtime::{
     generic, impl_opaque_keys,
     traits::{BlakeTwo256, IdentifyAccount, Verify},
     Cow, MultiSignature,
 };
-use cumulus_pallet_weight_reclaim::StorageWeightReclaim;
 
 use sp_std::prelude::*;
 #[cfg(feature = "std")]
@@ -102,18 +102,18 @@ pub type BlockId = generic::BlockId<Block>;
 /// The SignedExtension to the basic transaction logic.
 #[docify::export(template_signed_extra)]
 pub type TxExtension = StorageWeightReclaim<
-        Runtime,
-        (
-            frame_system::CheckNonZeroSender<Runtime>,
-            frame_system::CheckSpecVersion<Runtime>,
-            frame_system::CheckTxVersion<Runtime>,
-            frame_system::CheckGenesis<Runtime>,
-            frame_system::CheckEra<Runtime>,
-            frame_system::CheckNonce<Runtime>,
-            frame_system::CheckWeight<Runtime>,
-            pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
-            frame_metadata_hash_extension::CheckMetadataHash<Runtime>,
-        ),
+    Runtime,
+    (
+        frame_system::CheckNonZeroSender<Runtime>,
+        frame_system::CheckSpecVersion<Runtime>,
+        frame_system::CheckTxVersion<Runtime>,
+        frame_system::CheckGenesis<Runtime>,
+        frame_system::CheckEra<Runtime>,
+        frame_system::CheckNonce<Runtime>,
+        frame_system::CheckWeight<Runtime>,
+        pallet_transaction_payment::ChargeTransactionPayment<Runtime>,
+        frame_metadata_hash_extension::CheckMetadataHash<Runtime>,
+    ),
 >;
 
 /// Unchecked extrinsic type as expected by this runtime.
@@ -294,7 +294,7 @@ mod runtime {
     #[runtime::pallet_index(3)]
     pub type ParachainInfo = parachain_info::Pallet<Runtime>;
     #[runtime::pallet_index(4)]
-	pub type WeightReclaim = cumulus_pallet_weight_reclaim::Pallet<Runtime>;
+    pub type WeightReclaim = cumulus_pallet_weight_reclaim::Pallet<Runtime>;
 
     // Monetary stuff.
     #[runtime::pallet_index(10)]
