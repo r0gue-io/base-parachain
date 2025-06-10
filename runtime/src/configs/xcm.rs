@@ -24,12 +24,15 @@
 // For more information, please refer to <http://unlicense.org>
 
 use crate::{
-    AccountId, AllPalletsWithSystem, Balances, Balance, ParachainInfo, ParachainSystem, PolkadotXcm,
-    Runtime, RuntimeCall, RuntimeEvent, RuntimeOrigin, WeightToFee, XcmpQueue, RuntimeHoldReason, UNIT, MILLIUNIT,
+    AccountId, AllPalletsWithSystem, Balance, Balances, ParachainInfo, ParachainSystem,
+    PolkadotXcm, Runtime, RuntimeCall, RuntimeEvent, RuntimeHoldReason, RuntimeOrigin, WeightToFee,
+    XcmpQueue, MILLIUNIT, UNIT,
 };
 use frame_support::{
     parameter_types,
-    traits::{fungible::HoldConsideration, ConstU32, Contains, Everything, LinearStoragePrice, Nothing},
+    traits::{
+        fungible::HoldConsideration, ConstU32, Contains, Everything, LinearStoragePrice, Nothing,
+    },
     weights::Weight,
 };
 use frame_system::EnsureRoot;
@@ -177,7 +180,7 @@ impl xcm_executor::Config for XcmConfig {
     type CallDispatcher = RuntimeCall;
     type SafeCallFilter = Everything;
     // Allow origins explicitly authorized by the alias target location.
-	type Aliasers = AuthorizedAliasers<Runtime>;
+    type Aliasers = AuthorizedAliasers<Runtime>;
     type TransactionalProcessor = FrameTransactionalProcessor;
     type HrmpNewChannelOpenRequestHandler = ();
     type HrmpChannelAcceptedHandler = ();
@@ -200,12 +203,12 @@ pub type XcmRouter = WithUniqueTopic<(
 
 /// Deposits.
 pub const fn deposit(items: u32, bytes: u32) -> Balance {
-	(items as Balance * UNIT + (bytes as Balance) * (5 * MILLIUNIT / 100)) / 10
+    (items as Balance * UNIT + (bytes as Balance) * (5 * MILLIUNIT / 100)) / 10
 }
 parameter_types! {
-	pub const AuthorizeAliasHoldReason: RuntimeHoldReason = RuntimeHoldReason::PolkadotXcm(pallet_xcm::HoldReason::AuthorizeAlias);
+    pub const AuthorizeAliasHoldReason: RuntimeHoldReason = RuntimeHoldReason::PolkadotXcm(pallet_xcm::HoldReason::AuthorizeAlias);
     pub const DepositPerItem: Balance = deposit(1, 0);
-	pub const DepositPerByte: Balance = deposit(0, 1);
+    pub const DepositPerByte: Balance = deposit(0, 1);
 }
 
 impl pallet_xcm::Config for Runtime {
@@ -228,11 +231,11 @@ impl pallet_xcm::Config for Runtime {
     // ^ Override for AdvertisedXcmVersion default
     type AdvertisedXcmVersion = pallet_xcm::CurrentXcmVersion;
     type AuthorizedAliasConsideration = HoldConsideration<
-		AccountId,
-		Balances,
-		AuthorizeAliasHoldReason,
-		LinearStoragePrice<DepositPerItem, DepositPerByte, Balance>,
-	>;
+        AccountId,
+        Balances,
+        AuthorizeAliasHoldReason,
+        LinearStoragePrice<DepositPerItem, DepositPerByte, Balance>,
+    >;
     type Currency = Balances;
     type CurrencyMatcher = ();
     type TrustedLockers = ();
