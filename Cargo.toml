@@ -39,18 +39,18 @@ parachain-template-runtime = { path = "./runtime" }
 
 # Substrate
 frame-benchmarking = { version = "39.0.0", default-features = false }
-frame-benchmarking-cli = "45.0.0"
+frame-benchmarking-cli = "46.0.0"
 frame-executive = { version = "39.0.0", default-features = false }
 frame-support = { version = "39.0.0", default-features = false }
-frame-support-procedural = { version = "31.0.0", default-features = false }
-frame-system = { version = "39.0.0", default-features = false }
+frame-support-procedural = { version = "31.0.1", default-features = false }
+frame-system = { version = "39.1.0", default-features = false }
 frame-system-benchmarking = { version = "39.0.0", default-features = false }
 frame-system-rpc-runtime-api = { version = "35.0.0", default-features = false }
 frame-try-runtime = { version = "0.45.0", default-features = false }
 frame-metadata-hash-extension = { version = "0.7.0", default-features = false }
 pallet-aura = { version = "38.0.0", default-features = false }
 pallet-authorship = { version = "39.0.0", default-features = false }
-pallet-balances = { version = "40.0.0", default-features = false }
+pallet-balances = { version = "40.0.1", default-features = false }
 pallet-message-queue = { version = "42.0.0", default-features = false }
 pallet-session = { version = "39.0.0", default-features = false }
 pallet-sudo = { version = "39.0.0", default-features = false }
@@ -59,22 +59,22 @@ pallet-transaction-payment = { version = "39.0.0", default-features = false }
 pallet-transaction-payment-rpc = "42.0.0"
 pallet-transaction-payment-rpc-runtime-api = { version = "39.0.0", default-features = false }
 prometheus-endpoint = { version = "0.17.1", default-features = false, package = "substrate-prometheus-endpoint" }
-sc-basic-authorship = "0.47.0"
-sc-chain-spec = "40.0.0"
-sc-cli = "0.49.0"
+sc-basic-authorship = "0.48.0"
+sc-chain-spec = "41.0.0"
+sc-cli = "0.50.0"
 sc-client-api = "38.0.0"
-sc-offchain = "42.0.0"
-sc-consensus = "0.46.0"
+sc-offchain = "43.0.0"
+sc-consensus = "0.47.0"
 sc-executor = "0.41.0"
-sc-network = "0.47.0"
-sc-network-sync = "0.46.0"
-sc-rpc = "42.0.0"
-sc-service = "0.48.0"
-sc-sysinfo = "40.0.0"
-sc-telemetry = "27.0.0"
+sc-network = "0.48.2"
+sc-network-sync = "0.47.0"
+sc-rpc = "43.0.0"
+sc-service = "0.49.0"
+sc-sysinfo = "41.0.0"
+sc-telemetry = "28.0.0"
 sc-tracing = "38.0.0"
-sc-transaction-pool = "38.0.0"
-sc-transaction-pool-api = "38.0.0"
+sc-transaction-pool = "38.1.0"
+sc-transaction-pool-api = "38.1.0"
 sp-api = { version = "35.0.0", default-features = false }
 sp-block-builder = { version = "35.0.0", default-features = false }
 sp-blockchain = "38.0.0"
@@ -86,48 +86,48 @@ sp-inherents = { version = "35.0.0", default-features = false }
 sp-keyring = { version = "40.0.0", default-features = false }
 sp-keystore = "0.41.0"
 sp-offchain = { version = "35.0.0", default-features = false }
-sp-runtime = { version = "40.0.0", default-features = false }
+sp-runtime = { version = "40.1.0", default-features = false }
 sp-session = { version = "37.0.0", default-features = false }
 sp-std = { version = "14.0.0", default-features = false }
 sp-timestamp = "35.0.0"
 sp-transaction-pool = { version = "35.0.0", default-features = false }
 sp-version = { version = "38.0.0", default-features = false }
-substrate-frame-rpc-system = "41.0.0"
+substrate-frame-rpc-system = "42.0.0"
 
 # Contracts
 pallet-contracts = { version = "39.0.0", default-features = false }
 
 # Revive
-pallet-revive = { version = "0.4.0", default-features = false }
+pallet-revive = { version = "0.3.1", default-features = false }
 
 # Polkadot
 pallet-xcm = { version = "18.0.0", default-features = false }
-polkadot-cli = "21.0.0"
+polkadot-cli = "22.0.1"
 polkadot-parachain-primitives = { version = "15.0.0", default-features = false }
 polkadot-primitives = "17.0.0"
 polkadot-runtime-common = { version = "18.0.0", default-features = false }
-xcm = { version = "15.0.0", package = "staging-xcm", default-features = false }
-xcm-builder = { version = "18.0.0", package = "staging-xcm-builder", default-features = false }
-xcm-executor = { version = "18.0.0", package = "staging-xcm-executor", default-features = false }
+xcm = { version = "15.0.1", package = "staging-xcm", default-features = false }
+xcm-builder = { version = "18.0.1", package = "staging-xcm-builder", default-features = false }
+xcm-executor = { version = "18.0.1", package = "staging-xcm-executor", default-features = false }
 
 # Cumulus
-cumulus-client-cli = "0.20.0"
-cumulus-client-collator = "0.20.0"
-cumulus-client-consensus-aura = "0.20.0"
-cumulus-client-consensus-common = "0.20.0"
+cumulus-client-cli = "0.21.1"
+cumulus-client-collator = "0.21.0"
+cumulus-client-consensus-aura = "0.21.0"
+cumulus-client-consensus-common = "0.21.0"
 cumulus-client-consensus-proposer = "0.17.0"
-cumulus-client-service = "0.21.0"
+cumulus-client-service = "0.22.0"
 cumulus-pallet-aura-ext = { version = "0.18.0", default-features = false }
 cumulus-pallet-parachain-system = { version = "0.18.0", default-features = false }
 cumulus-pallet-session-benchmarking = { version = "20.0.0", default-features = false }
 cumulus-pallet-xcm = { version = "0.18.0", default-features = false }
-cumulus-pallet-xcmp-queue = { version = "0.18.0", default-features = false }
+cumulus-pallet-xcmp-queue = { version = "0.18.1", default-features = false }
 cumulus-primitives-aura = { version = "0.16.0", default-features = false }
 cumulus-primitives-core = { version = "0.17.0", default-features = false }
 cumulus-primitives-parachain-inherent = "0.17.0"
 cumulus-primitives-storage-weight-reclaim = { version = "9.0.0", default-features = false }
 cumulus-primitives-utility = { version = "0.18.0", default-features = false }
-cumulus-relay-chain-interface = "0.20.0"
+cumulus-relay-chain-interface = "0.21.0"
 pallet-collator-selection = { version = "20.0.0", default-features = false }
 parachains-common = { version = "19.0.0", default-features = false }
 parachain-info = { version = "0.18.0", package = "staging-parachain-info", default-features = false }
