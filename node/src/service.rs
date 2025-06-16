@@ -226,6 +226,7 @@ fn start_consensus(
         collator_service,
         authoring_duration: Duration::from_millis(2000),
         reinitialize: false,
+        max_pov_percentage: None,
     };
 
     let fut = aura::run::<Block, sp_consensus_aura::sr25519::AuthorityPair, _, _, _, _, _, _, _, _>(
@@ -279,7 +280,7 @@ pub async fn start_parachain_node(
 
     // NOTE: because we use Aura here explicitly, we can use `CollatorSybilResistance::Resistant`
     // when starting the network.
-    let (network, system_rpc_tx, tx_handler_controller, start_network, sync_service) =
+    let (network, system_rpc_tx, tx_handler_controller, sync_service) =
         build_network(BuildNetworkParams {
             parachain_config: &parachain_config,
             net_config,
@@ -418,8 +419,6 @@ pub async fn start_parachain_node(
             announce_block,
         )?;
     }
-
-    start_network.start_network();
 
     Ok((task_manager, client))
 }
