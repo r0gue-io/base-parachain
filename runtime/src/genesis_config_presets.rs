@@ -34,9 +34,7 @@ fn testnet_genesis(
                 .map(|k| (k, 1u128 << 60))
                 .collect::<Vec<_>>()
         },
-        parachain_info: ParachainInfoConfig {
-            parachain_id: id
-        },
+        parachain_info: ParachainInfoConfig { parachain_id: id },
         collator_selection: CollatorSelectionConfig {
             invulnerables: invulnerables
                 .iter()
