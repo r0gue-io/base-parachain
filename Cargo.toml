@@ -93,6 +93,12 @@ sp-transaction-pool = { version = "36.0.0", default-features = false }
 sp-version = { version = "39.0.0", default-features = false }
 substrate-frame-rpc-system = "43.0.0"
 
+# Contracts
+pallet-contracts = { version = "40.1.0", default-features = false }
+
+# Revive
+pallet-revive = { version = "0.5.0", default-features = false }
+
 # Polkadot
 pallet-xcm = { version = "19.1.0", default-features = false }
 polkadot-cli = "23.0.0"

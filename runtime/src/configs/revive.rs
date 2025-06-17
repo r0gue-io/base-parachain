@@ -59,14 +59,12 @@ impl pallet_revive::Config for Runtime {
     type UnsafeUnstableInterface = ConstBool<true>;
     type CodeHashLockupDepositPercent = CodeHashLockupDepositPercent;
     type RuntimeHoldReason = RuntimeHoldReason;
-    type Debug = ();
-    #[cfg(feature = "parachain")]
     type Xcm = pallet_xcm::Pallet<Self>;
-    #[cfg(not(feature = "parachain"))]
-    type Xcm = ();
     type UploadOrigin = EnsureSigned<Self::AccountId>;
     type InstantiateOrigin = EnsureSigned<Self::AccountId>;
     type AddressMapper = pallet_revive::AccountId32Mapper<Runtime>;
     type ChainId = ChainId;
     type NativeToEthRatio = ConstU32<{ (ETH_UNIT / UNIT) as u32 }>;
+    type EthGasEncoder = ();
+	type FindAuthor = <Runtime as pallet_authorship::Config>::FindAuthor;
 }
