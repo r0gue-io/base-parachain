@@ -41,6 +41,8 @@ mod weights;
 extern crate alloc;
 
 use alloc::vec::Vec;
+pub use apis::{RuntimeApi, RUNTIME_API_VERSIONS};
+
 use cumulus_pallet_weight_reclaim::StorageWeightReclaim;
 use smallvec::smallvec;
 use sp_runtime::{
@@ -116,6 +118,30 @@ pub type TxExtension = StorageWeightReclaim<
     ),
 >;
 
+/// EthExtra converts an unsigned Call::eth_transact into a CheckedExtrinsic.
+#[derive(Clone, PartialEq, Eq, Debug)]
+pub struct EthExtraImpl;
+
+impl pallet_revive::evm::runtime::EthExtra for EthExtraImpl {
+	type Config = Runtime;
+	type Extension = TxExtension;
+
+	fn get_eth_extension(nonce: u32, tip: Balance) -> Self::Extension {
+		(
+			frame_system::CheckNonZeroSender::<Runtime>::new(),
+			frame_system::CheckSpecVersion::<Runtime>::new(),
+			frame_system::CheckTxVersion::<Runtime>::new(),
+			frame_system::CheckGenesis::<Runtime>::new(),
+			frame_system::CheckEra::from(generic::Era::Immortal),
+			frame_system::CheckNonce::<Runtime>::from(nonce),
+			frame_system::CheckWeight::<Runtime>::new(),
+			pallet_transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
+			frame_metadata_hash_extension::CheckMetadataHash::<Runtime>::new(false),
+		)
+			.into()
+	}
+}
+
 /// Unchecked extrinsic type as expected by this runtime.
 pub type UncheckedExtrinsic =
 	pallet_revive::evm::runtime::UncheckedExtrinsic<Address, Signature, EthExtraImpl>;
@@ -189,29 +215,6 @@ impl_opaque_keys! {
     }
 }
 
-/// Default extensions applied to Ethereum transactions.
-#[derive(Clone, PartialEq, Eq, Debug)]
-pub struct EthExtraImpl;
-
-impl pallet_revive::evm::runtime::EthExtra for EthExtraImpl {
-	type Config = Runtime;
-	type Extension = TxExtension;
-
-	fn get_eth_extension(nonce: u32, tip: Balance) -> Self::Extension {
-		(
-			frame_system::CheckNonZeroSender::<Runtime>::new(),
-			frame_system::CheckSpecVersion::<Runtime>::new(),
-			frame_system::CheckTxVersion::<Runtime>::new(),
-			frame_system::CheckGenesis::<Runtime>::new(),
-			frame_system::CheckEra::from(generic::Era::Immortal),
-			frame_system::CheckNonce::<Runtime>::from(nonce),
-			frame_system::CheckWeight::<Runtime>::new(),
-			pallet_transaction_payment::ChargeTransactionPayment::<Runtime>::from(tip),
-            frame_metadata_hash_extension::CheckMetadataHash::<Runtime>::new(false),
-		).into()
-	}
-}
-
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
     spec_name: Cow::Borrowed("parachain-template-runtime"),
@@ -219,7 +222,7 @@ pub const VERSION: RuntimeVersion = RuntimeVersion {
     authoring_version: 1,
     spec_version: 1,
     impl_version: 0,
-    apis: apis::RUNTIME_API_VERSIONS,
+    apis: RUNTIME_API_VERSIONS,
     transaction_version: 1,
     system_version: 1,
 };
@@ -368,7 +371,7 @@ mod runtime {
 
     // Revive
     #[runtime::pallet_index(41)]
-    pub type Revive = pallet_revive::Pallet<Runtime>;
+	pub type Revive = pallet_revive::Pallet<Runtime>;
 }
 
 cumulus_pallet_parachain_system::register_validate_block! {

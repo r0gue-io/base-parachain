@@ -1,70 +1,70 @@
-use crate::{
-    Balance, Balances, BalancesCall, Perbill, Runtime, RuntimeCall, RuntimeEvent,
-    RuntimeHoldReason, Timestamp,
-};
 use frame_support::{
-    parameter_types,
-    traits::{ConstBool, ConstU32},
+	parameter_types,
+	traits::{ConstBool, ConstU32, ConstU64, Nothing},
 };
 use frame_system::EnsureSigned;
 
-pub enum AllowBalancesCall {}
+use crate::{
+	Balance, Balances, Perbill, PolkadotXcm, Runtime, RuntimeCall, RuntimeEvent, RuntimeHoldReason,
+	Timestamp, TransactionPayment, UNIT, MILLIUNIT
+};
 
-impl frame_support::traits::Contains<RuntimeCall> for AllowBalancesCall {
-    fn contains(call: &RuntimeCall) -> bool {
-        matches!(
-            call,
-            RuntimeCall::Balances(BalancesCall::transfer_allow_death { .. })
-        )
-    }
-}
+// 18 decimals
+const ETH: u128 = 1_000_000_000_000_000_000;
 
-// Unit = the base number of indivisible units for balances
-const ETH_UNIT: u128 = 1_000_000_000_000_000;
-const UNIT: Balance = 1_000_000_000_000;
-const MILLIUNIT: Balance = 1_000_000_000;
-
-const fn deposit(items: u32, bytes: u32) -> Balance {
-    (items as Balance * UNIT + (bytes as Balance) * (5 * MILLIUNIT / 100)) / 10
+/// Deposit rate for stored data. 1/100th of the Relay Chain's deposit rate. `items` is the
+/// number of keys in storage and `bytes` is the size of the value.
+pub const fn deposit(items: u32, bytes: u32) -> Balance {
+	(items as Balance * UNIT + (bytes as Balance) * (5 * MILLIUNIT / 100)) / 10
 }
 
 parameter_types! {
+	pub CodeHashLockupDepositPercent: Perbill = Perbill::from_percent(30);
+	pub const NativeToEthRatio: u32 = (ETH/UNIT) as u32;
     pub const DepositPerItem: Balance = deposit(1, 0);
-    pub const DepositPerByte: Balance = deposit(0, 1);
-    pub const DefaultDepositLimit: Balance = deposit(1024, 1024 * 1024);
-    pub const CodeHashLockupDepositPercent: Perbill = Perbill::from_percent(0);
-    pub const MaxDelegateDependencies: u32 = 32;
-    pub const ChainId: u32 = 1;
+	pub const DepositPerByte: Balance = deposit(0, 1);
 }
 
 impl pallet_revive::Config for Runtime {
-    type Time = Timestamp;
-    type Currency = Balances;
-    type RuntimeEvent = RuntimeEvent;
-    type RuntimeCall = RuntimeCall;
-    /// The safest default is to allow no calls at all.
-    ///
-    /// Runtimes should whitelist dispatchables that are allowed to be called from contracts
-    /// and make sure they are stable. Dispatchables exposed to contracts are not allowed to
-    /// change because that would break already deployed contracts. The `RuntimeCall` structure
-    /// itself is not allowed to change the indices of existing pallets, too.
-    type CallFilter = AllowBalancesCall;
-    type DepositPerItem = DepositPerItem;
-    type DepositPerByte = DepositPerByte;
-    type WeightPrice = pallet_transaction_payment::Pallet<Self>;
-    type WeightInfo = pallet_revive::weights::SubstrateWeight<Self>;
-    type ChainExtension = ();
-    type RuntimeMemory = ConstU32<{ 128 * 1024 * 1024 }>;
-    type PVFMemory = ConstU32<{ 512 * 1024 * 1024 }>;
-    type UnsafeUnstableInterface = ConstBool<true>;
-    type CodeHashLockupDepositPercent = CodeHashLockupDepositPercent;
-    type RuntimeHoldReason = RuntimeHoldReason;
-    type Xcm = pallet_xcm::Pallet<Self>;
-    type UploadOrigin = EnsureSigned<Self::AccountId>;
-    type InstantiateOrigin = EnsureSigned<Self::AccountId>;
-    type AddressMapper = pallet_revive::AccountId32Mapper<Runtime>;
-    type ChainId = ChainId;
-    type NativeToEthRatio = ConstU32<{ (ETH_UNIT / UNIT) as u32 }>;
-    type EthGasEncoder = ();
+	type AddressMapper = pallet_revive::AccountId32Mapper<Self>;
+	// No runtime dispatchables are callable from contracts.
+	type CallFilter = Nothing;
+	type ChainExtension = ();
+	// EVM chain id. 3,395 is a unique ID still.
+	type ChainId = ConstU64<3_395>;
+	// 30 percent of storage deposit held for using a code hash.
+	type CodeHashLockupDepositPercent = CodeHashLockupDepositPercent;
+	type Currency = Balances;
+	type DepositPerByte = DepositPerByte;
+	type DepositPerItem = DepositPerItem;
+	type EthGasEncoder = ();
 	type FindAuthor = <Runtime as pallet_authorship::Config>::FindAuthor;
+	type InstantiateOrigin = EnsureSigned<Self::AccountId>;
+	// 1 ETH : 1_000_000 UNIT
+	type NativeToEthRatio = NativeToEthRatio;
+	// 512 MB. Used in an integrity test that verifies the runtime has enough memory.
+	type PVFMemory = ConstU32<{ 512 * 1024 * 1024 }>;
+	type RuntimeCall = RuntimeCall;
+	type RuntimeEvent = RuntimeEvent;
+	type RuntimeHoldReason = RuntimeHoldReason;
+	// 128 MB. Used in an integrity that verifies the runtime has enough memory.
+	type RuntimeMemory = ConstU32<{ 128 * 1024 * 1024 }>;
+	type Time = Timestamp;
+	// Disables access to unsafe host fns such as xcm_send.
+	type UnsafeUnstableInterface = ConstBool<false>;
+	type UploadOrigin = EnsureSigned<Self::AccountId>;
+	type WeightInfo = pallet_revive::weights::SubstrateWeight<Self>;
+	type WeightPrice = TransactionPayment;
+	type Xcm = PolkadotXcm;
+}
+
+impl TryFrom<RuntimeCall> for pallet_revive::Call<Runtime> {
+	type Error = ();
+
+	fn try_from(value: RuntimeCall) -> Result<Self, Self::Error> {
+		match value {
+			RuntimeCall::Revive(call) => Ok(call),
+			_ => Err(()),
+		}
+	}
 }

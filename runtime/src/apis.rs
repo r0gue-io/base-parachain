@@ -24,16 +24,17 @@
 // For more information, please refer to <http://unlicense.org>
 
 // External crates imports
-use codec::Encode;
 use alloc::{vec, vec::Vec};
+
+use codec::Encode;
 use frame_support::{
     dispatch::DispatchInfo,
     genesis_builder_helper::{build_state, get_preset},
     weights::Weight,
 };
+use pallet_revive::{evm::runtime::EthExtra, AddressMapper};
 use frame_system::limits::BlockWeights;
 use pallet_aura::Authorities;
-use pallet_revive::{AddressMapper, evm::runtime::EthExtra};
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_core::{crypto::KeyTypeId, OpaqueMetadata, U256, H160};
@@ -47,9 +48,9 @@ use sp_version::RuntimeVersion;
 // Local module imports
 use super::{
     configs::RuntimeBlockWeights, AccountId, Balance, Block, BlockNumber, ConsensusHook,
-    Contracts, EthExtraImpl, Executive, Hash, InherentDataExt, Nonce, ParachainSystem, Revive,
-    Runtime, RuntimeCall, RuntimeGenesisConfig, RuntimeOrigin, SessionKeys, System,
-    TransactionPayment, UncheckedExtrinsic, CONTRACTS_DEBUG_OUTPUT, CONTRACTS_EVENTS,
+    Contracts, Executive, Hash, InherentDataExt, Nonce, ParachainSystem, UncheckedExtrinsic,
+    Runtime, RuntimeCall, RuntimeGenesisConfig, SessionKeys, System, Revive, EthExtraImpl,
+    TransactionPayment, RuntimeOrigin, CONTRACTS_DEBUG_OUTPUT, CONTRACTS_EVENTS,
     SLOT_DURATION, VERSION,
 };
 
@@ -309,6 +310,7 @@ impl_runtime_apis! {
 		fn eth_transact(tx: pallet_revive::evm::GenericTransaction) -> Result<pallet_revive::EthTransactInfo<Balance>, pallet_revive::EthTransactError>
 		{
 			let blockweights: BlockWeights = <Runtime as frame_system::Config>::BlockWeights::get();
+
 			let tx_fee = |pallet_call, mut dispatch_info: DispatchInfo| {
 				let call = RuntimeCall::Revive(pallet_call);
 				dispatch_info.extension_weight = EthExtraImpl::get_eth_extension(0, 0u32.into()).weight(&call);
@@ -321,7 +323,11 @@ impl_runtime_apis! {
 				)
 			};
 
-			Revive::bare_eth_transact(tx, blockweights.max_block, tx_fee)
+			Revive::bare_eth_transact(
+				tx,
+				blockweights.max_block,
+				tx_fee,
+			)
 		}
 
 		fn call(
@@ -440,14 +446,17 @@ impl_runtime_apis! {
 		{
 			use pallet_revive::tracing::trace;
 			let mut tracer = config.build(Revive::evm_gas_from_weight);
-			trace(&mut tracer, || {
-				Self::eth_transact(tx)
-			})?;
+			let result = trace(&mut tracer, || Self::eth_transact(tx));
 
-			Ok(tracer.collect_traces().pop().expect("eth_transact succeeded, trace must exist, qed"))
+			if let Some(trace) = tracer.collect_traces().pop() {
+				Ok(trace)
+			} else if let Err(err) = result {
+				Err(err)
+			} else {
+				Ok(Default::default())
+			}
 		}
 	}
-
 
     #[cfg(feature = "try-runtime")]
     impl frame_try_runtime::TryRuntime<Block> for Runtime {
