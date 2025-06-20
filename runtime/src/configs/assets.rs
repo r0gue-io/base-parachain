@@ -25,7 +25,7 @@
 
 use crate::{
     deposit, AccountId, Assets, Balance, Balances, BlockNumber, Nfts, Runtime, RuntimeEvent,
-    RuntimeHoldReason, DAYS, EXISTENTIAL_DEPOSIT, UNIT,
+    RuntimeHoldReason, System, DAYS, EXISTENTIAL_DEPOSIT, UNIT,
 };
 use frame_support::{
     parameter_types,
@@ -102,6 +102,7 @@ impl pallet_nfts::Config for Runtime {
     type WeightInfo = (); // Configure based on benchmarking results.
     #[cfg(feature = "runtime-benchmarks")]
     type Helper = ();
+    type BlockNumberProvider = System;
 }
 
 parameter_types! {
@@ -130,6 +131,7 @@ impl pallet_assets::Config<TrustBackedAssets> for Runtime {
     type ApprovalDeposit = ApprovalDeposit;
     type StringLimit = AssetsStringLimit;
     type Freezer = ();
+    type Holder = ();
     type Extra = ();
     type WeightInfo = (); // Configure based on benchmarking results.
     type CallbackHandle = ();
