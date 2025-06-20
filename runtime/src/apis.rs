@@ -24,6 +24,7 @@
 // For more information, please refer to <http://unlicense.org>
 
 // External crates imports
+use alloc::vec::Vec;
 use frame_support::{
     genesis_builder_helper::{build_state, get_preset},
     weights::Weight,
@@ -37,7 +38,6 @@ use sp_runtime::{
     transaction_validity::{TransactionSource, TransactionValidity},
     ApplyExtrinsicResult,
 };
-use sp_std::prelude::Vec;
 use sp_version::RuntimeVersion;
 
 // Local module imports
@@ -92,6 +92,15 @@ impl_runtime_apis! {
 
         fn metadata_versions() -> Vec<u32> {
             Runtime::metadata_versions()
+        }
+    }
+
+    impl frame_support::view_functions::runtime_api::RuntimeViewFunction<Block> for Runtime {
+        fn execute_view_function(
+            id: frame_support::view_functions::ViewFunctionId,
+            input: Vec<u8>
+        ) -> Result<Vec<u8>, frame_support::view_functions::ViewFunctionDispatchError> {
+            Runtime::execute_view_function(id, input)
         }
     }
 
@@ -227,7 +236,7 @@ impl_runtime_apis! {
             Vec<frame_benchmarking::BenchmarkList>,
             Vec<frame_support::traits::StorageInfo>,
         ) {
-            use frame_benchmarking::{Benchmarking, BenchmarkList};
+            use frame_benchmarking::BenchmarkList;
             use frame_support::traits::StorageInfoTrait;
             use frame_system_benchmarking::Pallet as SystemBench;
             use cumulus_pallet_session_benchmarking::Pallet as SessionBench;
@@ -243,7 +252,7 @@ impl_runtime_apis! {
         fn dispatch_benchmark(
             config: frame_benchmarking::BenchmarkConfig
         ) -> Result<Vec<frame_benchmarking::BenchmarkBatch>, alloc::string::String> {
-            use frame_benchmarking::{BenchmarkError, Benchmarking, BenchmarkBatch};
+            use frame_benchmarking::{BenchmarkError, BenchmarkBatch};
             use super::*;
 
             use frame_system_benchmarking::Pallet as SystemBench;

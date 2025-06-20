@@ -34,4 +34,5 @@ frame_benchmarking::define_benchmarks!(
     [pallet_session, SessionBench::<Runtime>]
     [cumulus_pallet_xcmp_queue, XcmpQueue]
     [pallet_message_queue, MessageQueue]
+    [cumulus_pallet_weight_reclaim, WeightReclaim]
 );

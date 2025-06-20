@@ -4,6 +4,7 @@ use crate::{
 };
 use alloc::{vec, vec::Vec};
 use cumulus_primitives_core::ParaId;
+use frame_support::build_struct_json_patch;
 use parachains_common::AuraId;
 use serde_json::Value;
 use sp_genesis_builder::PresetId;
@@ -25,26 +26,22 @@ fn testnet_genesis(
     root: AccountId,
     id: ParaId,
 ) -> Value {
-    let config = RuntimeGenesisConfig {
+    build_struct_json_patch!(RuntimeGenesisConfig {
         balances: BalancesConfig {
             balances: endowed_accounts
                 .iter()
                 .cloned()
                 .map(|k| (k, 1u128 << 60))
-                .collect::<Vec<_>>(),
+                .collect::<Vec<_>>()
         },
-        parachain_info: ParachainInfoConfig {
-            parachain_id: id,
-            ..Default::default()
-        },
+        parachain_info: ParachainInfoConfig { parachain_id: id },
         collator_selection: CollatorSelectionConfig {
             invulnerables: invulnerables
                 .iter()
                 .cloned()
                 .map(|(acc, _)| acc)
                 .collect::<Vec<_>>(),
-            candidacy_bond: EXISTENTIAL_DEPOSIT * 16,
-            ..Default::default()
+            candidacy_bond: EXISTENTIAL_DEPOSIT * 16
         },
         session: SessionConfig {
             keys: invulnerables
@@ -56,17 +53,13 @@ fn testnet_genesis(
                         template_session_keys(aura), // session keys
                     )
                 })
-                .collect::<Vec<_>>(),
-            ..Default::default()
+                .collect::<Vec<_>>()
         },
         polkadot_xcm: PolkadotXcmConfig {
-            safe_xcm_version: Some(SAFE_XCM_VERSION),
-            ..Default::default()
+            safe_xcm_version: Some(SAFE_XCM_VERSION)
         },
-        sudo: SudoConfig { key: Some(root) },
-        ..Default::default()
-    };
-    serde_json::to_value(config).expect("Could not build genesis config.")
+        sudo: SudoConfig { key: Some(root) }
+    })
 }
 
 fn local_testnet_genesis() -> Value {
