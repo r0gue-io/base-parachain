@@ -51,10 +51,10 @@ sp-consensus-aura.workspace = true
 sp-core.workspace = true
 sp-genesis-builder.workspace = true
 sp-inherents.workspace = true
+sp-keyring.workspace = true
 sp-offchain.workspace = true
 sp-runtime.workspace = true
 sp-session.workspace = true
-sp-std.workspace = true
 sp-transaction-pool.workspace = true
 sp-version.workspace = true
 
@@ -70,11 +70,11 @@ xcm-executor.workspace = true
 cumulus-pallet-aura-ext.workspace = true
 cumulus-pallet-parachain-system.workspace = true
 cumulus-pallet-session-benchmarking.workspace = true
+cumulus-pallet-weight-reclaim.workspace = true
 cumulus-pallet-xcm.workspace = true
 cumulus-pallet-xcmp-queue.workspace = true
 cumulus-primitives-aura.workspace = true
 cumulus-primitives-core.workspace = true
-cumulus-primitives-storage-weight-reclaim.workspace = true
 cumulus-primitives-utility.workspace = true
 pallet-collator-selection.workspace = true
 parachains-common.workspace = true
@@ -87,11 +87,11 @@ std = [
   "cumulus-pallet-aura-ext/std",
   "cumulus-pallet-parachain-system/std",
   "cumulus-pallet-session-benchmarking/std",
+  "cumulus-pallet-weight-reclaim/std",
   "cumulus-pallet-xcm/std",
   "cumulus-pallet-xcmp-queue/std",
   "cumulus-primitives-aura/std",
   "cumulus-primitives-core/std",
-  "cumulus-primitives-storage-weight-reclaim/std",
   "cumulus-primitives-utility/std",
   "frame-benchmarking?/std",
   "frame-executive/std",
@@ -126,10 +126,10 @@ std = [
   "sp-core/std",
   "sp-genesis-builder/std",
   "sp-inherents/std",
+  "sp-keyring/std",
   "sp-offchain/std",
   "sp-runtime/std",
   "sp-session/std",
-  "sp-std/std",
   "sp-transaction-pool/std",
   "sp-version/std",
   "xcm-builder/std",
@@ -140,6 +140,7 @@ std = [
 runtime-benchmarks = [
   "cumulus-pallet-parachain-system/runtime-benchmarks",
   "cumulus-pallet-session-benchmarking/runtime-benchmarks",
+  "cumulus-pallet-weight-reclaim/runtime-benchmarks",
   "cumulus-pallet-xcmp-queue/runtime-benchmarks",
   "cumulus-primitives-core/runtime-benchmarks",
   "cumulus-primitives-utility/runtime-benchmarks",
