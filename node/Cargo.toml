@@ -16,14 +16,12 @@ substrate-build-script-utils.workspace = true
 
 [dependencies]
 clap.workspace = true
-codec.workspace = true
 color-print.workspace = true
 docify.workspace = true
 futures.workspace = true
 jsonrpsee.workspace = true
 log.workspace = true
 serde.workspace = true
-serde_json.workspace = true
 
 # Local
 parachain-template-runtime.workspace = true
@@ -40,9 +38,7 @@ sc-client-api.workspace = true
 sc-consensus.workspace = true
 sc-executor.workspace = true
 sc-network.workspace = true
-sc-network-sync.workspace = true
 sc-offchain.workspace = true
-sc-rpc.workspace = true
 sc-service.workspace = true
 sc-sysinfo.workspace = true
 sc-telemetry.workspace = true
@@ -53,11 +49,9 @@ sp-api.workspace = true
 sp-block-builder.workspace = true
 sp-blockchain.workspace = true
 sp-consensus-aura.workspace = true
-sp-core.workspace = true
 sp-genesis-builder.workspace = true
 sp-genesis-builder.default-features = true
 sp-keystore.workspace = true
-sp-io.workspace = true
 sp-runtime.workspace = true
 sp-timestamp.workspace = true
 substrate-frame-rpc-system.workspace = true
@@ -68,6 +62,7 @@ polkadot-primitives.workspace = true
 xcm.workspace = true
 
 # Cumulus
+cumulus-client-bootnodes.workspace = true
 cumulus-client-cli.workspace = true
 cumulus-client-collator.workspace = true
 cumulus-client-consensus-aura.workspace = true
@@ -75,7 +70,6 @@ cumulus-client-consensus-common.workspace = true
 cumulus-client-consensus-proposer.workspace = true
 cumulus-client-service.workspace = true
 cumulus-primitives-core.workspace = true
-cumulus-primitives-parachain-inherent.workspace = true
 cumulus-relay-chain-interface.workspace = true
 
 [features]
