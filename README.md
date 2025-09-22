@@ -5,7 +5,7 @@
 <img height="70px" alt="Polkadot SDK Logo" src="https://github.com/paritytech/polkadot-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_White.png#gh-dark-mode-only"/>
 <img height="70px" alt="Polkadot SDK Logo" src="https://github.com/paritytech/polkadot-sdk/raw/master/docs/images/Polkadot_Logo_Horizontal_Pink_Black.png#gh-light-mode-only"/>
 <br /><br />
-<a href="r0gue.io"><img src="https://github.com/user-attachments/assets/96830651-c3db-412a-9cb4-6fcd8ea6231b" alt="R0GUE Logo" /></a>
+<a href="https://r0gue.io"><img src="https://github.com/user-attachments/assets/96830651-c3db-412a-9cb4-6fcd8ea6231b" alt="R0GUE Logo" /></a>
 
 [![Twitter URL](https://img.shields.io/twitter/follow/Pop?style=social)](https://x.com/onpopio/)
 [![Twitter URL](https://img.shields.io/twitter/follow/R0GUE?style=social)](https://twitter.com/gor0gue)
@@ -29,7 +29,6 @@ such as a [Balances pallet](https://paritytech.github.io/polkadot-sdk/master/pal
 
 A Polkadot SDK based project such as this one consists of:
 
-* 💿 [Node](./node/README.md) - the binary application.
 * 🧮 [Runtime](./runtime/README.md) - the core logic of the parachain.
 
 ## Getting Started
@@ -39,7 +38,6 @@ A Polkadot SDK based project such as this one consists of:
 ```
 cargo install --force --locked pop-cli
 ```
-
 #### Start a new parachain project with this template:
 ```
 pop new parachain
@@ -47,7 +45,20 @@ pop new parachain
 
 #### Learn how to run your parachain using the `pop up` command:
 ```sh
-pop up parachain -f ./network.toml
+# Generate the chain spec
+pop build spec            \
+--profile release         \
+--id 2000                 \
+--type local              \
+--relay paseo-local       \
+--protocol-id custom      \
+--chain local             \
+--default-bootnode=false  \
+--genesis-code=false      \
+--genesis-state=false     \
+--deterministic=false     \
+--output ./target/release/chain-spec.json
+pop up ./network.toml
 ```
 > 👉 https://learn.onpop.io/v/appchains/guides/running-your-parachain
 
@@ -68,4 +79,3 @@ the Polkadot SDK documentation resources.
 
 * 👥 Additionally, there are [GitHub issues](https://github.com/r0gue-io/base-parachain/issues) and
 [Polkadot Stack Exchange](https://polkadot.stackexchange.com/).
-
