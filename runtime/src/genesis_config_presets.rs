@@ -53,10 +53,10 @@ fn testnet_genesis(
                         template_session_keys(aura), // session keys
                     )
                 })
-                .collect::<Vec<_>>(),
+                .collect::<Vec<_>>()
         },
         polkadot_xcm: PolkadotXcmConfig {
-            safe_xcm_version: Some(SAFE_XCM_VERSION),
+            safe_xcm_version: Some(SAFE_XCM_VERSION)
         },
         sudo: SudoConfig { key: Some(root) },
     })
