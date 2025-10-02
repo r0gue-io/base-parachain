@@ -52,7 +52,7 @@ pop build spec            \
 --type local              \
 --relay paseo-local       \
 --protocol-id custom      \
---chain local             \
+--chain local_testnet     \
 --default-bootnode=false  \
 --genesis-code=false      \
 --genesis-state=false     \
