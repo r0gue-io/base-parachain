@@ -18,7 +18,7 @@ on:
         required: true
 
 jobs:
-  build-node:
+  build-runtime:
     runs-on: ${{ matrix.platform.os }}
     permissions:
       contents: write
@@ -36,7 +36,7 @@ jobs:
     env:
       RUSTFLAGS: "${{ matrix.platform.target == 'aarch64-unknown-linux-gnu' && '-C linker=aarch64-linux-gnu-gcc' || '' }}"
       path: "target/${{ matrix.platform.target }}/release"
-      package: "parachain-template-node-${{ matrix.platform.target }}.tar.gz"
+      package: "parachain-template-runtime-${{ matrix.platform.target }}.tar.gz"
 
     steps:
       - name: Checkout
@@ -60,28 +60,28 @@ jobs:
       - name: Add target
         run: rustup target add ${{ matrix.platform.target }}
 
-      - name: Build node
-        run: cargo build --release -p parachain-template-node --target ${{ matrix.platform.target }} --features parachain-template-runtime/on-chain-release-build
+      - name: Build runtime
+        run: cargo build --release -p parachain-template-runtime --target ${{ matrix.platform.target }} on-chain-release-build
 
       - name: Package binary
         run: |
           mkdir -p artifacts
-          cp ${{ env.path }}/parachain-template-node artifacts/
+          cp ${{ env.path }}/parachain-template-runtime artifacts/
           cd artifacts
           if [[ "${{ matrix.platform.target }}" == *"linux"* ]]; then
-            sha256sum parachain-template-node > parachain-template-node.sha256
+            sha256sum parachain-template-runtime > parachain-template-runtime.sha256
           else
-            shasum -a 256 parachain-template-node > parachain-template-node.sha256
+            shasum -a 256 parachain-template-runtime > parachain-template-runtime.sha256
           fi
-          tar -czf ${{ env.package }} parachain-template-node parachain-template-node.sha256
-      - name: Upload binary
+          tar -czf ${{ env.package }} parachain-template-runtime parachain-template-runtime.sha256
+      - name: Upload runtime
         uses: actions/upload-artifact@v4
         with:
-          name: parachain-template-node-${{ matrix.platform.target }}
+          name: parachain-template-runtime-${{ matrix.platform.target }}
           path: artifacts/${{ env.package }}
 
   create-release:
-    needs: build-node
+    needs: build-runtime
     runs-on: ubuntu-latest
     permissions:
       contents: write
