@@ -13,70 +13,14 @@ members = ["runtime"]
 resolver = "2"
 
 [workspace.dependencies]
-codec = { package = "parity-scale-codec", version = "3.7.5", default-features = false, features = [
-  "derive",
-] }
+codec = { package = "parity-scale-codec", version = "3.7.5", default-features = false, features = ["derive"] }
 docify = "0.4.1"
 log = { version = "0.4.25", default-features = false }
-scale-info = { version = "2.11.6", default-features = false, features = [
-  "derive",
-] }
-serde_json = { version = "1.0.137", default-features = false }
+scale-info = { version = "2.11.6", default-features = false, features = ["derive"] }
+serde_json = { version = "1.0.137", features = ["alloc"], default-features = false }
 smallvec = "1.13.2"
 
 # Build
 substrate-wasm-builder = "29.0.0"
 
-# Substrate
-frame-benchmarking = { version = "43.0.0", default-features = false }
-frame-executive = { version = "43.0.0", default-features = false }
-frame-support = { version = "43.0.0", default-features = false }
-frame-system = { version = "43.0.0", default-features = false }
-frame-system-benchmarking = { version = "43.0.0", default-features = false }
-frame-system-rpc-runtime-api = { version = "39.0.0", default-features = false }
-frame-try-runtime = { version = "0.49.0", default-features = false }
-frame-metadata-hash-extension = { version = "0.11.0", default-features = false }
-pallet-aura = { version = "42.0.0", default-features = false }
-pallet-authorship = { version = "43.0.0", default-features = false }
-pallet-balances = { version = "44.0.0", default-features = false }
-pallet-message-queue = { version = "46.0.0", default-features = false }
-pallet-session = { version = "43.0.0", default-features = false }
-pallet-sudo = { version = "43.0.0", default-features = false }
-pallet-timestamp = { version = "42.0.0", default-features = false }
-pallet-transaction-payment = { version = "43.0.0", default-features = false }
-pallet-transaction-payment-rpc = "46.0.0"
-pallet-transaction-payment-rpc-runtime-api = { version = "43.0.0", default-features = false }
-sp-api = { version = "39.0.0", default-features = false }
-sp-block-builder = { version = "39.0.0", default-features = false }
-sp-consensus-aura = { version = "0.45.0", default-features = false }
-sp-core = { version = "38.1.0", default-features = false }
-sp-genesis-builder = { version = "0.20.0", default-features = false }
-sp-inherents = { version = "39.0.0", default-features = false }
-sp-keyring = { version = "44.0.0", default-features = false }
-sp-offchain = { version = "39.0.0", default-features = false }
-sp-runtime = { version = "44.0.0", default-features = false }
-sp-session = { version = "41.0.0", default-features = false }
-sp-transaction-pool = { version = "39.0.0", default-features = false }
-sp-version = { version = "42.0.0", default-features = false }
-
-# Polkadot
-pallet-xcm = { version = "23.0.0", default-features = false }
-polkadot-parachain-primitives = { version = "19.0.0", default-features = false }
-polkadot-runtime-common = { version = "22.0.0", default-features = false }
-xcm = { version = "19.0.0", package = "staging-xcm", default-features = false }
-xcm-builder = { version = "23.0.0", package = "staging-xcm-builder", default-features = false }
-xcm-executor = { version = "22.0.0", package = "staging-xcm-executor", default-features = false }
-
-# Cumulus
-cumulus-pallet-aura-ext = { version = "0.23.0", default-features = false }
-cumulus-pallet-parachain-system = { version = "0.23.0", default-features = false }
-cumulus-pallet-session-benchmarking = { version = "24.0.0", default-features = false }
-cumulus-pallet-weight-reclaim = { version = "0.5.0", default-features = false }
-cumulus-pallet-xcm = { version = "0.22.0", default-features = false }
-cumulus-pallet-xcmp-queue = { version = "0.23.0", default-features = false }
-cumulus-primitives-aura = { version = "0.20.0", default-features = false }
-cumulus-primitives-core = { version = "0.21.0", default-features = false }
-cumulus-primitives-utility = { version = "0.23.0", default-features = false }
-pallet-collator-selection = { version = "24.0.0", default-features = false }
-parachains-common = { version = "25.0.0", default-features = false }
-parachain-info = { version = "0.23.0", package = "staging-parachain-info", default-features = false }
+polkadot-sdk = { version = "2509.0.0", default-features = false }
