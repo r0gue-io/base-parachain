@@ -13,3 +13,6 @@
 
 # Binaries
 **/bin/
+
+# Chain spec
+chain-spec.json
