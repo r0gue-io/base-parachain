@@ -205,7 +205,6 @@ impl cumulus_pallet_parachain_system::Config for Runtime {
     type ReservedXcmpWeight = ReservedXcmpWeight;
     type CheckAssociatedRelayNumber = RelayNumberMonotonicallyIncreases;
     type ConsensusHook = ConsensusHook;
-    type SelectCore = cumulus_pallet_parachain_system::DefaultCoreSelector<Runtime>;
     type RelayParentOffset = ConstU32<0>;
 }
 
@@ -274,7 +273,9 @@ impl pallet_session::Config for Runtime {
     // Essentially just Aura, but let's be pedantic.
     type SessionHandler = <SessionKeys as sp_runtime::traits::OpaqueKeys>::KeyTypeIdProviders;
     type Keys = SessionKeys;
-    type WeightInfo = (); // Configure based on benchmarking results.
+    type WeightInfo = ();
+    type Currency = Balances;
+    type KeyDeposit = ();
 }
 
 impl pallet_aura::Config for Runtime {
