@@ -18,7 +18,6 @@ docify.workspace = true
 
 [dependencies]
 codec.workspace = true
-hex-literal.workspace = true
 log.workspace = true
 scale-info.workspace = true
 serde_json.workspace = true
