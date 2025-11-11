@@ -8,6 +8,7 @@ validator = true
 [[relaychain.nodes]]
 name = "bob"
 validator = true
+args = ["--network-backend=libp2p"]
 
 [[parachains]]
 chain = "base-parachain"
@@ -34,3 +35,4 @@ pop build spec                \
 
 [[parachains.collators]]
 name = "collator-01"
+args = ["--network-backend=libp2p"]
