@@ -61,7 +61,7 @@ jobs:
         run: rustup target add ${{ matrix.platform.target }}
 
       - name: Build runtime
-        run: cargo build --release -p parachain-template-runtime --target ${{ matrix.platform.target }} on-chain-release-build
+        run: cargo build --release -p parachain-template-runtime --target ${{ matrix.platform.target }}
 
       - name: Package binary
         run: |
