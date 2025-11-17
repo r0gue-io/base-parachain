@@ -1,4 +1,4 @@
 [toolchain]
-channel = "1.86" # pinned to version used with polkadot release
+channel = "1.88" # pinned to version used with polkadot release
 components = [ "clippy", "llvm-tools-preview", "rust-src", "rustfmt" ]
 targets = [ "wasm32v1-none" ]
