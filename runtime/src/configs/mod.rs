@@ -63,7 +63,6 @@ use polkadot_sdk::{
 	sp_version::RuntimeVersion,
 	staging_parachain_info as parachain_info,
 	staging_xcm::latest::prelude::BodyId,
-	staging_xcm_builder as xcm_builder, staging_xcm_executor as xcm_executor,
 };
 
 // Local module imports
@@ -232,7 +231,7 @@ impl pallet_message_queue::Config for Runtime {
 	type WeightInfo = (); // Configure based on benchmarking results.
 	#[cfg(feature = "runtime-benchmarks")]
 	type MessageProcessor = pallet_message_queue::mock_helpers::NoopMessageProcessor<
-		cumulus_primitives_core::AggregateMessageOrigin,
+		polkadot_sdk::cumulus_primitives_core::AggregateMessageOrigin,
 	>;
 	#[cfg(not(feature = "runtime-benchmarks"))]
 	type MessageProcessor = xcm_builder::ProcessXcmMessage<
