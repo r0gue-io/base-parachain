@@ -23,4 +23,4 @@ smallvec = "1.13.2"
 # Build
 substrate-wasm-builder = "29.0.0"
 
-polkadot-sdk = { version = "2509.0.0", default-features = false }
+polkadot-sdk = { git = "https://github.com/paritytech/polkadot-sdk", tag = "polkadot-stable2512-rc2", default-features = false }
