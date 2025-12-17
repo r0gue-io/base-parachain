@@ -58,12 +58,11 @@ use polkadot_sdk::{
 		xcm_sender::NoPriceForMessageDelivery, BlockHashCount, SlowAdjustingFeeUpdate,
 	},
 	sp_consensus_aura::sr25519::AuthorityId as AuraId,
-	sp_core, sp_runtime,
+	sp_runtime,
 	sp_runtime::Perbill,
 	sp_version::RuntimeVersion,
 	staging_parachain_info as parachain_info,
 	staging_xcm::latest::prelude::BodyId,
-	staging_xcm_builder as xcm_builder, staging_xcm_executor as xcm_executor,
 };
 
 // Local module imports
@@ -136,7 +135,7 @@ impl frame_system::Config for Runtime {
 	type SS58Prefix = SS58Prefix;
 	/// The action to take on a Runtime Upgrade
 	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
-	type MaxConsumers = frame_support::traits::ConstU32<16>;
+	type MaxConsumers = ConstU32<16>;
 }
 
 impl cumulus_pallet_weight_reclaim::Config for Runtime {
@@ -231,13 +230,12 @@ impl pallet_message_queue::Config for Runtime {
 	type RuntimeEvent = RuntimeEvent;
 	type WeightInfo = (); // Configure based on benchmarking results.
 	#[cfg(feature = "runtime-benchmarks")]
-	type MessageProcessor = pallet_message_queue::mock_helpers::NoopMessageProcessor<
-		cumulus_primitives_core::AggregateMessageOrigin,
-	>;
+	type MessageProcessor =
+		pallet_message_queue::mock_helpers::NoopMessageProcessor<AggregateMessageOrigin>;
 	#[cfg(not(feature = "runtime-benchmarks"))]
-	type MessageProcessor = xcm_builder::ProcessXcmMessage<
+	type MessageProcessor = polkadot_sdk::staging_xcm_builder::ProcessXcmMessage<
 		AggregateMessageOrigin,
-		xcm_executor::XcmExecutor<xcm_config::XcmConfig>,
+		polkadot_sdk::staging_xcm_executor::XcmExecutor<xcm_config::XcmConfig>,
 		RuntimeCall,
 	>;
 	type Size = u32;
@@ -258,7 +256,7 @@ impl cumulus_pallet_xcmp_queue::Config for Runtime {
 	type VersionWrapper = ();
 	// Enqueue XCMP messages from siblings for later processing.
 	type XcmpQueue = TransformOrigin<MessageQueue, AggregateMessageOrigin, ParaId, ParaIdToSibling>;
-	type MaxInboundSuspended = sp_core::ConstU32<1_000>;
+	type MaxInboundSuspended = ConstU32<1_000>;
 	type ControllerOrigin = EnsureRoot<AccountId>;
 	type ControllerOriginConverter = XcmOriginToTransactDispatchOrigin;
 	type WeightInfo = (); // Configure based on benchmarking results.

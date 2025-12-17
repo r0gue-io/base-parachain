@@ -23,7 +23,7 @@
 //
 // For more information, please refer to <http://unlicense.org>
 
-frame_benchmarking::define_benchmarks!(
+polkadot_sdk::frame_benchmarking::define_benchmarks!(
 	// Only benchmark the following pallets
 	[frame_system, SystemBench::<Runtime>]
 	[cumulus_pallet_parachain_system, ParachainSystem]

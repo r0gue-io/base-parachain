@@ -29,14 +29,14 @@ pub mod constants {
 
 	#[cfg(test)]
 	mod test_weights {
-		use frame_support::weights::constants;
+		use polkadot_sdk::frame_support::weights::constants;
 
 		/// Checks that the weight exists and is sane.
 		// NOTE: If this test fails but you are sure that the generated values are fine,
 		// you can delete it.
 		#[test]
 		fn sane() {
-			let w = super::constants::ExtrinsicBaseWeight::get();
+			let w = constants::ExtrinsicBaseWeight::get();
 
 			// At least 10 µs.
 			assert!(
