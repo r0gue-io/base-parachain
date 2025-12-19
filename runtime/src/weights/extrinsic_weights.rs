@@ -36,7 +36,7 @@ pub mod constants {
 		// you can delete it.
 		#[test]
 		fn sane() {
-			let w = constants::ExtrinsicBaseWeight::get();
+			let w = super::constants::ExtrinsicBaseWeight::get();
 
 			// At least 10 µs.
 			assert!(
