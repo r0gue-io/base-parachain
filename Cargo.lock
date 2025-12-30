@@ -10517,6 +10517,7 @@ dependencies = [
 name = "parachain-template-runtime"
 version = "0.1.0"
 dependencies = [
+ "cumulus-pallet-parachain-system",
  "docify 0.4.1",
  "log",
  "parity-scale-codec",

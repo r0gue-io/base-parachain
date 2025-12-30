@@ -27,10 +27,9 @@
 mod xcm_config;
 
 // Substrate and Polkadot dependencies via the umbrella crate
+use cumulus_pallet_parachain_system::RelayNumberMonotonicallyIncreases;
 use polkadot_sdk::{
-	cumulus_pallet_aura_ext, cumulus_pallet_parachain_system,
-	cumulus_pallet_parachain_system::RelayNumberMonotonicallyIncreases,
-	cumulus_pallet_weight_reclaim, cumulus_pallet_xcmp_queue,
+	cumulus_pallet_aura_ext, cumulus_pallet_weight_reclaim, cumulus_pallet_xcmp_queue,
 	cumulus_primitives_core::{AggregateMessageOrigin, ParaId},
 	frame_support,
 	frame_support::{
