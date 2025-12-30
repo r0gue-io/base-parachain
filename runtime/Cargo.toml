@@ -23,6 +23,7 @@ scale-info.workspace = true
 serde_json.workspace = true
 smallvec.workspace = true
 docify.workspace = true
+cumulus-pallet-parachain-system = { workspace = true }
 
 # Polkadot SDK umbrella (curated features for this runtime)
 polkadot-sdk = { workspace = true, features = [
@@ -62,7 +63,6 @@ polkadot-sdk = { workspace = true, features = [
 
     # Cumulus runtime-side pallets and primitives
     "cumulus-pallet-aura-ext",
-    "cumulus-pallet-parachain-system",
     "cumulus-pallet-weight-reclaim",
     "cumulus-pallet-xcm",
     "cumulus-pallet-xcmp-queue",
@@ -90,6 +90,7 @@ std = [
     "scale-info/std",
     "serde_json/std",
     "polkadot-sdk/std",
+    "cumulus-pallet-parachain-system/std",
 ]
 
 runtime-benchmarks = [

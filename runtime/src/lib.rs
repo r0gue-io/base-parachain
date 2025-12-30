@@ -44,7 +44,7 @@ use alloc::vec::Vec;
 #[cfg(feature = "std")]
 use polkadot_sdk::sp_version::NativeVersion;
 use polkadot_sdk::{
-	cumulus_pallet_aura_ext, cumulus_pallet_parachain_system, cumulus_pallet_weight_reclaim,
+	cumulus_pallet_aura_ext, cumulus_pallet_weight_reclaim,
 	cumulus_pallet_weight_reclaim::StorageWeightReclaim,
 	cumulus_pallet_xcm, cumulus_pallet_xcmp_queue, cumulus_primitives_core, frame_executive,
 	frame_metadata_hash_extension,
@@ -330,4 +330,9 @@ mod runtime {
 	pub type CumulusXcm = cumulus_pallet_xcm::Pallet<Runtime>;
 	#[runtime::pallet_index(33)]
 	pub type MessageQueue = pallet_message_queue::Pallet<Runtime>;
+}
+
+cumulus_pallet_parachain_system::register_validate_block! {
+	Runtime = Runtime,
+	BlockExecutor = cumulus_pallet_aura_ext::BlockExecutor::<Runtime, Executive>,
 }
