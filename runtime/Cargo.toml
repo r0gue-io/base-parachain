@@ -96,6 +96,7 @@ std = [
 runtime-benchmarks = [
     "cumulus-pallet-parachain-system/runtime-benchmarks",
     "polkadot-sdk/runtime-benchmarks",
+    "polkadot-sdk/frame-benchmarking",
     "polkadot-sdk/frame-system-benchmarking",
     "polkadot-sdk/cumulus-pallet-session-benchmarking",
 ]
